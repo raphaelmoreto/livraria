@@ -1,0 +1,35 @@
+CREATE DATABASE Livraria;
+
+USE Livraria;
+
+CREATE TABLE Categoria (
+	id INT PRIMARY KEY IDENTITY(1,1),
+	categoria VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Autor (
+	id INT PRIMARY KEY IDENTITY(1,1),
+	nome VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Livro (
+	id INT PRIMARY KEY IDENTITY(1,1),
+	titulo VARCHAR(255) NOT NULL,
+	subtitulo VARCHAR(255) DEFAULT '',
+	isbn VARCHAR(15) NOT NULL, --Número Internacional Padronizado de Livro
+	dt_publicacao DATETIME NOT NULL,
+	dt_cadastro DATETIME NOT NULL, --Quando o livro foi cadastrado no sistema
+	preco DECIMAL(18,2) NOT NULL,
+	codigo_barras VARCHAR(50) NOT NULL,
+	qt_estoque INT NOT NULL DEFAULT 0,
+	fk_autor INT,
+	fk_categoria INT
+);
+
+ALTER TABLE Livro
+ADD CONSTRAINT fk_livro_autor
+FOREIGN KEY (fk_autor) REFERENCES Autor (id)
+
+ALTER TABLE Livro
+ADD CONSTRAINT fk_livro_categoria
+FOREIGN KEY (fk_categoria) REFERENCES Categoria (id);
