@@ -18,7 +18,6 @@ CREATE TABLE Livro (
 	subtitulo VARCHAR(255) DEFAULT '',
 	isbn VARCHAR(15) NOT NULL, --Número Internacional Padronizado de Livro
 	dt_publicacao DATETIME NOT NULL,
-	dt_cadastro DATETIME NOT NULL, --Quando o livro foi cadastrado no sistema
 	codigo_barras VARCHAR(50) NOT NULL,
 	preco DECIMAL(18,2) NOT NULL,
 	fk_autor INT,
@@ -40,4 +39,16 @@ CREATE TABLE Estoque (
 
 ALTER TABLE Estoque
 ADD CONSTRAINT fk_estoque_livro
+FOREIGN KEY (fk_livro) REFERENCES Livro (id);
+
+CREATE TABLE Movimentacao (
+	id INT PRIMARY KEY IDENTITY(1,1),
+	tipo VARCHAR(20) NOT NULL,
+	dt_movimentacao DATETIME NOT NULL, --Quando o livro foi cadastrado no sistema
+	quantidade INT NOT NULL,
+	fk_livro INT NOT NULL
+);
+
+ALTER TABLE Movimentacao
+ADD CONSTRAINT fk_movimentacao_livro
 FOREIGN KEY (fk_livro) REFERENCES Livro (id);

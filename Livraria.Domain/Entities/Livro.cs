@@ -13,8 +13,6 @@ namespace Livraria.Domain.Entities
 
         public DateTime Dt_Publicacao { get; private set; }
 
-        public DateTime Dt_Cadastro = DateTime.Now;
-
         public string Codigo_Barras { get; private set; }
 
         public decimal Preco {  get; private set; }
