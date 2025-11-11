@@ -1,3 +1,4 @@
+using Livraria.IoC;
 
 namespace Livraria.API
 {
@@ -13,6 +14,8 @@ namespace Livraria.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            DependecyInjection.AddInfrastructure(builder.Services);
 
             var app = builder.Build();
 
