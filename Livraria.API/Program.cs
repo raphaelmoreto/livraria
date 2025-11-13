@@ -15,7 +15,7 @@ namespace Livraria.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            DependecyInjection.AddInfrastructure(builder.Services);
+            DependecyInjectionOfRepositories.AddInfrastructure(builder.Services);
 
             var app = builder.Build();
 

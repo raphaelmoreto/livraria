@@ -1,9 +1,10 @@
 ﻿using Dapper.Contrib.Extensions;
+using Livraria.Domain.Entities.Base;
 using Livraria.Domain.Validations;
 
-namespace Livraria.Domain.Entities
+namespace Livraria.Domain.Entities.Livro
 {
-    public class Livro : BaseEntity
+    public class LivroEntity : BaseEntity
     {
         public string Titulo { get; private set; }
 
@@ -21,9 +22,9 @@ namespace Livraria.Domain.Entities
 
         public string Categoria { get; private set; }
 
-        public Livro() { }
+        public LivroEntity() { }
 
-        public Livro(string titulo, string subtitulo, string isbn, DateTime dt_publicacao, string codigoBarras, decimal preco, string autor, string categoria)
+        public LivroEntity(string titulo, string subtitulo, string isbn, DateTime dt_publicacao, string codigoBarras, decimal preco, string autor, string categoria)
         {
             AtribuirTitulo(titulo);
             AtribuirSubtitulo(subtitulo);

@@ -1,16 +1,17 @@
 ﻿using Dapper.Contrib.Extensions;
+using Livraria.Domain.Entities.Base;
 using Livraria.Domain.Validations;
 
-namespace Livraria.Domain.Entities
+namespace Livraria.Domain.Entities.CategoriaLivro
 {
     [Table("[dbo].[Categoria]")]
-    public class Categoria : BaseEntity
+    public class CategoriaLivroEntity : BaseEntity
     {
         public string Nome {  get; private set; }
 
-        public Categoria() { }
+        public CategoriaLivroEntity() { }
 
-        public Categoria(string nome)
+        public CategoriaLivroEntity(string nome)
         {
             AtribuirNome(nome);
             Validar();

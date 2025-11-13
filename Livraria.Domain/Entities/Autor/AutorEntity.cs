@@ -1,16 +1,17 @@
 ﻿using Dapper.Contrib.Extensions;
+using Livraria.Domain.Entities.Base;
 using Livraria.Domain.Validations;
 
-namespace Livraria.Domain.Entities
+namespace Livraria.Domain.Entities.Autor
 {
     [Table("[dbo].[Autor]")]
-    public class Autor : BaseEntity
+    public class AutorEntity : BaseEntity
     {
         public string Nome {  get; private set; }
 
-        public Autor() { }
+        public AutorEntity() { }
 
-        public Autor(string nome)
+        public AutorEntity(string nome)
         {
             AtribuirNome(nome);
             Validar();

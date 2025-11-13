@@ -1,6 +1,6 @@
 ﻿using Dapper.Contrib.Extensions;
 
-namespace Livraria.Domain.Entities
+namespace Livraria.Domain.Entities.Base
 {
     public abstract class BaseEntity
     {

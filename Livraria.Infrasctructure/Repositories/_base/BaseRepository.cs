@@ -1,0 +1,18 @@
+﻿using Livraria.Infrasctructure.Interfaces;
+using System.Data;
+
+namespace Livraria.Infrasctructure.Repositories._base
+{
+    public abstract class BaseRepository
+    {
+        private readonly IDatabaseConnection DbConnection;
+
+        protected readonly IDbConnection Connection;
+
+        public BaseRepository(IDatabaseConnection dbConnection)
+        {
+            DbConnection = dbConnection;
+            Connection = DbConnection.GetConnection();
+        }
+    }
+}
