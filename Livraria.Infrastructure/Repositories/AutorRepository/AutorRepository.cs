@@ -1,10 +1,10 @@
 ﻿using Dapper.Contrib.Extensions;
 using Livraria.Domain.Entities.Autor;
 using Livraria.Domain.Interfaces.Repositories;
-using Livraria.Infrasctructure.Interfaces;
-using Livraria.Infrasctructure.Repositories.Base;
+using Livraria.Infrastructure.Interfaces;
+using Livraria.Infrastructure.Repositories.Base;
 
-namespace Livraria.Infrasctructure.Repositories.AutorRepositories
+namespace Livraria.Infrastructure.Repositories.AutorRepositories
 {
     public class AutorRepository : BaseWrite<AutorEntity>, IBaseWrite<AutorEntity>
     {

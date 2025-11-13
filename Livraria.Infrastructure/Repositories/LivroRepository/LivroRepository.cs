@@ -1,10 +1,10 @@
 ﻿using Dapper.Contrib.Extensions;
 using Livraria.Domain.Entities.Livro;
 using Livraria.Domain.Interfaces.Repositories;
-using Livraria.Infrasctructure.Interfaces;
-using Livraria.Infrasctructure.Repositories.Base;
+using Livraria.Infrastructure.Interfaces;
+using Livraria.Infrastructure.Repositories.Base;
 
-namespace Livraria.Infrasctructure.Repositories.LivroRepository
+namespace Livraria.Infrastructure.Repositories.LivroRepository
 {
     public class LivroRepository : BaseWrite<LivroEntity>, IBaseWrite<LivroEntity>
     {

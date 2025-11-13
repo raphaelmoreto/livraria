@@ -2,9 +2,9 @@
 using Livraria.Domain.Entities.CategoriaLivro;
 using Livraria.Domain.Entities.Livro;
 using Livraria.Domain.Interfaces.Repositories;
-using Livraria.Infrasctructure.Connection;
-using Livraria.Infrasctructure.Interfaces;
-using Livraria.Infrasctructure.Repositories.Base;
+using Livraria.Infrastructure.Connection;
+using Livraria.Infrastructure.Interfaces;
+using Livraria.Infrastructure.Repositories.Base;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Livraria.IoC

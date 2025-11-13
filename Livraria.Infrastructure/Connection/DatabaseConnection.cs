@@ -1,9 +1,9 @@
-﻿using Livraria.Infrasctructure.Interfaces;
+﻿using Livraria.Infrastructure.Interfaces;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
-namespace Livraria.Infrasctructure.Connection
+namespace Livraria.Infrastructure.Connection
 {
     public class DatabaseConnection : IDatabaseConnection
     {

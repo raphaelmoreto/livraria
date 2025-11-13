@@ -9,7 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Livraria.Application\Livraria.Application.csproj" />
     <ProjectReference Include="..\Livraria.Domain\Livraria.Domain.csproj" />
-    <ProjectReference Include="..\Livraria.Infrasctructure\Livraria.Infrasctructure.csproj" />
+    <ProjectReference Include="..\Livraria.Infrastructure\Livraria.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
