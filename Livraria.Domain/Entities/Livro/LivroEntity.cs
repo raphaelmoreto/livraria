@@ -24,16 +24,16 @@ namespace Livraria.Domain.Entities.Livro
 
         public LivroEntity() { }
 
-        public LivroEntity(string titulo, string subtitulo, string isbn, DateTime dt_publicacao, string codigoBarras, decimal preco, string autor, string categoria)
+        public LivroEntity(string titulo, string isbn, DateTime dt_publicacao, string codigoBarras, decimal preco, string categoria, string? subtitulo = null, string? autor = null)
         {
             AtribuirTitulo(titulo);
-            AtribuirSubtitulo(subtitulo);
             AtribuirIsbn(isbn);
             AtribuirDataPublicacao(dt_publicacao);
             AtribuirCodigoBarras(codigoBarras);
             AtribuirPreco(preco);
-            AtribuirAutor(autor);
             AtribuirCategoria(categoria);
+            AtribuirSubtitulo(subtitulo);
+            AtribuirAutor(autor);
             Validar();
         }
 
@@ -51,7 +51,7 @@ namespace Livraria.Domain.Entities.Livro
             Titulo = titulo.ToUpper();
         }
 
-        public void AtribuirSubtitulo(string subtitulo)
+        public void AtribuirSubtitulo(string? subtitulo)
         {
             if (string.IsNullOrWhiteSpace(subtitulo) || subtitulo == Subtitulo)
                 return;
@@ -115,7 +115,7 @@ namespace Livraria.Domain.Entities.Livro
             Preco = preco;
         }
 
-        public void AtribuirAutor(string autor)
+        public void AtribuirAutor(string? autor)
         {
             if (string.IsNullOrWhiteSpace(autor) || autor == Autor)
                 return;

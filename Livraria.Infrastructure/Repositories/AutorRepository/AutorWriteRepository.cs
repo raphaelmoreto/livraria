@@ -6,8 +6,8 @@ using Livraria.Infrastructure.Repositories.Base;
 
 namespace Livraria.Infrastructure.Repositories.AutorRepositories
 {
-    public class AutorRepository : BaseWrite<AutorEntity>, IBaseWrite<AutorEntity>
+    public class AutorWriteRepository : BaseWrite<AutorEntity>, IRepositoryWrite<AutorEntity>
     {
-        public AutorRepository(IDatabaseConnection dbConnection) : base(dbConnection) { }
+        public AutorWriteRepository(IDatabaseConnection dbConnection) : base(dbConnection) { }
     }
 }

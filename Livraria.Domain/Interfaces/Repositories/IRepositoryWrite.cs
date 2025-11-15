@@ -1,7 +1,7 @@
 ﻿
 namespace Livraria.Domain.Interfaces.Repositories
 {
-    public interface IBaseWrite<T> where T : class
+    public interface IRepositoryWrite<T> where T : class
     {
         Task<bool> Delete(T entity);
 

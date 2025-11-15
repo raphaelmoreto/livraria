@@ -1,5 +1,4 @@
-﻿
-namespace Livraria.Application.Services.Interfaces
+﻿namespace Livraria.Application.Interfaces.Response
 {
     public interface IServiceResponse
     {

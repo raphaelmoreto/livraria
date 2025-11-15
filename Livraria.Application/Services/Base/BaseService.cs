@@ -1,8 +1,8 @@
-﻿using Livraria.Application.Services.Interfaces;
+﻿using Livraria.Application.Interfaces.Response;
 
 namespace Livraria.Application.Services.Base
 {
-    public class BaseService
+    public abstract class BaseService
     {
         protected IServiceResponse Response;
 

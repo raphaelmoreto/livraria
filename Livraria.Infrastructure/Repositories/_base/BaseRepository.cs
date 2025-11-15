@@ -1,5 +1,6 @@
 ﻿using Livraria.Infrastructure.Interfaces;
 using System.Data;
+using System.Text;
 
 namespace Livraria.Infrastructure.Repositories._base
 {
@@ -9,10 +10,13 @@ namespace Livraria.Infrastructure.Repositories._base
 
         protected readonly IDbConnection Connection;
 
+        protected StringBuilder SB;
+
         public BaseRepository(IDatabaseConnection dbConnection)
         {
             DbConnection = dbConnection;
             Connection = DbConnection.GetConnection();
+            SB = new StringBuilder();
         }
     }
 }

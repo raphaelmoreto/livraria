@@ -1,6 +1,6 @@
-﻿using Livraria.Application.Services.Interfaces;
+﻿using Livraria.Application.Interfaces.Response;
 
-namespace Livraria.Application.Services.Response
+namespace Livraria.Application.Response
 {
     public class ServiceResponse : IServiceResponse
     {

@@ -6,7 +6,7 @@ using Livraria.Infrastructure.Repositories.Base;
 
 namespace Livraria.Infrastructure.Repositories.LivroRepository
 {
-    public class LivroRepository : BaseWrite<LivroEntity>, IBaseWrite<LivroEntity>
+    public class LivroRepository : BaseWrite<LivroEntity>, IRepositoryWrite<LivroEntity>
     {
         public LivroRepository(IDatabaseConnection dbConnection) : base(dbConnection) { }
     }

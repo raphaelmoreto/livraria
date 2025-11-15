@@ -5,7 +5,7 @@ using Livraria.Infrastructure.Repositories._base;
 
 namespace Livraria.Infrastructure.Repositories.Base
 {
-    public abstract class BaseWrite<T> : BaseRepository, IBaseWrite<T> where T : class
+    public abstract class BaseWrite<T> : BaseRepository, IRepositoryWrite<T> where T : class
     {
         public BaseWrite(IDatabaseConnection dbConnection) : base(dbConnection) { }
 
