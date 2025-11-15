@@ -1,9 +1,9 @@
-﻿using Livraria.Application.Interfaces;
-using Livraria.Application.Interfaces.Autor;
+﻿using Livraria.Application.Interfaces.Autor;
+using Livraria.Application.Interfaces.CategoriaLivro;
 using Livraria.Application.Interfaces.Response;
 using Livraria.Application.Response;
 using Livraria.Application.Services.Autor;
-using Livraria.Domain.Dtos.Autor;
+using Livraria.Application.Services.CategoriaLivro;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Livraria.IoC
@@ -14,9 +14,8 @@ namespace Livraria.IoC
         {
             services.AddScoped<IServiceResponse, ServiceResponse>();
 
-            services.AddScoped<IServiceWrite<AutorInputDto>, AutorService>();
-
             services.AddScoped<IAutorService, AutorService>();
+            services.AddScoped<ICategoriaLivroService, CategoriaLivroService>();
 
             return services;
         }

@@ -67,7 +67,7 @@ namespace Livraria.API.Controllers.Autor
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAutor(int id, [FromBody] AutorInputDto autor)
+        public async Task<IActionResult> PutAutor([FromRoute] int id, [FromBody] AutorInputDto autor)
         {
             try
             {

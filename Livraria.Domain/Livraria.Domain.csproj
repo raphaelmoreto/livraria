@@ -11,9 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos\CategoriaLivro\" />
     <Folder Include="Interfaces\Repositories\Livro\" />
-    <Folder Include="Interfaces\Repositories\CategoriaLivro\" />
   </ItemGroup>
 
 </Project>

@@ -12,8 +12,6 @@
 
   <ItemGroup>
     <Folder Include="Interfaces\Livro\" />
-    <Folder Include="Interfaces\CategoriaLivro\" />
-    <Folder Include="Services\CategoriaLivro\" />
     <Folder Include="Services\Livro\" />
   </ItemGroup>
 

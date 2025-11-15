@@ -59,17 +59,10 @@ namespace Livraria.Application.Services.Autor
                 return Response;
             }
 
-            var verificarSeExiste = await repositoryAutor.BuscarAutorPorNome(dto.Nome);
-            if (verificarSeExiste)
-            {
-                Response.Mensagem = "AUTOR JÁ CADASTRADO";
-                return Response;
-            }
-
             var autor = await repositoryAutor.Get(id);
             if (autor == null)
             {
-                Response.Mensagem = "AUTOR NÃO CADASTRADO!";
+                Response.Mensagem = "AUTOR NÃO ENCONTRADO NO BANCO!";
                 return Response;
             }
 

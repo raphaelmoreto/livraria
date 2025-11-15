@@ -1,13 +1,13 @@
 ﻿using Livraria.Domain.Dtos.Autor;
-using Livraria.Domain.Entities.Autor;
-using Livraria.Domain.Entities.CategoriaLivro;
-using Livraria.Domain.Entities.Livro;
+using Livraria.Domain.Dtos.CategoriaLivro;
 using Livraria.Domain.Interfaces.Repositories;
 using Livraria.Domain.Interfaces.Repositories.Autor;
+using Livraria.Domain.Interfaces.Repositories.CategoriaLivro;
 using Livraria.Infrastructure.Connection;
 using Livraria.Infrastructure.Interfaces;
 using Livraria.Infrastructure.Repositories.AutorRepositories;
 using Livraria.Infrastructure.Repositories.AutorRepository;
+using Livraria.Infrastructure.Repositories.CategoriaRepository;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Livraria.IoC
@@ -21,10 +21,10 @@ namespace Livraria.IoC
 
             //REPOSITORIES
             services.AddScoped<IAutorRepository, AutorWriteRepository>();
-            //services.AddScoped<IRepositoryWrite<CategoriaLivroEntity>, BaseWrite<CategoriaLivroEntity>>();
-            //services.AddScoped<IRepositoryWrite<LivroEntity>, BaseWrite<LivroEntity>>();
+            services.AddScoped<ICategoriaRepository, CategoriaWriteRepository>();
 
             services.AddScoped<IRepositoryRead<AutorOutputDto>, AutorReadRepository>();
+            services.AddScoped<IRepositoryRead<CategoriaLivroOutputDto>, CategoriaReadRepository>();
 
             return services;
         }
