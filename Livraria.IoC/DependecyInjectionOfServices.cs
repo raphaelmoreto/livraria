@@ -1,4 +1,5 @@
 ﻿using Livraria.Application.Interfaces;
+using Livraria.Application.Interfaces.Autor;
 using Livraria.Application.Interfaces.Response;
 using Livraria.Application.Response;
 using Livraria.Application.Services.Autor;
@@ -14,6 +15,8 @@ namespace Livraria.IoC
             services.AddScoped<IServiceResponse, ServiceResponse>();
 
             services.AddScoped<IServiceWrite<AutorInputDto>, AutorService>();
+
+            services.AddScoped<IAutorService, AutorService>();
 
             return services;
         }

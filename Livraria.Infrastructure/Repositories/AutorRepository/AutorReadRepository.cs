@@ -10,9 +10,13 @@ namespace Livraria.Infrastructure.Repositories.AutorRepository
     {
         public AutorReadRepository(IDatabaseConnection dbConnection) : base(dbConnection) { }
 
-        public Task<IEnumerable<AutorOutputDto>> Listar()
+        public async Task<IEnumerable<AutorOutputDto>> Listar()
         {
-            throw new NotImplementedException();
+            SB.AppendLine("SELECT [id],");
+            SB.AppendLine("            [nome]");
+            SB.AppendLine("FROM [dbo].[Autor]");
+
+            return await Connection.QueryAsync<AutorOutputDto>(SB.ToString());
         }
 
         public async Task<AutorOutputDto?> SelecionarPorId(int id)
