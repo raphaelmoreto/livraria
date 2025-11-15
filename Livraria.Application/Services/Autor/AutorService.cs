@@ -3,18 +3,18 @@ using Livraria.Application.Interfaces.Response;
 using Livraria.Application.Services.Base;
 using Livraria.Domain.Dtos.Autor;
 using Livraria.Domain.Entities.Autor;
-using Livraria.Domain.Interfaces.Repositories;
+using Livraria.Domain.Interfaces.Repositories.Autor;
 
 namespace Livraria.Application.Services.Autor
 {
     public class AutorService : BaseService, IAutorService
     {
-        private readonly IRepositoryWrite<AutorEntity> repositoryAutor;
+        private readonly IAutorRepository repositoryAutor;
 
         public AutorService
         (
             IServiceResponse serviceResponse,
-            IRepositoryWrite<AutorEntity> repositoryAutor
+            IAutorRepository repositoryAutor
         ) : base(serviceResponse)
         {
             this.repositoryAutor = repositoryAutor;
@@ -27,6 +27,13 @@ namespace Livraria.Application.Services.Autor
 
         public async Task<IServiceResponse> Insert(AutorInputDto dto)
         {
+            var verificarSeExiste = await repositoryAutor.BuscarAutorPorNome(dto.Nome);
+            if (verificarSeExiste)
+            {
+                Response.Mensagem = "AUTOR JÁ CADASTRADO";
+                return Response;
+            }
+
             var autor = new AutorEntity
             (
                 dto.Nome
@@ -52,6 +59,13 @@ namespace Livraria.Application.Services.Autor
                 return Response;
             }
 
+            var verificarSeExiste = await repositoryAutor.BuscarAutorPorNome(dto.Nome);
+            if (verificarSeExiste)
+            {
+                Response.Mensagem = "AUTOR JÁ CADASTRADO";
+                return Response;
+            }
+
             var autor = await repositoryAutor.Get(id);
             if (autor == null)
             {
@@ -69,6 +83,8 @@ namespace Livraria.Application.Services.Autor
                 return Response;
             }
 
+            Response.Success = true;
+            Response.Mensagem = "AUTOR ATUALIZADO COM SUCESSO";
             return Response;
         }
     }
