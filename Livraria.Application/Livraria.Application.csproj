@@ -8,6 +8,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Livraria.Domain\Livraria.Domain.csproj" />
+    <ProjectReference Include="..\Livraria.Infrastructure\Livraria.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\CategoriaLivro\" />
+    <Folder Include="Services\Livro\" />
   </ItemGroup>
 
 </Project>

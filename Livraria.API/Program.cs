@@ -16,6 +16,7 @@ namespace Livraria.API
             builder.Services.AddSwaggerGen();
 
             DependecyInjectionOfRepositories.AddInfrastructure(builder.Services);
+            DependecyInjectionOfServices.AddApplication(builder.Services);
 
             var app = builder.Build();
 

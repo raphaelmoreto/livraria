@@ -10,4 +10,10 @@
     <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Dtos\Autor\" />
+    <Folder Include="Dtos\CategoriaLivro\" />
+    <Folder Include="Dtos\Livro\" />
+  </ItemGroup>
+
 </Project>
