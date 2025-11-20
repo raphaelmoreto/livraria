@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Livraria.API.Controllers.Autor
 {
-    [Route("api/[controller]")]
+    [Route("api/autor")]
     [ApiController]
     public class AutorController : ControllerBase
     {

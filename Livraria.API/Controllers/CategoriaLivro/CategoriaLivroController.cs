@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Livraria.API.Controllers.CategoriaLivro
 {
-    [Route("api/[controller]")]
+    [Route("api/categoria-livro")]
     [ApiController]
     public class CategoriaLivroController : ControllerBase
     {

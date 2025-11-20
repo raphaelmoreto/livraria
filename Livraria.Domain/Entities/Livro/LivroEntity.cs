@@ -4,6 +4,7 @@ using Livraria.Domain.Validations;
 
 namespace Livraria.Domain.Entities.Livro
 {
+    [Table("[dbo].[Livro]")]
     public class LivroEntity : BaseEntity
     {
         public string Titulo { get; private set; }
