@@ -3,6 +3,7 @@ using Livraria.Domain.Entities.Autor;
 using Livraria.Domain.Interfaces.Repositories.Autor;
 using Livraria.Infrastructure.Interfaces;
 using Livraria.Infrastructure.Repositories.Base;
+using System.Text;
 
 namespace Livraria.Infrastructure.Repositories.AutorRepository
 {
@@ -12,11 +13,12 @@ namespace Livraria.Infrastructure.Repositories.AutorRepository
 
         public async Task<bool> BuscarAutorPorNome(string nomeAutor)
         {
-            SB.AppendLine("SELECT COUNT([nome])");
-            SB.AppendLine("FROM [dbo].[Autor]");
-            SB.AppendLine("WHERE [nome] = @Nome");
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("SELECT COUNT([nome])");
+            sb.AppendLine("FROM [dbo].[Autor]");
+            sb.AppendLine("WHERE [nome] = @Nome");
 
-            return await Connection.QuerySingleAsync<int>(SB.ToString(), new { Nome = nomeAutor }) > 0;
+            return await Connection.QuerySingleAsync<int>(sb.ToString(), new { Nome = nomeAutor }) > 0;
         }
     }
 }

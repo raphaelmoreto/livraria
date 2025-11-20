@@ -3,6 +3,7 @@ using Livraria.Domain.Dtos.Autor;
 using Livraria.Domain.Interfaces.Repositories.Autor;
 using Livraria.Infrastructure.Interfaces;
 using Livraria.Infrastructure.Repositories.Base;
+using System.Text;
 
 namespace Livraria.Infrastructure.Repositories.AutorRepository
 {
@@ -12,21 +13,23 @@ namespace Livraria.Infrastructure.Repositories.AutorRepository
 
         public async Task<IEnumerable<AutorOutputDto>> Listar()
         {
-            SB.AppendLine("SELECT [id],");
-            SB.AppendLine("            [nome]");
-            SB.AppendLine("FROM [dbo].[Autor]");
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("SELECT [id],");
+            sb.AppendLine("            [nome]");
+            sb.AppendLine("FROM [dbo].[Autor]");
 
-            return await Connection.QueryAsync<AutorOutputDto>(SB.ToString());
+            return await Connection.QueryAsync<AutorOutputDto>(sb.ToString());
         }
 
         public async Task<AutorOutputDto?> SelecionarPorId(int id)
         {
-            SB.AppendLine("SELECT [id],");
-            SB.AppendLine("            [nome]");
-            SB.AppendLine("FROM [dbo].[Autor]");
-            SB.AppendLine("WHERE [id] = @Id");
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("SELECT [id],");
+            sb.AppendLine("            [nome]");
+            sb.AppendLine("FROM [dbo].[Autor]");
+            sb.AppendLine("WHERE [id] = @Id");
 
-            return await Connection.QueryFirstOrDefaultAsync<AutorOutputDto>(SB.ToString(), new { Id = id });
+            return await Connection.QueryFirstOrDefaultAsync<AutorOutputDto>(sb.ToString(), new { Id = id });
         }
     }
 }

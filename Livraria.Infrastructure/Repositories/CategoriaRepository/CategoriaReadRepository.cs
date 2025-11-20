@@ -3,6 +3,7 @@ using Livraria.Domain.Dtos.CategoriaLivro;
 using Livraria.Domain.Interfaces.Repositories.CategoriaLivro;
 using Livraria.Infrastructure.Interfaces;
 using Livraria.Infrastructure.Repositories.Base;
+using System.Text;
 
 namespace Livraria.Infrastructure.Repositories.CategoriaRepository
 {
@@ -12,21 +13,23 @@ namespace Livraria.Infrastructure.Repositories.CategoriaRepository
 
         public async Task<IEnumerable<CategoriaLivroOutputDto>> Listar()
         {
-            SB.AppendLine("SELECT [id],");
-            SB.AppendLine("            [nome]");
-            SB.AppendLine("FROM [dbo].[Categoria]");
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("SELECT [id],");
+            sb.AppendLine("            [nome]");
+            sb.AppendLine("FROM [dbo].[Categoria]");
 
-            return await Connection.QueryAsync<CategoriaLivroOutputDto>(SB.ToString());
+            return await Connection.QueryAsync<CategoriaLivroOutputDto>(sb.ToString());
         }
 
         public async Task<CategoriaLivroOutputDto?> SelecionarPorId(int id)
         {
-            SB.AppendLine("SELECT [id],");
-            SB.AppendLine("            [nome]");
-            SB.AppendLine("FROM [dbo].[Categoria]");
-            SB.AppendLine("WHERE [id] = @Id");
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("SELECT [id],");
+            sb.AppendLine("            [nome]");
+            sb.AppendLine("FROM [dbo].[Categoria]");
+            sb.AppendLine("WHERE [id] = @Id");
 
-            return await Connection.QueryFirstOrDefaultAsync<CategoriaLivroOutputDto>(SB.ToString(), new { Id = id });
+            return await Connection.QueryFirstOrDefaultAsync<CategoriaLivroOutputDto>(sb.ToString(), new { Id = id });
         }
     }
 }
