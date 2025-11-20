@@ -9,12 +9,12 @@ namespace Livraria.Application.Services.Autor
 {
     public class AutorService : BaseService, IAutorService
     {
-        private readonly IAutorRepository repositoryAutor;
+        private readonly IAutorWriteRepository repositoryAutor;
 
         public AutorService
         (
             IServiceResponse serviceResponse,
-            IAutorRepository repositoryAutor
+            IAutorWriteRepository repositoryAutor
         ) : base(serviceResponse)
         {
             this.repositoryAutor = repositoryAutor;

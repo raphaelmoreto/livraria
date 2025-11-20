@@ -1,12 +1,12 @@
 ﻿using Dapper;
 using Livraria.Domain.Dtos.Autor;
-using Livraria.Domain.Interfaces.Repositories;
+using Livraria.Domain.Interfaces.Repositories.Autor;
 using Livraria.Infrastructure.Interfaces;
 using Livraria.Infrastructure.Repositories.Base;
 
 namespace Livraria.Infrastructure.Repositories.AutorRepository
 {
-    public class AutorReadRepository : BaseRead<AutorOutputDto>, IRepositoryRead<AutorOutputDto>
+    public class AutorReadRepository : BaseRead<AutorOutputDto>, IAutorReadRepository
     {
         public AutorReadRepository(IDatabaseConnection dbConnection) : base(dbConnection) { }
 

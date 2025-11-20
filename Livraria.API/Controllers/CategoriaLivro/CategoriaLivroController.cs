@@ -1,6 +1,6 @@
 ﻿using Livraria.Application.Interfaces.CategoriaLivro;
 using Livraria.Domain.Dtos.CategoriaLivro;
-using Livraria.Domain.Interfaces.Repositories;
+using Livraria.Domain.Interfaces.Repositories.CategoriaLivro;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Livraria.API.Controllers.CategoriaLivro
@@ -11,9 +11,13 @@ namespace Livraria.API.Controllers.CategoriaLivro
     {
         private readonly ICategoriaLivroService categoriaLivroService;
 
-        private readonly IRepositoryRead<CategoriaLivroOutputDto> repositoryRead;
+        private readonly ICategoriaReadRepository repositoryRead;
 
-        public CategoriaLivroController(ICategoriaLivroService categoriaLivroService, IRepositoryRead<CategoriaLivroOutputDto> repositoryRead)
+        public CategoriaLivroController
+        (
+            ICategoriaLivroService categoriaLivroService,
+            ICategoriaReadRepository repositoryRead
+        )
         {
             this.categoriaLivroService = categoriaLivroService;
             this.repositoryRead = repositoryRead;

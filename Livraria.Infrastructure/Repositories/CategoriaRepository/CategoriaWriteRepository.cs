@@ -6,7 +6,7 @@ using Livraria.Infrastructure.Repositories.Base;
 
 namespace Livraria.Infrastructure.Repositories.CategoriaRepository
 {
-    public class CategoriaWriteRepository : BaseWrite<CategoriaLivroEntity>, ICategoriaRepository
+    public class CategoriaWriteRepository : BaseWrite<CategoriaLivroEntity>, ICategoriaWriteRepository
     {
         public CategoriaWriteRepository(IDatabaseConnection dbConnection) : base(dbConnection) { }
 

@@ -1,6 +1,6 @@
 ﻿using Livraria.Application.Interfaces.Autor;
 using Livraria.Domain.Dtos.Autor;
-using Livraria.Domain.Interfaces.Repositories;
+using Livraria.Domain.Interfaces.Repositories.Autor;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Livraria.API.Controllers.Autor
@@ -11,9 +11,9 @@ namespace Livraria.API.Controllers.Autor
     {
         private readonly IAutorService autorService;
 
-        private readonly IRepositoryRead<AutorOutputDto> autorRead;
+        private readonly IAutorReadRepository autorRead;
 
-        public AutorController(IAutorService autorService, IRepositoryRead<AutorOutputDto> autorRead)
+        public AutorController(IAutorService autorService, IAutorReadRepository autorRead)
         {
             this.autorService = autorService;
             this.autorRead = autorRead;

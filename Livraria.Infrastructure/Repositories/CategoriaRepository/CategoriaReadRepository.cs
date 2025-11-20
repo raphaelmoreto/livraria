@@ -1,12 +1,12 @@
 ﻿using Dapper;
 using Livraria.Domain.Dtos.CategoriaLivro;
-using Livraria.Domain.Interfaces.Repositories;
+using Livraria.Domain.Interfaces.Repositories.CategoriaLivro;
 using Livraria.Infrastructure.Interfaces;
 using Livraria.Infrastructure.Repositories.Base;
 
 namespace Livraria.Infrastructure.Repositories.CategoriaRepository
 {
-    public class CategoriaReadRepository : BaseRead<CategoriaLivroOutputDto>, IRepositoryRead<CategoriaLivroOutputDto>
+    public class CategoriaReadRepository : BaseRead<CategoriaLivroOutputDto>, ICategoriaReadRepository
     {
         public CategoriaReadRepository(IDatabaseConnection dbConnection) : base(dbConnection) { }
 

@@ -4,9 +4,9 @@ using Livraria.Domain.Interfaces.Repositories.Autor;
 using Livraria.Infrastructure.Interfaces;
 using Livraria.Infrastructure.Repositories.Base;
 
-namespace Livraria.Infrastructure.Repositories.AutorRepositories
+namespace Livraria.Infrastructure.Repositories.AutorRepository
 {
-    public class AutorWriteRepository : BaseWrite<AutorEntity>, IAutorRepository
+    public class AutorWriteRepository : BaseWrite<AutorEntity>, IAutorWriteRepository
     {
         public AutorWriteRepository(IDatabaseConnection dbConnection) : base(dbConnection) { }
 

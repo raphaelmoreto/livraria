@@ -9,12 +9,12 @@ namespace Livraria.Application.Services.CategoriaLivro
 {
     public class CategoriaLivroService : BaseService, ICategoriaLivroService
     {
-        private readonly ICategoriaRepository categoriaRepository;
+        private readonly ICategoriaWriteRepository categoriaRepository;
 
         public CategoriaLivroService
         (
             IServiceResponse serviceResponse,
-            ICategoriaRepository categoriaRepository
+            ICategoriaWriteRepository categoriaRepository
         ) : base(serviceResponse)
         {
             this.Response = serviceResponse;

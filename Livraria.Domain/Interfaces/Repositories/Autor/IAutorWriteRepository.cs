@@ -2,7 +2,7 @@
 
 namespace Livraria.Domain.Interfaces.Repositories.Autor
 {
-    public interface IAutorRepository : IRepositoryWrite<AutorEntity>
+    public interface IAutorWriteRepository : IRepositoryWrite<AutorEntity>
     {
         Task<bool> BuscarAutorPorNome(string nomeAutor);
     }

@@ -10,8 +10,4 @@
     <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Interfaces\Repositories\Livro\" />
-  </ItemGroup>
-
 </Project>
