@@ -11,6 +11,17 @@ namespace Livraria.Infrastructure.Repositories.CategoriaRepository
     {
         public CategoriaReadRepository(IDatabaseConnection dbConnection) : base(dbConnection) { }
 
+        public async Task<int> BuscarIdDaCategoria(string nomeCategoria)
+        {
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("SELECT [id]");
+            sb.AppendLine("FROM [dbo].[Categoria]");
+            sb.AppendLine("WHERE [nome] = @Categoria");
+
+            return await Connection.ExecuteScalarAsync<int>(sb.ToString(), new { Categoria = nomeCategoria });
+        }
+
         public async Task<IEnumerable<CategoriaLivroOutputDto>> Listar()
         {
             StringBuilder sb = new StringBuilder();

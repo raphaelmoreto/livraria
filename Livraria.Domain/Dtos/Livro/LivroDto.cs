@@ -6,19 +6,21 @@ namespace Livraria.Domain.Dtos.Livro
         string Titulo,
         string Isbn,
         DateTime dtPublicacao,
-        string CodigoBarras,
         decimal Preco,
         string Categoria,
+        int Quantidade,
         string? Subtitulo = null,
         string? Autor = null
     );
 
     public record LivroOutputDto
     (
+        int Id,
         string Titulo,
         string Isbn,
-        DateTime dtPublicacao,
+        DateTime dt_Publicacao,
         decimal Preco,
+        int Quantidade,
         string Categoria,
         string? Subtitulo = null,
         string? Autor = null

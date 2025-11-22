@@ -15,23 +15,23 @@ namespace Livraria.Domain.Entities.Livro
 
         public DateTime Dt_Publicacao { get; private set; }
 
-        public string Codigo_Barras { get; private set; }
-
         public decimal Preco {  get; private set; }
 
-        public string? Autor {  get; private set; }
+        public int Qt_Estoque { get; private set; }
 
-        public string Categoria { get; private set; }
+        public int Autor {  get; private set; }
+
+        public int Categoria { get; private set; }
 
         public LivroEntity() { }
 
-        public LivroEntity(string titulo, string isbn, DateTime dt_publicacao, string codigoBarras, decimal preco, string categoria, string? subtitulo = null, string? autor = null)
+        public LivroEntity(string titulo, string isbn, DateTime dt_publicacao, decimal preco, int qt_estoque, int categoria, string? subtitulo = null, int? autor = null)
         {
             AtribuirTitulo(titulo);
             AtribuirIsbn(isbn);
             AtribuirDataPublicacao(dt_publicacao);
-            AtribuirCodigoBarras(codigoBarras);
             AtribuirPreco(preco);
+            AtribuirQuantidade(qt_estoque);
             AtribuirCategoria(categoria);
             AtribuirSubtitulo(subtitulo);
             AtribuirAutor(autor);
@@ -85,21 +85,7 @@ namespace Livraria.Domain.Entities.Livro
             if (dt_publicacao == Dt_Publicacao)
                 return;
 
-            Dt_Publicacao = dt_publicacao;
-        }
-
-        public void AtribuirCodigoBarras(string codigoBarras)
-        {
-            if (string.IsNullOrWhiteSpace(codigoBarras))
-            {
-                DomainValidationException.AtribuirExcecao("CÓDIGO DE BARRAS NÃO PODE SER NULO/VÁZIO");
-                return;
-            }
-
-            if (codigoBarras == Codigo_Barras)
-                return;
-
-            Codigo_Barras = codigoBarras;
+            Dt_Publicacao = dt_publicacao.Date;
         }
 
         public void AtribuirPreco(decimal preco)
@@ -116,17 +102,27 @@ namespace Livraria.Domain.Entities.Livro
             Preco = preco;
         }
 
-        public void AtribuirAutor(string? autor)
+        public void AtribuirQuantidade(int qt_estoque)
         {
-            if (string.IsNullOrWhiteSpace(autor) || autor == Autor)
-                return;
+            if (qt_estoque <= 0)
+            {
+                Qt_Estoque = 1;
+            }
 
-            Autor = autor.ToUpper();
+            Qt_Estoque = qt_estoque;
         }
 
-        public void AtribuirCategoria(string categoria)
+        public void AtribuirAutor(int? autor)
         {
-            if (string.IsNullOrWhiteSpace(categoria))
+            if (autor <= 0 || autor == Autor)
+                return;
+
+            Autor = autor.Value;
+        }
+
+        public void AtribuirCategoria(int categoria)
+        {
+            if (categoria <= 0)
             {
                 DomainValidationException.AtribuirExcecao("CATEGORIA DO LIVRO OBRIGATÓRIO");
                 return;
@@ -135,7 +131,7 @@ namespace Livraria.Domain.Entities.Livro
             if (categoria == Categoria)
                 return;
 
-            Categoria = categoria.ToUpper();
+            Categoria = categoria;
         }
 
         public void Validar()

@@ -27,13 +27,6 @@ namespace Livraria.Application.Services.Autor
 
         public async Task<IServiceResponse> Insert(AutorInputDto dto)
         {
-            var verificarSeExiste = await repositoryAutor.BuscarAutorPorNome(dto.Nome);
-            if (verificarSeExiste)
-            {
-                Response.Mensagem = "AUTOR JÁ CADASTRADO";
-                return Response;
-            }
-
             var autor = new AutorEntity
             (
                 dto.Nome

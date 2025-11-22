@@ -57,6 +57,11 @@ namespace Livraria.API.Controllers.CategoriaLivro
             try
             {
                 var result = await categoriaLivroService.Insert(categoria);
+                if (!result.Success)
+                {
+                    return Conflict(result);
+                }
+
                 return Ok(result);
             }
             catch (AggregateException aggEx)
@@ -76,6 +81,11 @@ namespace Livraria.API.Controllers.CategoriaLivro
             try
             {
                 var result = await categoriaLivroService.Update(id, categoria);
+                if (!result.Success)
+                {
+                    return Conflict(result);
+                }
+
                 return Ok(result);
             }
             catch (AggregateException aggEx)

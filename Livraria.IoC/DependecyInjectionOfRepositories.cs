@@ -24,6 +24,7 @@ namespace Livraria.IoC
 
             services.AddScoped<IAutorReadRepository, AutorReadRepository>();
             services.AddScoped<ICategoriaReadRepository, CategoriaReadRepository>();
+            services.AddScoped<ILivroReadRepository, LivroReadRepository>();
 
             return services;
         }

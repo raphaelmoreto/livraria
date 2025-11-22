@@ -9,16 +9,16 @@ namespace Livraria.Application.Services.CategoriaLivro
 {
     public class CategoriaLivroService : BaseService, ICategoriaLivroService
     {
-        private readonly ICategoriaWriteRepository categoriaRepository;
+        private readonly ICategoriaWriteRepository repositoryCategoria;
 
         public CategoriaLivroService
         (
             IServiceResponse serviceResponse,
-            ICategoriaWriteRepository categoriaRepository
+            ICategoriaWriteRepository repositoryCategoria
         ) : base(serviceResponse)
         {
             this.Response = serviceResponse;
-            this.categoriaRepository = categoriaRepository;
+            this.repositoryCategoria = repositoryCategoria;
         }
 
         public Task<IServiceResponse> Delete(int id)
@@ -28,19 +28,12 @@ namespace Livraria.Application.Services.CategoriaLivro
 
         public async Task<IServiceResponse> Insert(CategoriaLivroInputDto dto)
         {
-            var verificarSeExiste = await categoriaRepository.BuscarCategoriaPorNome(dto.Nome);
-            if (verificarSeExiste)
-            {
-                Response.Mensagem = "CATEGÓRIA JÁ CADASTRADA";
-                return Response;
-            }
-
             var categoria = new CategoriaLivroEntity
             (
                 dto.Nome
             );
 
-            var insert = await categoriaRepository.Insert(categoria);
+            var insert = await repositoryCategoria.Insert(categoria);
             if (!insert)
             {
                 Response.Mensagem = $"ERRO! {insert}";
@@ -60,7 +53,7 @@ namespace Livraria.Application.Services.CategoriaLivro
                 return Response;
             }
 
-            var categoria = await categoriaRepository.Get(id);
+            var categoria = await repositoryCategoria.Get(id);
             if (categoria == null)
             {
                 Response.Mensagem = "CATEGORIA NÃO ENCONTRADA NO BANCO!";
@@ -70,7 +63,7 @@ namespace Livraria.Application.Services.CategoriaLivro
             categoria.AtribuirNome(dto.Nome);
             categoria.Validar();
 
-            var categoriaAtualizada = await categoriaRepository.Update(categoria);
+            var categoriaAtualizada = await repositoryCategoria.Update(categoria);
             if (!categoriaAtualizada)
             {
                 Response.Mensagem = $"ERRO! {categoriaAtualizada}";

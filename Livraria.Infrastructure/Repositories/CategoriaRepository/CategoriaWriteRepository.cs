@@ -11,14 +11,43 @@ namespace Livraria.Infrastructure.Repositories.CategoriaRepository
     {
         public CategoriaWriteRepository(IDatabaseConnection dbConnection) : base(dbConnection) { }
 
-        public async Task<bool> BuscarCategoriaPorNome(string nomeCategoria)
+        //public async Task<bool> BuscarCategoriaPorNome(string nomeCategoria)
+        //{
+        //    StringBuilder sb = new StringBuilder();
+        //    sb.AppendLine("SELECT COUNT([nome])");
+        //    sb.AppendLine("FROM [dbo].[Categoria]");
+        //    sb.AppendLine("WHERE [nome] = @Nome");
+
+        //    return await Connection.QuerySingleAsync<int>(sb.ToString(), new { Nome = nomeCategoria }) > 0;
+        //}
+
+        public override async Task<bool> Insert(CategoriaLivroEntity categoria)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("SELECT COUNT([nome])");
-            sb.AppendLine("FROM [dbo].[Categoria]");
-            sb.AppendLine("WHERE [nome] = @Nome");
+            sb.AppendLine("INSERT INTO [dbo].[Categoria] ([nome])");
+            sb.AppendLine("SELECT @Nome");
+            sb.AppendLine("WHERE NOT EXISTS (");
+            sb.AppendLine("         SELECT [id]");
+            sb.AppendLine("         FROM [dbo].[Categoria] AS categoria");
+            sb.AppendLine("         WHERE categoria.nome = @Nome");
+            sb.AppendLine(")");
 
-            return await Connection.QuerySingleAsync<int>(sb.ToString(), new { Nome = nomeCategoria }) > 0;
+            return await Connection.ExecuteAsync(sb.ToString(), new { categoria.Nome }) > 0;
+        }
+
+        public override async Task<bool> Update(CategoriaLivroEntity categoria)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("UPDATE [dbo].[Categoria]");
+            sb.AppendLine("SET [nome] = @Nome");
+            sb.AppendLine("WHERE [id] = @Id");
+            sb.AppendLine("AND NOT EXISTS (");
+            sb.AppendLine("         SELECT [id]");
+            sb.AppendLine("         FROM [dbo].[Categoria] AS categoria");
+            sb.AppendLine("         WHERE categoria.nome = @Nome");
+            sb.AppendLine(")");
+
+            return await Connection.ExecuteAsync(sb.ToString(), new { categoria.Id, categoria.Nome }) > 0;
         }
     }
 }

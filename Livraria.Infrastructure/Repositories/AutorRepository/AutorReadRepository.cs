@@ -11,6 +11,16 @@ namespace Livraria.Infrastructure.Repositories.AutorRepository
     {
         public AutorReadRepository(IDatabaseConnection dbConnection) : base(dbConnection) { }
 
+        public async Task<int> BuscarIdDoAutor(string nomeAutor)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("SELECT [id]");
+            sb.AppendLine("FROM [dbo].[Autor]");
+            sb.AppendLine("WHERE [nome] = @Autor");
+
+            return await Connection.ExecuteScalarAsync<int>(sb.ToString(), new { Autor = nomeAutor });
+        }
+
         public async Task<IEnumerable<AutorOutputDto>> Listar()
         {
             StringBuilder sb = new StringBuilder();

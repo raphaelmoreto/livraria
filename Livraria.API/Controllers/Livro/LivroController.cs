@@ -1,44 +1,44 @@
-﻿using Livraria.Application.Interfaces.Autor;
-using Livraria.Domain.Dtos.Autor;
-using Livraria.Domain.Interfaces.Repositories.Autor;
+﻿using Livraria.Application.Interfaces.Livro;
+using Livraria.Domain.Dtos.Livro;
+using Livraria.Domain.Interfaces.Repositories.Livro;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Livraria.API.Controllers.Autor
+namespace Livraria.API.Controllers.Livro
 {
-    [Route("api/autor")]
+    [Route("api/livro")]
     [ApiController]
-    public class AutorController : ControllerBase
+    public class LivroController : ControllerBase
     {
-        private readonly IAutorService autorService;
+        private readonly ILivroService livroService;
 
-        private readonly IAutorReadRepository autorRead;
+        private readonly ILivroReadRepository livroRead;
 
-        public AutorController(IAutorService autorService, IAutorReadRepository autorRead)
+        public LivroController(ILivroService livroService, ILivroReadRepository livroRead)
         {
-            this.autorService = autorService;
-            this.autorRead = autorRead;
+            this.livroService = livroService;
+            this.livroRead = livroRead;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAutores()
+        public async Task<IActionResult> GetLivros()
         {
             try
             {
-                var result = await autorRead.Listar();
+                var result = await livroRead.Listar();
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"ERRO INTERNO: {ex.Message}");
+                return StatusCode(500, $"ERRO INTERNO: {ex.Message} ");
             }
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAutorPorId([FromRoute] int id)
+        public async Task<IActionResult> GetLivroPorId([FromRoute] int id)
         {
             try
             {
-                var result = await autorRead.SelecionarPorId(id);
+                var result = await livroRead.SelecionarPorId(id);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -48,11 +48,11 @@ namespace Livraria.API.Controllers.Autor
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAutor([FromBody] AutorInputDto autor)
+        public async Task<IActionResult> PostLivro([FromBody] LivroInputDto livro)
         {
             try
             {
-                var result = await autorService.Insert(autor);
+                var result = await livroService.Insert(livro);
                 if (!result.Success)
                 {
                     return Conflict(result);
@@ -72,16 +72,15 @@ namespace Livraria.API.Controllers.Autor
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAutor([FromRoute] int id, [FromBody] AutorInputDto autor)
+        public async Task<IActionResult> PutLivro([FromRoute] int id, [FromBody] LivroInputDto livro)
         {
             try
             {
-                var result = await autorService.Update(id, autor);
+                var result = await livroService.Update(id, livro);
                 if (!result.Success)
                 {
                     return Conflict(result);
                 }
-
                 return Ok(result);
             }
             catch (AggregateException aggEx)
