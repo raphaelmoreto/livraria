@@ -29,6 +29,10 @@ namespace Livraria.API.Controllers.CategoriaLivro
             try
             {
                 var result = await repositoryRead.Listar();
+                if (result == null)
+                {
+                    return NotFound("LISTAGEM DE CATEGORIAS VÁZIA");
+                }
                 return Ok(result);
             }
             catch (Exception ex)
@@ -43,6 +47,10 @@ namespace Livraria.API.Controllers.CategoriaLivro
             try
             {
                 var result = await repositoryRead.SelecionarPorId(id);
+                if (result == null)
+                {
+                    return NotFound("CATEGORIA NÃO ENCONTRADA");
+                }
                 return Ok(result);
             }
             catch (Exception ex)

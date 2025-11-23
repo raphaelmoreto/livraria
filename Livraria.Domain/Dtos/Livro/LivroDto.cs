@@ -5,7 +5,7 @@ namespace Livraria.Domain.Dtos.Livro
     (
         string Titulo,
         string Isbn,
-        DateTime dtPublicacao,
+        DateTime Dt_Publicacao,
         decimal Preco,
         string Categoria,
         int Quantidade,
@@ -18,7 +18,7 @@ namespace Livraria.Domain.Dtos.Livro
         int Id,
         string Titulo,
         string Isbn,
-        DateTime dt_Publicacao,
+        DateTime Dt_Publicacao,
         decimal Preco,
         int Quantidade,
         string Categoria,

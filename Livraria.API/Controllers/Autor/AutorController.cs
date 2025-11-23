@@ -25,6 +25,10 @@ namespace Livraria.API.Controllers.Autor
             try
             {
                 var result = await autorRead.Listar();
+                if (result == null)
+                {
+                    return NotFound("LISTAGEM DE AUTORES VÁZIA");
+                }
                 return Ok(result);
             }
             catch (Exception ex)
@@ -39,6 +43,10 @@ namespace Livraria.API.Controllers.Autor
             try
             {
                 var result = await autorRead.SelecionarPorId(id);
+                if (result == null)
+                {
+                    return NotFound("AUTOR NÃO ENCONTRADO");
+                }
                 return Ok(result);
             }
             catch (Exception ex)

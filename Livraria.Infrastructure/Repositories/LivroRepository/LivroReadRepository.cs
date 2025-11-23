@@ -20,6 +20,7 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
             sb.AppendLine("            l.[isbn],");
             sb.AppendLine("            l.[dt_publicacao],");
             sb.AppendLine("            l.[preco],");
+            sb.AppendLine("            l.[qt_estoque] AS 'quantidade',");
             sb.AppendLine("            c.[nome] AS 'categoria',");
             sb.AppendLine("            l.[subtitulo],");
             sb.AppendLine("            a.[nome] AS 'autor'");
@@ -32,13 +33,14 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
 
         public async Task<LivroOutputDto?> SelecionarPorId(int id)
         {
-            
+
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("SELECT l.[id],");
             sb.AppendLine("            l.[titulo],");
             sb.AppendLine("            l.[isbn],");
             sb.AppendLine("            l.[dt_publicacao],");
             sb.AppendLine("            l.[preco],");
+            sb.AppendLine("            l.[qt_estoque] AS 'quantidade',");
             sb.AppendLine("            c.[nome] AS 'categoria',");
             sb.AppendLine("            l.[subtitulo],");
             sb.AppendLine("            a.[nome] AS 'autor'");

@@ -25,6 +25,10 @@ namespace Livraria.API.Controllers.Livro
             try
             {
                 var result = await livroRead.Listar();
+                if (result == null)
+                {
+                    return NotFound("LISTAGEM DE LIVROS VÁZIA");
+                }
                 return Ok(result);
             }
             catch (Exception ex)
@@ -39,6 +43,10 @@ namespace Livraria.API.Controllers.Livro
             try
             {
                 var result = await livroRead.SelecionarPorId(id);
+                if (result == null)
+                {
+                    return NotFound("LIVRO NÃO ENCONTRADO");
+                }
                 return Ok(result);
             }
             catch (Exception ex)

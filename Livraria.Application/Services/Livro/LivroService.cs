@@ -45,7 +45,6 @@ namespace Livraria.Application.Services.Livro
             }
 
             int idAutor = 0;
-
             if (!string.IsNullOrWhiteSpace(dto.Autor))
             {
                 idAutor = await autorReadRepository.BuscarIdDoAutor(dto.Autor);
@@ -60,10 +59,10 @@ namespace Livraria.Application.Services.Livro
             (
                 dto.Titulo,
                 dto.Isbn,
-                dto.dtPublicacao,
+                dto.Dt_Publicacao,
                 dto.Preco,
-                idCategoria,
                 dto.Quantidade,
+                idCategoria,
                 dto.Subtitulo,
                 idAutor
             );
@@ -96,7 +95,6 @@ namespace Livraria.Application.Services.Livro
             }
 
             int idAutor = 0;
-
             if (!string.IsNullOrWhiteSpace(dto.Autor))
             {
                 idAutor = await autorReadRepository.BuscarIdDoAutor(dto.Autor);
@@ -116,7 +114,7 @@ namespace Livraria.Application.Services.Livro
 
             livro.AtribuirTitulo(dto.Titulo);
             livro.AtribuirIsbn(dto.Isbn);
-            livro.AtribuirDataPublicacao(dto.dtPublicacao);
+            livro.AtribuirDataPublicacao(dto.Dt_Publicacao);
             livro.AtribuirPreco(dto.Preco);
             livro.AtribuirCategoria(idCategoria);
             livro.AtribuirSubtitulo(dto.Subtitulo);

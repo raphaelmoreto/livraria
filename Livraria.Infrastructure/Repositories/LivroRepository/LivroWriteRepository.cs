@@ -29,7 +29,7 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
             sb.AppendLine("SELECT @Titulo,");
             sb.AppendLine("            @Subtitulo,");
             sb.AppendLine("            @Isbn,");
-            sb.AppendLine("            @DtPublicacao,");
+            sb.AppendLine("            @Dt_Publicacao,");
             sb.AppendLine("            @Preco,");
             sb.AppendLine("            @Qt_Estoque,");
             sb.AppendLine("            @Fk_Autor,");
@@ -41,7 +41,19 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
             sb.AppendLine("         AND livro.isbn = @Isbn");
             sb.AppendLine(")");
 
-            return await Connection.ExecuteAsync(sb.ToString(), param: livro) > 0;
+            var param = new
+            {
+                livro.Titulo,
+                livro.Subtitulo,
+                livro.Isbn,
+                livro.Dt_Publicacao,
+                livro.Preco,
+                livro.Qt_Estoque,
+                livro.Fk_Autor,
+                livro.Fk_Categoria
+            };
+
+            return await Connection.ExecuteAsync(sb.ToString(), param) > 0;
         }
     }
 }

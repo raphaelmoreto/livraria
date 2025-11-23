@@ -19,22 +19,22 @@ namespace Livraria.Domain.Entities.Livro
 
         public int Qt_Estoque { get; private set; }
 
-        public int Autor {  get; private set; }
+        public int Fk_Autor {  get; private set; }
 
-        public int Categoria { get; private set; }
+        public int Fk_Categoria { get; private set; }
 
         public LivroEntity() { }
 
-        public LivroEntity(string titulo, string isbn, DateTime dt_publicacao, decimal preco, int qt_estoque, int categoria, string? subtitulo = null, int? autor = null)
+        public LivroEntity(string titulo, string isbn, DateTime dt_publicacao, decimal preco, int qt_estoque, int fk_categoria, string? subtitulo = null, int? fk_autor = null)
         {
             AtribuirTitulo(titulo);
             AtribuirIsbn(isbn);
             AtribuirDataPublicacao(dt_publicacao);
             AtribuirPreco(preco);
             AtribuirQuantidade(qt_estoque);
-            AtribuirCategoria(categoria);
+            AtribuirCategoria(fk_categoria);
             AtribuirSubtitulo(subtitulo);
-            AtribuirAutor(autor);
+            AtribuirAutor(fk_autor);
             Validar();
         }
 
@@ -54,7 +54,13 @@ namespace Livraria.Domain.Entities.Livro
 
         public void AtribuirSubtitulo(string? subtitulo)
         {
-            if (string.IsNullOrWhiteSpace(subtitulo) || subtitulo == Subtitulo)
+            if (string.IsNullOrWhiteSpace(subtitulo))
+            {
+                Subtitulo = null;
+                return;
+            }
+
+            if (subtitulo == Subtitulo)
                 return;
 
             Subtitulo = subtitulo.ToUpper();
@@ -107,31 +113,32 @@ namespace Livraria.Domain.Entities.Livro
             if (qt_estoque <= 0)
             {
                 Qt_Estoque = 1;
+                return;
             }
 
             Qt_Estoque = qt_estoque;
         }
 
-        public void AtribuirAutor(int? autor)
+        public void AtribuirAutor(int? fk_autor)
         {
-            if (autor <= 0 || autor == Autor)
+            if (fk_autor <= 0 || fk_autor == Fk_Autor)
                 return;
 
-            Autor = autor.Value;
+            Fk_Autor = fk_autor.Value;
         }
 
-        public void AtribuirCategoria(int categoria)
+        public void AtribuirCategoria(int fk_categoria)
         {
-            if (categoria <= 0)
+            if (fk_categoria <= 0)
             {
                 DomainValidationException.AtribuirExcecao("CATEGORIA DO LIVRO OBRIGATÓRIO");
                 return;
             }
 
-            if (categoria == Categoria)
+            if (fk_categoria == Fk_Categoria)
                 return;
 
-            Categoria = categoria;
+            Fk_Categoria = fk_categoria;
         }
 
         public void Validar()
