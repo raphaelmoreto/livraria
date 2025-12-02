@@ -2,12 +2,21 @@
 using Livraria.Domain.Interfaces.Repositories;
 using Livraria.Infrastructure.Interfaces;
 using Livraria.Infrastructure.Repositories._base;
+using System.Data;
 
 namespace Livraria.Infrastructure.Repositories.Base
 {
     public abstract class BaseWrite<T> : BaseRepository, IRepositoryWrite<T> where T : class
     {
         public BaseWrite(IDatabaseConnection dbConnection) : base(dbConnection) { }
+
+        protected IDbTransaction BeginTransaction()
+        {
+            if (Connection.State == ConnectionState.Closed)
+                Connection.Open();
+
+            return Connection.BeginTransaction();
+        }
 
         public virtual async Task<bool> Delete(T entity) => await Connection.DeleteAsync(entity);
 
