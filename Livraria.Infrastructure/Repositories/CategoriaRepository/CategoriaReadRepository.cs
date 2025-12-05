@@ -11,15 +11,19 @@ namespace Livraria.Infrastructure.Repositories.CategoriaRepository
     {
         public CategoriaReadRepository(IDatabaseConnection dbConnection) : base(dbConnection) { }
 
-        public async Task<int> BuscarIdDaCategoria(string nomeCategoria)
+        public async Task<bool> VerificarIdDaCategoria(int numeroCategoria)
         {
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("SELECT [id]");
+            sb.AppendLine("SELECT");
+            sb.AppendLine("       CASE");
+            sb.AppendLine("               WHEN COUNT([Categoria].[id]) > 0 THEN 1");
+            sb.AppendLine("               ELSE 0");
+            sb.AppendLine("       END");
             sb.AppendLine("FROM [dbo].[Categoria]");
-            sb.AppendLine("WHERE [nome] = @Categoria");
+            sb.AppendLine("WHERE [Categoria].[id] = @Id;");
 
-            return await Connection.ExecuteScalarAsync<int>(sb.ToString(), new { Categoria = nomeCategoria });
+            return await Connection.QuerySingleAsync<int>(sb.ToString(), new { Id = numeroCategoria }) > 0;
         }
 
         public async Task<IEnumerable<CategoriaLivroOutputDto>> Listar()
@@ -27,7 +31,7 @@ namespace Livraria.Infrastructure.Repositories.CategoriaRepository
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("SELECT [id],");
             sb.AppendLine("            [nome]");
-            sb.AppendLine("FROM [dbo].[Categoria]");
+            sb.AppendLine("FROM [dbo].[Categoria];");
 
             return await Connection.QueryAsync<CategoriaLivroOutputDto>(sb.ToString());
         }
@@ -38,7 +42,7 @@ namespace Livraria.Infrastructure.Repositories.CategoriaRepository
             sb.AppendLine("SELECT [id],");
             sb.AppendLine("            [nome]");
             sb.AppendLine("FROM [dbo].[Categoria]");
-            sb.AppendLine("WHERE [id] = @Id");
+            sb.AppendLine("WHERE [id] = @Id;");
 
             return await Connection.QueryFirstOrDefaultAsync<CategoriaLivroOutputDto>(sb.ToString(), new { Id = id });
         }

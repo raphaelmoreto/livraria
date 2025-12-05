@@ -6,6 +6,7 @@ using Livraria.Domain.Entities.Livro;
 using Livraria.Domain.Interfaces.Repositories.Autor;
 using Livraria.Domain.Interfaces.Repositories.CategoriaLivro;
 using Livraria.Domain.Interfaces.Repositories.Livro;
+using Microsoft.VisualBasic;
 
 namespace Livraria.Application.Services.Livro
 {
@@ -37,21 +38,25 @@ namespace Livraria.Application.Services.Livro
 
         public async Task<IServiceResponse> Insert(LivroInputDto dto)
         {
-            var idCategoria = await categoriaReadRepository.BuscarIdDaCategoria(dto.Categoria);
-            if (idCategoria <= 0)
+            var idCategoria = await categoriaReadRepository.VerificarIdDaCategoria(dto.Categoria);
+            if (!idCategoria)
             {
                 Response.Mensagem = "CATEGORIA NÃO ENCONTRADA NO BANCO!";
                 return Response;
             }
 
             int idAutor = 0;
-            if (!string.IsNullOrWhiteSpace(dto.Autor))
+            if (dto.Autor != 0 && dto.Autor != null)
             {
-                idAutor = await autorReadRepository.BuscarIdDoAutor(dto.Autor);
-                if (idAutor <= 0)
+                var idAutorBanco = await autorReadRepository.VerificarIdDoAutor(dto.Autor.Value);
+                if (!idAutorBanco)
                 {
                     Response.Mensagem = "AUTOR NÃO ENCONTRADO NO BANCO!";
                     return Response;
+                }
+                else
+                {
+                    idAutor = dto.Autor.Value;
                 }
             }
 
@@ -62,7 +67,7 @@ namespace Livraria.Application.Services.Livro
                 dto.Dt_Publicacao,
                 dto.Preco,
                 dto.Quantidade,
-                idCategoria,
+                dto.Categoria,
                 dto.Subtitulo,
                 idAutor
             );
@@ -87,21 +92,25 @@ namespace Livraria.Application.Services.Livro
                 return Response;
             }
 
-            var idCategoria = await categoriaReadRepository.BuscarIdDaCategoria(dto.Categoria);
-            if (idCategoria <= 0)
+            var idCategoria = await categoriaReadRepository.VerificarIdDaCategoria(dto.Categoria);
+            if (!idCategoria)
             {
                 Response.Mensagem = "CATEGORIA NÃO ENCONTRADA NO BANCO!";
                 return Response;
             }
 
             int idAutor = 0;
-            if (!string.IsNullOrWhiteSpace(dto.Autor))
+            if (dto.Autor != 0 && dto.Autor != null)
             {
-                idAutor = await autorReadRepository.BuscarIdDoAutor(dto.Autor);
-                if (idAutor <= 0)
+                var idAutorBanco = await autorReadRepository.VerificarIdDoAutor(dto.Autor.Value);
+                if (!idAutorBanco)
                 {
                     Response.Mensagem = "AUTOR NÃO ENCONTRADO NO BANCO!";
                     return Response;
+                }
+                else
+                {
+                    idAutor = dto.Autor.Value;
                 }
             }
 
@@ -116,7 +125,7 @@ namespace Livraria.Application.Services.Livro
             livro.AtribuirIsbn(dto.Isbn);
             livro.AtribuirDataPublicacao(dto.Dt_Publicacao);
             livro.AtribuirPreco(dto.Preco);
-            livro.AtribuirCategoria(idCategoria);
+            livro.AtribuirCategoria(dto.Categoria);
             livro.AtribuirSubtitulo(dto.Subtitulo);
             livro.AtribuirAutor(idAutor);
             livro.Validar();

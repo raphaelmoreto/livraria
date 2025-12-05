@@ -11,14 +11,18 @@ namespace Livraria.Infrastructure.Repositories.AutorRepository
     {
         public AutorReadRepository(IDatabaseConnection dbConnection) : base(dbConnection) { }
 
-        public async Task<int> BuscarIdDoAutor(string nomeAutor)
+        public async Task<bool> VerificarIdDoAutor(int numeroAutor)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("SELECT [id]");
+            sb.AppendLine("SELECT");
+            sb.AppendLine("       CASE");
+            sb.AppendLine("               WHEN COUNT([id]) > 0 THEN 1");
+            sb.AppendLine("               ELSE 0");
+            sb.AppendLine("       END");
             sb.AppendLine("FROM [dbo].[Autor]");
-            sb.AppendLine("WHERE [nome] = @Autor");
+            sb.AppendLine("WHERE [Id] = @IdAutor;");
 
-            return await Connection.ExecuteScalarAsync<int>(sb.ToString(), new { Autor = nomeAutor });
+            return await Connection.QuerySingleAsync<int>(sb.ToString(), new { IdAutor = numeroAutor }) > 0;
         }
 
         public async Task<IEnumerable<AutorOutputDto>> Listar()
@@ -26,7 +30,7 @@ namespace Livraria.Infrastructure.Repositories.AutorRepository
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("SELECT [id],");
             sb.AppendLine("            [nome]");
-            sb.AppendLine("FROM [dbo].[Autor]");
+            sb.AppendLine("FROM [dbo].[Autor];");
 
             return await Connection.QueryAsync<AutorOutputDto>(sb.ToString());
         }
@@ -37,7 +41,7 @@ namespace Livraria.Infrastructure.Repositories.AutorRepository
             sb.AppendLine("SELECT [id],");
             sb.AppendLine("            [nome]");
             sb.AppendLine("FROM [dbo].[Autor]");
-            sb.AppendLine("WHERE [id] = @Id");
+            sb.AppendLine("WHERE [id] = @Id;");
 
             return await Connection.QueryFirstOrDefaultAsync<AutorOutputDto>(sb.ToString(), new { Id = id });
         }
