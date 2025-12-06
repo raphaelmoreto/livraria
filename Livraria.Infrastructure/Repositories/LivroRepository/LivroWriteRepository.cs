@@ -12,17 +12,6 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
     {
         public LivroWriteRepository(IDatabaseConnection dbConnection) : base(dbConnection) { }
 
-        //public async Task<bool> BuscarLivroPorNome(string nomeLivro, string isbn)
-        //{
-        //    StringBuilder sb = new StringBuilder();
-        //    sb.AppendLine("SELECT COUNT(CASE WHEN [titulo] = @Titulo");
-        //    sb.AppendLine("                        AND [isbn] = @Isbn");
-        //    sb.AppendLine("                        THEN 1 END)");
-        //    sb.AppendLine("FROM [dbo].[Livro]");
-
-        //    return await Connection.QuerySingleAsync(sb.ToString(), new { Titulo = nomeLivro, Isbn = isbn});
-        //}
-
         public override async Task<bool> Insert(LivroEntity livro)
         {
             using var transaction = BeginTransaction();
@@ -30,54 +19,57 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
             try
             {
                 StringBuilder sb = new StringBuilder();
-                sb.AppendLine("INSERT INTO [dbo].[Livro] ([titulo], [subtitulo], [isbn], [dt_publicacao], [preco], [qt_estoque], [fk_autor], [fk_categoria])");
-                sb.AppendLine("SELECT @Titulo,");
-                sb.AppendLine("            @Subtitulo,");
-                sb.AppendLine("            @Isbn,");
-                sb.AppendLine("            @Dt_Publicacao,");
-                sb.AppendLine("            @Preco,");
-                sb.AppendLine("            @Qt_Estoque,");
-                sb.AppendLine("            @Fk_Autor,");
-                sb.AppendLine("            @Fk_Categoria");
-                sb.AppendLine("WHERE NOT EXISTS (");
-                sb.AppendLine("         SELECT [Id]");
-                sb.AppendLine("         FROM [dbo].[Livro] AS livro");
-                sb.AppendLine("         WHERE livro.titulo = @Titulo");
-                sb.AppendLine("         AND livro.isbn = @Isbn");
-                sb.AppendLine(")");
+                sb.AppendLine("SELECT [id],");
+                sb.AppendLine("            [qt_estoque]");
+                sb.AppendLine("FROM [dbo].[Livro]");
+                sb.AppendLine("WHERE [titulo] = @Titulo");
+                sb.AppendLine("AND [isbn] = @Isbn;");
 
-                //PEGA O ÚLITMO ID GERADO EM UMA MESMA SESSÃO E MESMO ESCOPO APÓS UM INSERT NUMA TABELA
-                sb.AppendLine("SELECT CAST(SCOPE_IDENTITY() AS INT)");
+                var livroBanco = await Connection.QueryFirstOrDefaultAsync<(int id, int qt_estoque)>(sb.ToString(), new { livro.Titulo, livro.Isbn }, transaction);
 
-                var param = new
-                {
-                    livro.Titulo,
-                    livro.Subtitulo,
-                    livro.Isbn,
-                    livro.Dt_Publicacao,
-                    livro.Preco,
-                    livro.Qt_Estoque,
-                    livro.Fk_Autor,
-                    livro.Fk_Categoria
-                };
-
-                var idLivro = await Connection.QuerySingleAsync<int>(sb.ToString(), param, transaction);
-
-                if (idLivro > 0)
+                int idLivro;
+                if (livroBanco.id == 0) //SE O SELECT NÃO RETORNAR UM ID FAZER A INSERÇÃO NO BANCO
                 {
                     StringBuilder sb2 = new StringBuilder();
-                    sb2.AppendLine("INSERT INTO [dbo].[Movimentacao] ([tipo], [dt_movimentacao], [quantidade], [fk_livro])");
-                    sb2.AppendLine("                                         VALUES ('ENTRADA', GETDATE(), @Quantidade, @FK_Livro)");
+                    sb2.AppendLine("INSERT INTO [dbo].[Livro] ([titulo], [subtitulo], [isbn], [dt_publicacao], [preco], [qt_estoque], [fk_autor], [fk_categoria])");
+                    sb2.AppendLine("                           VALUES (@Titulo, @Subtitulo, @Isbn, @Dt_Publicacao, @Preco, @Qt_Estoque, @Fk_Autor, @Fk_Categoria);");
 
-                    var movimentacao = await Connection.ExecuteAsync(sb2.ToString(), new { Quantidade = livro.Qt_Estoque, FK_Livro = idLivro }, transaction) > 0;
+                    //PEGA O ÚLITMO ID GERADO EM UMA MESMA SESSÃO E MESMO ESCOPO APÓS UM INSERT NUMA TABELA
+                    sb2.AppendLine("SELECT CAST(SCOPE_IDENTITY() AS INT);");
 
-                    if (!movimentacao)
+                    var param = new
                     {
-                        transaction.Rollback();
-                        return false;
-                    }
+                        livro.Titulo,
+                        livro.Subtitulo,
+                        livro.Isbn,
+                        livro.Dt_Publicacao,
+                        livro.Preco,
+                        livro.Qt_Estoque,
+                        livro.Fk_Autor,
+                        livro.Fk_Categoria
+                    };
+
+                    idLivro = await Connection.QuerySingleAsync<int>(sb.ToString(), param, transaction);
                 }
-                else
+                else //SE O SELECT RETORNAR UM ID FAZER A ATUALIZAÇÃO DO ESTOQUE
+                {
+                    idLivro = livroBanco.id;
+
+                    StringBuilder sb3 = new StringBuilder();
+                    sb3.AppendLine("UPDATE [dbo].[Livro]");
+                    sb3.AppendLine("SET [qt_estoque] = [qt_estoque] + @Qt_Estoque");
+                    sb3.AppendLine("WHERE [id] = @Id;");
+
+                    await Connection.ExecuteAsync(sb3.ToString(), new { livro.Qt_Estoque, Id = idLivro }, transaction);
+                }
+
+                StringBuilder sb4 = new StringBuilder();
+                sb4.AppendLine("INSERT INTO [dbo].[Movimentacao] ([tipo], [dt_movimentacao], [quantidade], [fk_livro])");
+                sb4.AppendLine("                                         VALUES ('ENTRADA', GETDATE(), @Quantidade, @FK_Livro)");
+
+                var movimentacao = await Connection.ExecuteAsync(sb4.ToString(), new { Quantidade = livro.Qt_Estoque, FK_Livro = idLivro }, transaction) > 0;
+
+                if (!movimentacao)
                 {
                     transaction.Rollback();
                     return false;
@@ -86,10 +78,10 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
                 transaction.Commit();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
                 transaction.Rollback();
-                throw;
+                throw new Exception(ex.Message);
             }
         }
     }
