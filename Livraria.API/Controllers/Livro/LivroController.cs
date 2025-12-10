@@ -1,13 +1,14 @@
 ﻿using Livraria.Application.Interfaces.Livro;
 using Livraria.Domain.Dtos.Livro;
 using Livraria.Domain.Interfaces.Repositories.Livro;
+using Livraria.API.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Livraria.API.Controllers.Livro
 {
     [Route("api/livro")]
     [ApiController]
-    public class LivroController : ControllerBase
+    public class LivroController : BaseController
     {
         private readonly ILivroService livroService;
 

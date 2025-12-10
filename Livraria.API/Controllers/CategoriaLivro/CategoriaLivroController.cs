@@ -1,4 +1,5 @@
-﻿using Livraria.Application.Interfaces.CategoriaLivro;
+﻿using Livraria.API.Controllers.Base;
+using Livraria.Application.Interfaces.CategoriaLivro;
 using Livraria.Domain.Dtos.CategoriaLivro;
 using Livraria.Domain.Interfaces.Repositories.CategoriaLivro;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ namespace Livraria.API.Controllers.CategoriaLivro
 {
     [Route("api/categoria-livro")]
     [ApiController]
-    public class CategoriaLivroController : ControllerBase
+    public class CategoriaLivroController : BaseController
     {
         private readonly ICategoriaLivroService categoriaLivroService;
 

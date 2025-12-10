@@ -1,0 +1,43 @@
+﻿using Livraria.Domain.Dtos.Usuario;
+using Livraria.Application.Interfaces.Token;
+using Microsoft.IdentityModel.Tokens; //ASSINA E VALIDA TOKEN
+using Microsoft.Owin.Security.DataHandler.Encoder; //CONTÉM CLASSES PARA CODIFICAR E DECODIFICAR DADOS
+using System.IdentityModel.Tokens.Jwt; //CRIA E LÊ TOKEN
+using System.Security.Claims;
+
+namespace Livraria.Application.Services.Token
+{
+    public class TokenService : ITokenService
+    {
+        private readonly string Secret; //SENHA SECRETA USADA PARA ASSINAR O TOKEN
+
+        public TokenService(string secret)
+        {
+            Secret = secret;
+        }
+
+        public string GerarToken(LoginDto usuario)
+        {
+            //DEFINE COMO OS BYTES DEVEM SER CONVERTIDOS PARA TEXTO E VICE-VERSA
+            var key = TextEncodings.Base64Url.Decode(Secret);
+
+            //O 'tokenDescriptor' DEFINE COMO O TOKEN SERÁ CRIADO
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                //'Subject' INDICA QUEM É O DONO DO TOKEN
+                Subject = new ClaimsIdentity
+                (
+                    new Claim[] { new Claim(ClaimTypes.Name, usuario.Login) }
+                ),
+                Expires = DateTime.UtcNow.AddHours(2), //QUANDO O TOKEN EXPIRA
+
+                //COMO O TOKEN SERÁ ASSINADO
+                SigningCredentials = new SigningCredentials( new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler(); //É COMO SE FOSSE UM IMPRESSOR DE TOKENS
+            var token = tokenHandler.CreateToken(tokenDescriptor); //GERA O TOKEN JWT
+            return tokenHandler.WriteToken(token); //TRANFORMA O TOKEN EM TEXTO
+        }
+    }
+}
