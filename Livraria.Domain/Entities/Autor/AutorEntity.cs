@@ -31,7 +31,7 @@ namespace Livraria.Domain.Entities.Autor
             Nome = nome.ToUpper();
         }
 
-        public void Validar()
+        public override void Validar()
         {
             if (DomainValidationException.TemExcecoes())
                 throw new AggregateException(DomainValidationException.Excecoes);

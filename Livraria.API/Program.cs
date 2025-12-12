@@ -27,9 +27,9 @@ namespace Livraria.API
                     {
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
-                            ValidateIssuer = false, //QUEM GEROU O TOKEN (false = não importa quem gerou o token, eu aceito.)
-                            ValidateAudience = false, //PARA QUEM O TOKEN FOI GERADO (false = não vou validar para quem o token é destinado.)
-                            ValidateIssuerSigningKey = true, //VALIDA A ASSINATURA (O sistema só aceita tokens assinados com a sua chave secreta.)
+                            ValidateIssuer = false, //QUEM GEROU O TOKEN (false = NÃO IMPORTA QUEM GEROU O TOKEN, EU ACEITO.)
+                            ValidateAudience = false, //PARA QUEM O TOKEN FOI GERADO (false = NÃO VOU VALIDAR PARA QUEM O TOKEN É DESTINADO.)
+                            ValidateIssuerSigningKey = true, //VALIDA A ASSINATURA (O SISTEMA SÓ ACEITA TOKENS ASSINADOS COM A SUA CHAVE SECRETA.)
                             IssuerSigningKey = new SymmetricSecurityKey(key), //INFORMA A CHAVE SECRETA USADA PARA ASSINAR O TOKEN
                              ClockSkew = TimeSpan.Zero //TOKEN EXPIROU = INVÁLIDO NA HORA
                         };

@@ -2,6 +2,13 @@ CREATE DATABASE Livraria;
 
 USE Livraria;
 
+CREATE TABLE Usuario (
+	id INT PRIMARY KEY IDENTITY(1,1),
+	nome VARCHAR(255) NOT NULL,
+	email VARCHAR(255) NOT NULL,
+	senha VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE Categoria (
 	id INT PRIMARY KEY IDENTITY(1,1),
 	nome VARCHAR(255) NOT NULL
@@ -125,9 +132,14 @@ CREATE TABLE Movimentacao (
 	tipo VARCHAR(20) NOT NULL, --ENTRADA OU SAÍDA
 	dt_movimentacao DATETIME NOT NULL, --Quando o livro foi cadastrado no sistema
 	quantidade INT NOT NULL,
-	fk_livro INT NOT NULL
+	fk_livro INT NOT NULL,
+	fk_usuario INT NOT NULL
 );
 
 ALTER TABLE Movimentacao
 ADD CONSTRAINT fk_movimentacao_livro
 FOREIGN KEY (fk_livro) REFERENCES Livro (id);
+
+ALTER TABLE Movimentacao
+ADD CONSTRAINT fk_movimentacao_usuario
+FOREIGN KEY (fk_usuario) REFERENCES Usuario (id);

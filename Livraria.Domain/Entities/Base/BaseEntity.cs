@@ -6,5 +6,7 @@ namespace Livraria.Domain.Entities.Base
     {
         [Key]
         public int Id { get; protected set; }
+
+        public abstract void Validar();
     }
 }

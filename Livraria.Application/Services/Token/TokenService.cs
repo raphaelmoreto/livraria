@@ -16,7 +16,7 @@ namespace Livraria.Application.Services.Token
             Secret = secret;
         }
 
-        public string GerarToken(LoginDto usuario)
+        public string GerarToken(UsuarioInputDto usuario)
         {
             //DEFINE COMO OS BYTES DEVEM SER CONVERTIDOS PARA TEXTO E VICE-VERSA
             var key = TextEncodings.Base64Url.Decode(Secret);
@@ -27,7 +27,7 @@ namespace Livraria.Application.Services.Token
                 //'Subject' INDICA QUEM É O DONO DO TOKEN
                 Subject = new ClaimsIdentity
                 (
-                    new Claim[] { new Claim(ClaimTypes.Name, usuario.Login) }
+                    new Claim[] { new Claim(ClaimTypes.Email, usuario.Email) }
                 ),
                 Expires = DateTime.UtcNow.AddHours(2), //QUANDO O TOKEN EXPIRA
 

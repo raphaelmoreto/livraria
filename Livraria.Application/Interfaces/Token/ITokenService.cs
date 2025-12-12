@@ -4,6 +4,6 @@ namespace Livraria.Application.Interfaces.Token
 {
     public interface ITokenService
     {
-        string GerarToken(LoginDto usuario);
+        string GerarToken(UsuarioInputDto usuario);
     }
 }

@@ -6,7 +6,6 @@ using Livraria.Domain.Entities.Livro;
 using Livraria.Domain.Interfaces.Repositories.Autor;
 using Livraria.Domain.Interfaces.Repositories.CategoriaLivro;
 using Livraria.Domain.Interfaces.Repositories.Livro;
-using Microsoft.VisualBasic;
 
 namespace Livraria.Application.Services.Livro
 {

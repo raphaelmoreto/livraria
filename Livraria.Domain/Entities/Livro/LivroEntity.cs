@@ -141,7 +141,7 @@ namespace Livraria.Domain.Entities.Livro
             Fk_Categoria = fk_categoria;
         }
 
-        public void Validar()
+        public override void Validar()
         {
             if (DomainValidationException.TemExcecoes())
                 throw new AggregateException(DomainValidationException.Excecoes);
