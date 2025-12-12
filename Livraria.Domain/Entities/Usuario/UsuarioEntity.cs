@@ -13,12 +13,6 @@ namespace Livraria.Domain.Entities.Usuario
 
         public string Senha { get; private set; }
 
-        //public DateTime Dt_Cadastro { get; private set; }
-
-        //public DateTime Dt_Exclusao { get; private set; }
-
-        //public bool Ativo { get; private set; }
-
         public UsuarioEntity() { }
 
         public UsuarioEntity(string nome, string email, string senha)

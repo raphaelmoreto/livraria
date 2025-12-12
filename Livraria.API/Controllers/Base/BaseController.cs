@@ -10,8 +10,7 @@ namespace Livraria.API.Controllers.Base
         {
             get
             {
-                var claimsIdentity = User?.Identity as ClaimsIdentity;
-                return claimsIdentity?.Name ?? "administrador";
+                return User.FindFirst(ClaimTypes.Email)?.Value ?? "administrador";
             }
         }
     }

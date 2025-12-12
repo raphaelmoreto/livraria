@@ -1,9 +1,9 @@
-﻿using Livraria.Domain.Dtos.Usuario;
+﻿using Livraria.Domain.Dtos.Login;
 
 namespace Livraria.Application.Interfaces.Token
 {
     public interface ITokenService
     {
-        string GerarToken(UsuarioInputDto usuario);
+        string GerarToken(LoginDto login);
     }
 }

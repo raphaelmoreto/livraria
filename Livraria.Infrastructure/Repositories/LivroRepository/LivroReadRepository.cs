@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Livraria.Infrastructure.Repositories.LivroRepository
 {
-    public class LivroReadRepository : BaseWrite<LivroOutputDto>, ILivroReadRepository
+    public class LivroReadRepository : BaseRead<LivroOutputDto>, ILivroReadRepository
     {
         public LivroReadRepository(IDatabaseConnection databaseConnection) : base(databaseConnection) { }
 
