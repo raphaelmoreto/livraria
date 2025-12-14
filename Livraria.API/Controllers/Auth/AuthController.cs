@@ -2,7 +2,6 @@
 using Livraria.Application.Interfaces.Token;
 using Livraria.Domain.Dtos.Login;
 using Livraria.Domain.Interfaces.Repositories.Login;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Livraria.API.Controllers.Auth

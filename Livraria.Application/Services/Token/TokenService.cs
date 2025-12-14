@@ -32,7 +32,8 @@ namespace Livraria.Application.Services.Token
                         new Claim(ClaimTypes.Name, login.Usuario)
                     }
                 ),
-                Expires = DateTime.UtcNow.AddHours(2), //QUANDO O TOKEN EXPIRA
+                //QUANDO O TOKEN EXPIRA. ACRESCENTADO "-3" PORQUE ESTOU COM PREGUIÇA DE FAZER A CONVERSÃO PARA O HORÁRIO DE BRASÍLIA
+                Expires = DateTime.UtcNow.AddHours(-2),
 
                 //COMO O TOKEN SERÁ ASSINADO
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
