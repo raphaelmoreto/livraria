@@ -1,12 +1,14 @@
 ﻿using Livraria.API.Controllers.Base;
 using Livraria.Application.Interfaces.Usuario;
 using Livraria.Domain.Dtos.Usuario;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Livraria.API.Controllers.Usuario
 {
-    [Route("api/usuario")]
     [ApiController]
+    [Route("api/usuario")]
+    [Authorize]
     public class UsuarioController : BaseController
     {
         private readonly IUsuarioService usuarioService;

@@ -3,11 +3,13 @@ using Livraria.Domain.Dtos.Livro;
 using Livraria.Domain.Interfaces.Repositories.Livro;
 using Livraria.API.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Livraria.API.Controllers.Livro
 {
-    [Route("api/livro")]
     [ApiController]
+    [Route("api/livro")]
+    [Authorize]
     public class LivroController : BaseController
     {
         private readonly ILivroService livroService;

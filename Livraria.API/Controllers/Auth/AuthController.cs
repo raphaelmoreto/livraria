@@ -2,13 +2,13 @@
 using Livraria.Application.Interfaces.Token;
 using Livraria.Domain.Dtos.Login;
 using Livraria.Domain.Interfaces.Repositories.Login;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 
 namespace Livraria.API.Controllers.Auth
 {
-    [Route("api/auth")]
     [ApiController]
+    [Route("api/auth")]
     public class AuthController : BaseController
     {
         private readonly ILoginReadRepository loginReadRepository;

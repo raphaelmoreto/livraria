@@ -9,6 +9,7 @@ namespace Livraria.API.Controllers.Autor
 {
     [ApiController]
     [Route("api/autor")]
+    [Authorize]
     public class AutorController : BaseController
     {
         private readonly IAutorService autorService;
