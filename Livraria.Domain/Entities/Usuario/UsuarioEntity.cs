@@ -9,15 +9,18 @@ namespace Livraria.Domain.Entities.Usuario
     {
         public string Nome { get; private set; }
 
+        public string Usuario { get; private set; }
+
         public string Email { get; private set; }
 
         public string Senha { get; private set; }
 
         public UsuarioEntity() { }
 
-        public UsuarioEntity(string nome, string email, string senha)
+        public UsuarioEntity(string nome, string usuario, string email, string senha)
         {
             AtribuirNome(nome);
+            AtribuirUsuario(usuario);
             AtribuirEmail(email);
             AtribuirSenha(senha);
             Validar();
@@ -35,6 +38,20 @@ namespace Livraria.Domain.Entities.Usuario
                 return;
 
             Nome = nome.ToUpper();
+        }
+
+        public void AtribuirUsuario(string usuario)
+        {
+            if (string.IsNullOrWhiteSpace(usuario))
+            {
+                DomainValidationException.AtribuirExcecao("NOME DE USUÁRIO OBRIGATÓRIO");
+                return;
+            }
+
+            if (usuario == Usuario)
+                return;
+
+            Usuario = usuario.ToLower();
         }
 
         public void AtribuirEmail(string email)

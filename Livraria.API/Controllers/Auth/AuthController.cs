@@ -26,7 +26,7 @@ namespace Livraria.API.Controllers.Auth
         {
             try
             {
-                if (!string.IsNullOrWhiteSpace(loginDto.Email) && !string.IsNullOrWhiteSpace(loginDto.Senha))
+                if (!string.IsNullOrWhiteSpace(loginDto.Usuario) && !string.IsNullOrWhiteSpace(loginDto.Senha))
                 {
                     var result = await loginReadRepository.ValidarLogin(loginDto);
                     if (result)
@@ -36,7 +36,7 @@ namespace Livraria.API.Controllers.Auth
                     }
                 }
 
-                return Unauthorized(JsonSerializer.Serialize(new { erro = $"EMAIL/SENHA INVÁLIDOS" }));
+                return NotFound(new { erro = $"EMAIL/SENHA INVÁLIDOS" });
             }
             catch (Exception ex)
             {

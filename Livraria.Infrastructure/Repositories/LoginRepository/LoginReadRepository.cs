@@ -30,11 +30,11 @@ namespace Livraria.Infrastructure.Repositories.LoginRepository
             sb.AppendLine("               ELSE 0");
             sb.AppendLine("       END");
             sb.AppendLine("FROM [dbo].[Usuario]");
-            sb.AppendLine("WHERE [Usuario].[email] = @Email");
+            sb.AppendLine("WHERE [Usuario].[usuario] = @Usuario");
             sb.AppendLine("AND [Usuario].[senha] = @Senha");
             sb.AppendLine("AND [Usuario].[Ativo] = 1");
 
-            return await Connection.QuerySingleAsync<int>(sb.ToString(), new { Email = login.Email, Senha = login.Senha }) > 0;
+            return await Connection.QuerySingleAsync<int>(sb.ToString(), new { login.Usuario, login.Senha }) > 0;
         }
     }
 }

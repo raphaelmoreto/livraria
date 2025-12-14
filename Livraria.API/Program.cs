@@ -36,7 +36,42 @@ namespace Livraria.API
                     }
                 );
 
-            //ToDo: CRIAR CONTROLLER PARA O USUÁRIO
+            builder.Services.AddSwaggerGen
+            (
+                c =>
+                {
+                    c.AddSecurityDefinition
+                    (
+                        "Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                        { 
+                            Name = "Authorization",
+                            Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+                            Scheme = "Bearer",
+                            BearerFormat = "JWT",
+                            In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                            Description = "Digite: Bearer {seu token}"
+                        }
+                    );
+
+                    c.AddSecurityRequirement
+                    (
+                        new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+                        {
+                            {
+                                new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                            {
+                                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                                {
+                                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            new string[] {}
+                            }
+                        }
+                    );
+                }
+            );
 
             DependencyInjectionOfApi.AddApi(builder.Services, builder.Configuration);
             DependecyInjectionOfRepositories.AddInfrastructure(builder.Services);

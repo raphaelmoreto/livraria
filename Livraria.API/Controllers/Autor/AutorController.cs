@@ -2,12 +2,13 @@
 using Livraria.Application.Interfaces.Autor;
 using Livraria.Domain.Dtos.Autor;
 using Livraria.Domain.Interfaces.Repositories.Autor;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Livraria.API.Controllers.Autor
 {
-    [Route("api/autor")]
     [ApiController]
+    [Route("api/autor")]
     public class AutorController : BaseController
     {
         private readonly IAutorService autorService;

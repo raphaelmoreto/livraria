@@ -45,6 +45,7 @@ namespace Livraria.Application.Services.Usuario
             var usuario = new UsuarioEntity
             (
                 dto.Nome,
+                dto.Usuario,
                 dto.Email,
                 dto.Senha
             );

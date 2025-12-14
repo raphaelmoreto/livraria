@@ -32,8 +32,9 @@ namespace Livraria.Infrastructure.Repositories.UsuarioRepository
         public override async Task<bool> Insert(UsuarioEntity usuario)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("INSERT INTO [dbo].[Usuario] ([nome], [email], [senha], [dt_cadastro])");
+            sb.AppendLine("INSERT INTO [dbo].[Usuario] ([nome], [usuario], [email], [senha], [dt_cadastro])");
             sb.AppendLine("SELECT @Nome,");
+            sb.AppendLine("            @Usuario,");
             sb.AppendLine("            @Email,");
             sb.AppendLine("            @Senha,");
             sb.AppendLine("            @DtCadastro");
@@ -41,11 +42,13 @@ namespace Livraria.Infrastructure.Repositories.UsuarioRepository
             sb.AppendLine("         SELECT [id]");
             sb.AppendLine("         FROM [dbo].[Usuario] AS usuario");
             sb.AppendLine("         WHERE usuario.email = @Email");
+            sb.AppendLine("         AND usuario.usuario = @Usuario");
             sb.AppendLine(")");
 
             var param = new
             {
                 usuario.Nome,
+                usuario.Usuario,
                 usuario.Email,
                 usuario.Senha,
                 DtCadastro = DateTime.Now
@@ -59,6 +62,7 @@ namespace Livraria.Infrastructure.Repositories.UsuarioRepository
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("UPDATE [dbo].[Usuario]");
             sb.AppendLine("SET [nome] = @Nome,");
+            sb.AppendLine("       [usuario] = @Usuario,");
             sb.AppendLine("       [email] = @Email,");
             sb.AppendLine("       [senha] = @Senha");
             sb.AppendLine("WHERE [id] = @Id");
@@ -66,12 +70,14 @@ namespace Livraria.Infrastructure.Repositories.UsuarioRepository
             sb.AppendLine("         SELECT [id]");
             sb.AppendLine("         FROM [dbo].[Usuario] AS usuario");
             sb.AppendLine("         WHERE usuario.email = @Email");
+            sb.AppendLine("         AND usuario.usuario = @Usuario");
             sb.AppendLine(")");
 
             var param = new
             {
                 usuario.Id,
                 usuario.Nome,
+                usuario.Usuario,
                 usuario.Email,
                 usuario.Senha,
             };
