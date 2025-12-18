@@ -27,7 +27,7 @@ namespace Livraria.API.Controllers.Livro
         {
             try
             {
-                var result = await livroRead.Listar();
+                var result = await livroRead.GetAll();
                 if (result == null)
                 {
                     return NotFound("LISTAGEM DE LIVROS VÁZIA");
@@ -45,7 +45,7 @@ namespace Livraria.API.Controllers.Livro
         {
             try
             {
-                var result = await livroRead.SelecionarPorId(id);
+                var result = await livroRead.GetById(id);
                 if (result == null)
                 {
                     return NotFound("LIVRO NÃO ENCONTRADO");

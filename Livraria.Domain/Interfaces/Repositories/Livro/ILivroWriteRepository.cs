@@ -1,8 +1,9 @@
 ﻿using Livraria.Domain.Entities.Livro;
+using Livraria.Domain.Interfaces.Repositories.Base;
 
 namespace Livraria.Domain.Interfaces.Repositories.Livro
 {
-    public interface ILivroWriteRepository : IRepositoryWrite<LivroEntity>
+    public interface ILivroWriteRepository : IDelete<LivroEntity>, IGetAll<LivroEntity>, IGetById<LivroEntity>, IInsert<LivroEntity>, IUpdate<LivroEntity>
     {
         //Task<bool> BuscarLivroPorNome(string nomeLivro, string isbn);
     }

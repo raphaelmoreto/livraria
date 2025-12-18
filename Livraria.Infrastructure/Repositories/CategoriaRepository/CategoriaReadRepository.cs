@@ -26,7 +26,7 @@ namespace Livraria.Infrastructure.Repositories.CategoriaRepository
             return await Connection.QuerySingleAsync<int>(sb.ToString(), new { Id = numeroCategoria }) > 0;
         }
 
-        public async Task<IEnumerable<CategoriaLivroOutputDto>> Listar()
+        public async Task<IEnumerable<CategoriaLivroOutputDto>> GetAll()
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("SELECT [id],");
@@ -36,7 +36,7 @@ namespace Livraria.Infrastructure.Repositories.CategoriaRepository
             return await Connection.QueryAsync<CategoriaLivroOutputDto>(sb.ToString());
         }
 
-        public async Task<CategoriaLivroOutputDto?> SelecionarPorId(int id)
+        public async Task<CategoriaLivroOutputDto?> GetById(int id)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("SELECT [id],");

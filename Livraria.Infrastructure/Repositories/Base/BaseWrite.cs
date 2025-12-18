@@ -1,12 +1,12 @@
 ﻿using Dapper.Contrib.Extensions;
-using Livraria.Domain.Interfaces.Repositories;
+using Livraria.Domain.Interfaces.Repositories.Base;
 using Livraria.Infrastructure.Interfaces;
 using Livraria.Infrastructure.Repositories._base;
 using System.Data;
 
 namespace Livraria.Infrastructure.Repositories.Base
 {
-    public abstract class BaseWrite<T> : BaseRepository, IRepositoryWrite<T> where T : class
+    public abstract class BaseWrite<T> : BaseRepository, IDelete<T>, IGetAll<T>,  IGetById<T>, IInsert<T>, IUpdate<T> where T : class
     {
         public BaseWrite(IDatabaseConnection dbConnection) : base(dbConnection) { }
 
@@ -20,7 +20,7 @@ namespace Livraria.Infrastructure.Repositories.Base
 
         public virtual async Task<bool> Delete(T entity) => await Connection.DeleteAsync(entity);
 
-        public virtual async Task<T> Get(int id) => await Connection.GetAsync<T>(id);
+        public virtual async Task<T?> GetById(int id) => await Connection.GetAsync<T>(id);
 
         public virtual async Task<IEnumerable<T>> GetAll() => await Connection.GetAllAsync<T>();
 

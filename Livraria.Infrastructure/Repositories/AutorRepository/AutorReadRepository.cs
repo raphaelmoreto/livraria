@@ -25,7 +25,7 @@ namespace Livraria.Infrastructure.Repositories.AutorRepository
             return await Connection.QuerySingleAsync<int>(sb.ToString(), new { IdAutor = numeroAutor }) > 0;
         }
 
-        public async Task<IEnumerable<AutorOutputDto>> Listar()
+        public async Task<IEnumerable<AutorOutputDto>> GetAll()
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("SELECT [id],");
@@ -35,7 +35,7 @@ namespace Livraria.Infrastructure.Repositories.AutorRepository
             return await Connection.QueryAsync<AutorOutputDto>(sb.ToString());
         }
 
-        public async Task<AutorOutputDto?> SelecionarPorId(int id)
+        public async Task<AutorOutputDto?> GetById(int id)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("SELECT [id],");

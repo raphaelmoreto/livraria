@@ -27,7 +27,7 @@ namespace Livraria.API.Controllers.Autor
         {
             try
             {
-                var result = await autorRead.Listar();
+                var result = await autorRead.GetAll();
                 if (result == null)
                 {
                     return NotFound("LISTAGEM DE AUTORES VÁZIA");
@@ -45,7 +45,7 @@ namespace Livraria.API.Controllers.Autor
         {
             try
             {
-                var result = await autorRead.SelecionarPorId(id);
+                var result = await autorRead.GetById(id);
                 if (result == null)
                 {
                     return NotFound("AUTOR NÃO ENCONTRADO");

@@ -2,7 +2,7 @@
 
 namespace Livraria.Domain.Interfaces.Repositories.Login
 {
-    public interface ILoginReadRepository : IRepositoryRead<LoginDto>
+    public interface ILoginReadRepository
     {
         Task<bool> ValidarLogin(LoginDto login);
     }

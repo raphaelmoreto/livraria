@@ -3,7 +3,6 @@ using Livraria.Domain.Entities.Livro;
 using Livraria.Domain.Interfaces.Repositories.Livro;
 using Livraria.Infrastructure.Interfaces;
 using Livraria.Infrastructure.Repositories.Base;
-using System.Data;
 using System.Text;
 
 namespace Livraria.Infrastructure.Repositories.LivroRepository

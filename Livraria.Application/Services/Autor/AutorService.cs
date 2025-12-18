@@ -52,7 +52,7 @@ namespace Livraria.Application.Services.Autor
                 return Response;
             }
 
-            var autor = await repositoryAutor.Get(id);
+            var autor = await repositoryAutor.GetById(id);
             if (autor == null)
             {
                 Response.Mensagem = "AUTOR NÃO ENCONTRADO NO BANCO!";

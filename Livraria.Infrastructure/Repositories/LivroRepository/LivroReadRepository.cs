@@ -11,7 +11,7 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
     {
         public LivroReadRepository(IDatabaseConnection databaseConnection) : base(databaseConnection) { }
 
-        public async Task<IEnumerable<LivroOutputDto>> Listar()
+        public async Task<IEnumerable<LivroOutputDto>> GetAll()
         {
 
             StringBuilder sb = new StringBuilder();
@@ -31,7 +31,7 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
             return await Connection.QueryAsync<LivroOutputDto>(sb.ToString());
         }
 
-        public async Task<LivroOutputDto?> SelecionarPorId(int id)
+        public async Task<LivroOutputDto?> GetById(int id)
         {
 
             StringBuilder sb = new StringBuilder();

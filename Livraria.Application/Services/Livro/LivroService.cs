@@ -113,7 +113,7 @@ namespace Livraria.Application.Services.Livro
                 }
             }
 
-            var livro = await repositoryLivro.Get(id);
+            var livro = await repositoryLivro.GetById(id);
             if (livro == null)
             {
                 Response.Mensagem = "LIVRO NÃO ENCONTRADO NO BANCO!";

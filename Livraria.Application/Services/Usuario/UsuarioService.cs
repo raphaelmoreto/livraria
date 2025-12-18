@@ -70,7 +70,7 @@ namespace Livraria.Application.Services.Usuario
                 return Response;
             }
 
-            var usuario = await repositoryUsuario.Get(id);
+            var usuario = await repositoryUsuario.GetById(id);
             if (usuario == null)
             {
                 Response.Mensagem = "USUÁRIO NÃO ENCONTRADO NO BANCO";

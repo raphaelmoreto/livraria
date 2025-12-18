@@ -53,7 +53,7 @@ namespace Livraria.Application.Services.CategoriaLivro
                 return Response;
             }
 
-            var categoria = await repositoryCategoria.Get(id);
+            var categoria = await repositoryCategoria.GetById(id);
             if (categoria == null)
             {
                 Response.Mensagem = "CATEGORIA NÃO ENCONTRADA NO BANCO!";

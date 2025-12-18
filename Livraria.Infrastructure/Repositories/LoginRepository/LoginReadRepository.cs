@@ -11,16 +11,6 @@ namespace Livraria.Infrastructure.Repositories.LoginRepository
     {
         public LoginReadRepository(IDatabaseConnection dbConnection) : base(dbConnection) { }
 
-        public Task<IEnumerable<LoginDto>> Listar()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<LoginDto?> SelecionarPorId(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<bool> ValidarLogin(LoginDto login)
         {
             StringBuilder sb = new StringBuilder();
