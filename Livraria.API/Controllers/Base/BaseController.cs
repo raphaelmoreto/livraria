@@ -10,7 +10,7 @@ namespace Livraria.API.Controllers.Base
         {
             get
             {
-                return User.FindFirst(ClaimTypes.Name)?.Value ?? "administrador";
+                return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new Exception("ID NÃO INFORMADO");
             }
         }
     }

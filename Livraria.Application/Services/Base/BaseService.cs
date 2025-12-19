@@ -1,4 +1,4 @@
-﻿using Livraria.Application.Interfaces.Response;
+﻿using Livraria.Application.Interfaces.Services.Response;
 
 namespace Livraria.Application.Services.Base
 {

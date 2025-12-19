@@ -1,5 +1,5 @@
 ﻿using Livraria.API.Controllers.Base;
-using Livraria.Application.Interfaces.Token;
+using Livraria.Application.Interfaces.Services.Token;
 using Livraria.Domain.Dtos.Login;
 using Livraria.Domain.Interfaces.Repositories.Login;
 using Microsoft.AspNetCore.Mvc;
@@ -27,10 +27,10 @@ namespace Livraria.API.Controllers.Auth
             {
                 if (!string.IsNullOrWhiteSpace(loginDto.Usuario) && !string.IsNullOrWhiteSpace(loginDto.Senha))
                 {
-                    var result = await loginReadRepository.ValidarLogin(loginDto);
-                    if (result)
+                    var idUsuario = await loginReadRepository.ValidarLogin(loginDto);
+                    if (idUsuario > 0)
                     {
-                        var token = tokenService.GerarToken(loginDto);
+                        var token = tokenService.GerarToken(idUsuario);
                         return Ok(token);
                     }
                 }

@@ -1,5 +1,5 @@
-﻿using Livraria.Application.Interfaces.Autor;
-using Livraria.Application.Interfaces.Response;
+﻿using Livraria.Application.Interfaces.Services.Autor;
+using Livraria.Application.Interfaces.Services.Response;
 using Livraria.Application.Services.Base;
 using Livraria.Domain.Dtos.Autor;
 using Livraria.Domain.Entities.Autor;

@@ -1,9 +1,9 @@
-﻿using Livraria.Application.Interfaces.Livro;
-using Livraria.Domain.Dtos.Livro;
+﻿using Livraria.Domain.Dtos.Livro;
 using Livraria.Domain.Interfaces.Repositories.Livro;
 using Livraria.API.Controllers.Base;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Livraria.Application.Interfaces.Services.Livro;
 
 namespace Livraria.API.Controllers.Livro
 {
@@ -63,7 +63,7 @@ namespace Livraria.API.Controllers.Livro
         {
             try
             {
-                var result = await livroService.Insert(livro);
+                var result = await livroService.Insert(livro, UsuarioLogado);
                 if (!result.Success)
                 {
                     return Conflict(result);

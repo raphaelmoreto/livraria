@@ -1,5 +1,4 @@
-﻿
-namespace Livraria.Domain.Interfaces.Repositories.Base
+﻿namespace Livraria.Domain.Interfaces.Repositories.Base
 {
     public interface IGetAll<T> where T : class
     {

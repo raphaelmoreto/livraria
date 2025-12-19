@@ -1,5 +1,5 @@
-﻿using Livraria.Application.Interfaces.Livro;
-using Livraria.Application.Interfaces.Response;
+﻿using Livraria.Application.Interfaces.Services.Livro;
+using Livraria.Application.Interfaces.Services.Response;
 using Livraria.Application.Services.Base;
 using Livraria.Domain.Dtos.Livro;
 using Livraria.Domain.Entities.Livro;
@@ -35,7 +35,7 @@ namespace Livraria.Application.Services.Livro
             throw new NotImplementedException();
         }
 
-        public async Task<IServiceResponse> Insert(LivroInputDto dto)
+        public async Task<IServiceResponse> Insert(LivroInputDto dto, string usuarioLogado)
         {
             var idCategoria = await categoriaReadRepository.VerificarIdDaCategoria(dto.Categoria);
             if (!idCategoria)
@@ -71,7 +71,7 @@ namespace Livraria.Application.Services.Livro
                 idAutor
             );
 
-            var insert = await repositoryLivro.Insert(livro);
+            var insert = await repositoryLivro.Insert(livro, usuarioLogado);
             if (!insert)
             {
                 Response.Mensagem = $"ERRO! {insert}";

@@ -1,5 +1,4 @@
-﻿using Livraria.Application.Interfaces.Token;
-using Livraria.Domain.Dtos.Login;
+﻿using Livraria.Application.Interfaces.Services.Token;
 using Microsoft.IdentityModel.Tokens; //ASSINA E VALIDA TOKEN
 using System.IdentityModel.Tokens.Jwt; //CRIA E LÊ TOKEN
 using System.Security.Claims;
@@ -16,7 +15,7 @@ namespace Livraria.Application.Services.Token
             Secret = secret;
         }
 
-        public string GerarToken(LoginDto login)
+        public string GerarToken(int idUsuario)
         {
             //DEFINE COMO OS BYTES DEVEM SER CONVERTIDOS PARA TEXTO E VICE-VERSA
             var key = Encoding.ASCII.GetBytes(Secret);
@@ -29,7 +28,7 @@ namespace Livraria.Application.Services.Token
                 (
                     new Claim[]
                     {
-                        new Claim(ClaimTypes.Name, login.Usuario)
+                        new Claim(ClaimTypes.NameIdentifier, idUsuario.ToString())
                     }
                 ),
                 //QUANDO O TOKEN EXPIRA.

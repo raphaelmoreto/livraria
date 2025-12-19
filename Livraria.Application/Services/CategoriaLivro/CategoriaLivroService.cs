@@ -1,5 +1,5 @@
-﻿using Livraria.Application.Interfaces.CategoriaLivro;
-using Livraria.Application.Interfaces.Response;
+﻿using Livraria.Application.Interfaces.Services.CategoriaLivro;
+using Livraria.Application.Interfaces.Services.Response;
 using Livraria.Application.Services.Base;
 using Livraria.Domain.Dtos.CategoriaLivro;
 using Livraria.Domain.Entities.CategoriaLivro;

@@ -11,20 +11,16 @@ namespace Livraria.Infrastructure.Repositories.LoginRepository
     {
         public LoginReadRepository(IDatabaseConnection dbConnection) : base(dbConnection) { }
 
-        public async Task<bool> ValidarLogin(LoginDto login)
+        public async Task<int> ValidarLogin(LoginDto login)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("SELECT");
-            sb.AppendLine("       CASE");
-            sb.AppendLine("               WHEN COUNT(*) > 0 THEN 1");
-            sb.AppendLine("               ELSE 0");
-            sb.AppendLine("       END");
+            sb.AppendLine("SELECT [id]");
             sb.AppendLine("FROM [dbo].[Usuario]");
             sb.AppendLine("WHERE [Usuario].[usuario] = @Usuario");
             sb.AppendLine("AND [Usuario].[senha] = @Senha");
             sb.AppendLine("AND [Usuario].[Ativo] = 1");
 
-            return await Connection.QuerySingleAsync<int>(sb.ToString(), new { login.Usuario, login.Senha }) > 0;
+            return await Connection.QuerySingleAsync<int>(sb.ToString(), new { login.Usuario, login.Senha });
         }
     }
 }

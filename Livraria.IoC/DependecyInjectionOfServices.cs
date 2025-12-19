@@ -1,9 +1,9 @@
-﻿using Livraria.Application.Interfaces.Autor;
-using Livraria.Application.Interfaces.CategoriaLivro;
-using Livraria.Application.Interfaces.Livro;
-using Livraria.Application.Interfaces.Response;
-using Livraria.Application.Interfaces.Token;
-using Livraria.Application.Interfaces.Usuario;
+﻿using Livraria.Application.Interfaces.Services.Autor;
+using Livraria.Application.Interfaces.Services.CategoriaLivro;
+using Livraria.Application.Interfaces.Services.Livro;
+using Livraria.Application.Interfaces.Services.Response;
+using Livraria.Application.Interfaces.Services.Token;
+using Livraria.Application.Interfaces.Services.Usuario;
 using Livraria.Application.Response;
 using Livraria.Application.Services.Autor;
 using Livraria.Application.Services.CategoriaLivro;

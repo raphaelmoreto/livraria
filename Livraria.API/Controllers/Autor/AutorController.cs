@@ -1,5 +1,5 @@
 ﻿using Livraria.API.Controllers.Base;
-using Livraria.Application.Interfaces.Autor;
+using Livraria.Application.Interfaces.Services.Autor;
 using Livraria.Domain.Dtos.Autor;
 using Livraria.Domain.Interfaces.Repositories.Autor;
 using Microsoft.AspNetCore.Authorization;
