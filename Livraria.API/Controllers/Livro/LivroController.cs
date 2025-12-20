@@ -58,6 +58,24 @@ namespace Livraria.API.Controllers.Livro
             }
         }
 
+        [HttpGet("busca-por-paginação")]
+        public async Task<IActionResult> GetPorPaginacao(int page = 1, int pageSize = 20)
+        {
+            try
+            {
+                var result = await livroRead.BuscaPorPaginacao(page, pageSize);
+                if (result == null)
+                {
+                    return NotFound("LISTAGEM DE LIVROS VÁZIA");
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"ERRO INTERNO: {ex.Message}");
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> PostLivro([FromBody] LivroInputDto livro)
         {
