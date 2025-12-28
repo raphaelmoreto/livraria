@@ -16,4 +16,9 @@
     <ProjectReference Include="..\Livraria.Domain\Livraria.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Arquivo\Exportar\Livro\" />
+    <Folder Include="Arquivo\Importar\Livro\" />
+  </ItemGroup>
+
 </Project>
