@@ -1,4 +1,5 @@
-﻿using Livraria.Application.Interfaces.Services.Livro;
+﻿using Livraria.Application.Interfaces.Services.Arquivo;
+using Livraria.Application.Interfaces.Services.Livro;
 using Livraria.Application.Interfaces.Services.Response;
 using Livraria.Application.Services.Base;
 using Livraria.Domain.Dtos.Livro;
@@ -15,24 +16,43 @@ namespace Livraria.Application.Services.Livro
 
         private readonly ICategoriaReadRepository categoriaReadRepository;
 
+        private readonly IGerarArquivo<LivroOutputDto> gerarArquivo;
+
+        private readonly ILerArquivo<LivroInputDto> lerArquivo;
+
+        private readonly ILivroReadRepository livroReadRepository;
+
         private readonly ILivroWriteRepository repositoryLivro;
 
         public LivroService
         (
             IAutorReadRepository autorReadRepository,
             ICategoriaReadRepository categoriaReadRepository,
+            IGerarArquivo<LivroOutputDto> gerarArquivo,
+            ILerArquivo<LivroInputDto> lerArquivo,
+            ILivroReadRepository livroReadRepository,
             ILivroWriteRepository repositoryLivro,
             IServiceResponse serviceResponse
         ) : base(serviceResponse)
         {
             this.autorReadRepository = autorReadRepository;
             this.categoriaReadRepository = categoriaReadRepository;
+            this.gerarArquivo = gerarArquivo;
+            this.lerArquivo = lerArquivo;
+            this.livroReadRepository = livroReadRepository;
             this.repositoryLivro = repositoryLivro;
         }
 
-        public Task<IServiceResponse> Delete(int id)
+        public async Task<byte[]> DownloadLivros(string extensao)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(extensao))
+                throw new ArgumentNullException("EXTENSÃO NÃO DECLARADA");
+
+            var lstLivros = (await livroReadRepository.GetAll()).ToList();
+
+            var arquivo = gerarArquivo.CriarBytes(extensao, lstLivros);
+            
+            return arquivo.CriarBytes();
         }
 
         public async Task<IServiceResponse> Insert(LivroInputDto dto, string usuarioLogado)

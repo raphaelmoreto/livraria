@@ -1,9 +1,10 @@
-﻿using Livraria.Domain.Dtos.Livro;
-using Livraria.Domain.Interfaces.Repositories.Livro;
-using Livraria.API.Controllers.Base;
+﻿using Livraria.API.Controllers.Base;
+using Livraria.API.Helpers.MimeType;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Livraria.Application.Interfaces.Services.Livro;
+using Livraria.Domain.Dtos.Livro;
+using Livraria.Domain.Interfaces.Repositories.Livro;
 
 namespace Livraria.API.Controllers.Livro
 {
@@ -20,6 +21,20 @@ namespace Livraria.API.Controllers.Livro
         {
             this.livroService = livroService;
             this.livroRead = livroRead;
+        }
+
+        [HttpGet("download-livros")]
+        public async Task<IActionResult> DownloadLivros([FromQuery] string extensao)
+        {
+            try
+            {
+                var result = await livroService.DownloadLivros(extensao);
+                return File(result, MimeTypeHelper.GetMimeType(extensao), $"download-livros{extensao}");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpGet]
