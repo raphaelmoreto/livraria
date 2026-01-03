@@ -20,7 +20,7 @@ namespace Livraria.Infrastructure.Repositories.LoginRepository
             sb.AppendLine("AND [Usuario].[senha] = @Senha");
             sb.AppendLine("AND [Usuario].[Ativo] = 1");
 
-            return await Connection.QuerySingleAsync<int>(sb.ToString(), new { login.Usuario, login.Senha });
+            return await Connection.QuerySingleOrDefaultAsync<int>(sb.ToString(), new { login.Usuario, login.Senha });
         }
     }
 }

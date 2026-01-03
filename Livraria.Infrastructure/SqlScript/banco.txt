@@ -131,14 +131,31 @@ INSERT INTO Livro (titulo, subtitulo, isbn, dt_publicacao, preco, qt_estoque, fk
                   ('O MÁGICO DE OZ', 'EDIÇÃO DE LUXO', '9780142427505', '1900-01-01', 29.90, 25, 25, 10),
                   ('ALICE NO PAÍS DAS MARAVILHAS', 'EDIÇÃO ILUSTRADA', '9780141439769', '1865-01-01', 32.90, 20, 23, 10);
 
+CREATE TABLE Origem (
+	id INT PRIMARY KEY IDENTITY(1,1),
+	tipo VARCHAR(255) --COMPRA, DEVOLUÇÃO, TRANSFERÊNCIA, DOAÇÃO
+);
+
+INSERT INTO Origem ([tipo])
+			VALUES ('COMPRA'), --PRODUTO ADQUIRIDO DE FORNECEDOR
+				   ('DEVOLUÇÃO'),
+				   ('DOAÇÃO'),
+				   ('TRANSFERÊNCIA'),
+				   ('VENDA') --PRODUTO VENDIDO AO CLIENTE;
+
 CREATE TABLE Movimentacao (
 	id INT PRIMARY KEY IDENTITY(1,1),
 	tipo VARCHAR(20) NOT NULL, --ENTRADA OU SAÍDA
 	dt_movimentacao DATETIME NOT NULL, --Quando o livro foi cadastrado no sistema
 	quantidade INT NOT NULL,
+	fk_origem INT NOT NULL,
 	fk_livro INT NOT NULL,
 	fk_usuario INT NOT NULL
 );
+
+ALTER TABLE Movimentacao
+ADD CONSTRAINT fk_movimentacao_origem
+FOREIGN KEY (fk_origem) REFERENCES Origem (id);
 
 ALTER TABLE Movimentacao
 ADD CONSTRAINT fk_movimentacao_livro

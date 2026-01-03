@@ -5,7 +5,6 @@ using Livraria.Infrastructure.Interfaces;
 using Livraria.Infrastructure.Repositories.Base;
 using System.Data;
 using System.Text;
-using System.Transactions;
 
 namespace Livraria.Infrastructure.Repositories.LivroRepository
 {
@@ -50,31 +49,13 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
                         livro.Fk_Categoria
                     };
 
-                    idLivro = await Connection.QuerySingleAsync<int>(sb.ToString(), param, transaction);
+                    idLivro = await Connection.QuerySingleAsync<int>(sb2.ToString(), param, transaction);
                 }
                 else //SE O SELECT RETORNAR UM ID FAZER A ATUALIZAÇÃO DO ESTOQUE
                 {
                     idLivro = livroBanco.id;
                     await AtualizarEstoqueLivro(livro.Qt_Estoque, idLivro, transaction);
-
-                    //StringBuilder sb3 = new StringBuilder();
-                    //sb3.AppendLine("UPDATE [dbo].[Livro]");
-                    //sb3.AppendLine("SET [qt_estoque] = [qt_estoque] + @Qt_Estoque");
-                    //sb3.AppendLine("WHERE [id] = @Id;");
-
-                    //await Connection.ExecuteAsync(sb3.ToString(), new { livro.Qt_Estoque, Id = idLivro }, transaction);
                 }
-
-                //StringBuilder sb4 = new StringBuilder();
-                //sb4.AppendLine("INSERT INTO [dbo].[Movimentacao] ([tipo], [dt_movimentacao], [quantidade], [fk_livro], [fk_usuario])");
-                //sb4.AppendLine("                                         VALUES ('ENTRADA', GETDATE(), @Quantidade, @FK_Livro, @Fk_Usuario)");
-
-                //var param2 = new
-                //{
-                //    Quantidade = livro.Qt_Estoque,
-                //    FK_Livro = idLivro,
-                //    FK_Usuario = usuarioLogado
-                //};
 
                 var movimentacao = await InserirMovimentacao(livro.Qt_Estoque, idLivro, usuarioLogado, transaction);
 
@@ -107,17 +88,17 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
         private async Task<bool> InserirMovimentacao(int qt_estoque, int idLivro, string usuarioLogado, IDbTransaction transaction)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("INSERT INTO [dbo].[Movimentacao] ([tipo], [dt_movimentacao], [quantidade], [fk_livro], [fk_usuario])");
-            sb.AppendLine("                                         VALUES ('ENTRADA', GETDATE(), @Quantidade, @FK_Livro, @Fk_Usuario)");
+            sb.AppendLine("INSERT INTO [dbo].[Movimentacao] ([tipo], [dt_movimentacao], [quantidade], [fk_origem], [fk_livro], [fk_usuario])");
+            sb.AppendLine("                                         VALUES ('ENTRADA', GETDATE(), @Quantidade, 4, @FK_Livro, @Fk_Usuario)");
 
-            var param2 = new
+            var param = new
             {
                 Quantidade = qt_estoque,
                 FK_Livro = idLivro,
                 FK_Usuario = usuarioLogado
             };
 
-            return await Connection.ExecuteAsync(sb.ToString(), param2, transaction) > 0;
+            return await Connection.ExecuteAsync(sb.ToString(), param, transaction) > 0;
         }
     }
 }
