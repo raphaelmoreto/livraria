@@ -1,8 +1,10 @@
-﻿using Livraria.Domain.Interfaces.Repositories.Autor;
+﻿using Livraria.Domain.Interfaces.Repositories.Arquivo.Livro.Exportar;
+using Livraria.Domain.Interfaces.Repositories.Autor;
 using Livraria.Domain.Interfaces.Repositories.CategoriaLivro;
 using Livraria.Domain.Interfaces.Repositories.Livro;
 using Livraria.Domain.Interfaces.Repositories.Login;
 using Livraria.Domain.Interfaces.Repositories.Usuario;
+using Livraria.Infrastructure.Arquivo.Exportar.Livro;
 using Livraria.Infrastructure.Connection;
 using Livraria.Infrastructure.Interfaces;
 using Livraria.Infrastructure.Repositories.AutorRepository;
@@ -31,6 +33,8 @@ namespace Livraria.IoC
             services.AddScoped<ICategoriaReadRepository, CategoriaReadRepository>();
             services.AddScoped<ILivroReadRepository, LivroReadRepository>();
             services.AddScoped<ILoginReadRepository, LoginReadRepository>();
+
+            services.AddScoped<IExportarLivro, LivroXlsx>();
 
             return services;
         }

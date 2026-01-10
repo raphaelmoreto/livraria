@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EPPlus" Version="8.4.0" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.15.0" />
     <PackageReference Include="Microsoft.Owin.Security" Version="4.2.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
@@ -15,10 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Livraria.Domain\Livraria.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Arquivo\Importar\Livro\" />
   </ItemGroup>
 
 </Project>

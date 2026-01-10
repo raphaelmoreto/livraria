@@ -23,6 +23,7 @@ namespace Livraria.API
 
             DependecyInjectionOfRepositories.AddInfrastructure(builder.Services);
             DependecyInjectionOfServices.AddApplication(builder.Services, builder.Configuration);
+            DependecyInjectionOfInfrastructure.AddInfrastructure(builder.Services);
 
             var app = builder.Build();
 

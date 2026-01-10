@@ -1,9 +1,9 @@
-﻿using Livraria.Application.Interfaces.Services.Arquivo;
-using Livraria.Application.Interfaces.Services.Livro;
+﻿using Livraria.Application.Interfaces.Services.Livro;
 using Livraria.Application.Interfaces.Services.Response;
 using Livraria.Application.Services.Base;
 using Livraria.Domain.Dtos.Livro;
 using Livraria.Domain.Entities.Livro;
+using Livraria.Domain.Interfaces.Repositories.Arquivo.Livro.Exportar;
 using Livraria.Domain.Interfaces.Repositories.Autor;
 using Livraria.Domain.Interfaces.Repositories.CategoriaLivro;
 using Livraria.Domain.Interfaces.Repositories.Livro;
@@ -16,9 +16,7 @@ namespace Livraria.Application.Services.Livro
 
         private readonly ICategoriaReadRepository categoriaReadRepository;
 
-        private readonly IGerarArquivo<LivroOutputDto> gerarArquivo;
-
-        private readonly ILerArquivo<LivroInputDto> lerArquivo;
+        private readonly IEnumerable<IExportarLivro> exportador;
 
         private readonly ILivroReadRepository livroReadRepository;
 
@@ -28,8 +26,7 @@ namespace Livraria.Application.Services.Livro
         (
             IAutorReadRepository autorReadRepository,
             ICategoriaReadRepository categoriaReadRepository,
-            IGerarArquivo<LivroOutputDto> gerarArquivo,
-            ILerArquivo<LivroInputDto> lerArquivo,
+            IEnumerable<IExportarLivro> exportador,
             ILivroReadRepository livroReadRepository,
             ILivroWriteRepository repositoryLivro,
             IServiceResponse serviceResponse
@@ -37,8 +34,7 @@ namespace Livraria.Application.Services.Livro
         {
             this.autorReadRepository = autorReadRepository;
             this.categoriaReadRepository = categoriaReadRepository;
-            this.gerarArquivo = gerarArquivo;
-            this.lerArquivo = lerArquivo;
+            this.exportador = exportador;
             this.livroReadRepository = livroReadRepository;
             this.repositoryLivro = repositoryLivro;
         }
@@ -50,9 +46,11 @@ namespace Livraria.Application.Services.Livro
 
             var lstLivros = (await livroReadRepository.GetAll()).ToList();
 
-            var arquivo = gerarArquivo.CriarBytes(extensao, lstLivros);
-            
-            return arquivo.CriarBytes();
+            var exportar = exportador.FirstOrDefault(e => e.SuportaExtensao(extensao));
+            if (exportar is null)
+                throw new NotSupportedException("EXTENSÃO NÃO SUPORTADA");
+
+            return exportar.CriarBytes(lstLivros);
         }
 
         public async Task<IServiceResponse> Insert(LivroInputDto dto, string usuarioLogado)
