@@ -48,7 +48,7 @@ namespace Livraria.Infrastructure.Arquivo.Exportar.Livro
                 planilha.Cells[$"A{contador}"].Value = livro.Isbn;
                 planilha.Cells[$"B{contador}"].Value = livro.Titulo;
                 planilha.Cells[$"C{contador}"].Value = livro.Subtitulo;
-                planilha.Cells[$"D{contador}"].Value = livro.Categoria;
+                planilha.Cells[$"D{contador}"].Value = livro.Categorias;
                 planilha.Cells[$"E{contador}"].Value = livro.Autor;
                 planilha.Cells[$"F{contador}"].Value = livro.Dt_Publicacao.ToString("dd/MM/yyyy");
                 planilha.Cells[$"G{contador}"].Value = livro.Preco.ToString("F2", CultureInfo.InvariantCulture);

@@ -7,20 +7,22 @@ using System.Text;
 
 namespace Livraria.Infrastructure.Repositories.LoginRepository
 {
-    public class LoginReadRepository : BaseRead<LoginDto>, ILoginReadRepository
+    public class LoginReadRepository : BaseRead<LoginInputDto>, ILoginReadRepository
     {
         public LoginReadRepository(IDatabaseConnection dbConnection) : base(dbConnection) { }
 
-        public async Task<int> ValidarLogin(LoginDto login)
+        public async Task<LoginOutputDto?> ValidarLogin(LoginInputDto login)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("SELECT [id]");
-            sb.AppendLine("FROM [dbo].[Usuario]");
-            sb.AppendLine("WHERE [Usuario].[usuario] = @Usuario");
-            sb.AppendLine("AND [Usuario].[senha] = @Senha");
-            sb.AppendLine("AND [Usuario].[Ativo] = 1");
+            sb.AppendLine("SELECT u.[id],");
+            sb.AppendLine("            p.[tipo]");
+            sb.AppendLine("FROM [dbo].[Usuario] u");
+            sb.AppendLine("INNER JOIN [dbo].[Perfil_Usuario] p ON u.id = p.id");
+            sb.AppendLine("WHERE [u].[usuario] = @Usuario");
+            sb.AppendLine("AND [u].[senha] = @Senha");
+            sb.AppendLine("AND [u].[Ativo] = 1");
 
-            return await Connection.QuerySingleOrDefaultAsync<int>(sb.ToString(), new { login.Usuario, login.Senha });
+            return await Connection.QueryFirstOrDefaultAsync<LoginOutputDto>(sb.ToString(), new { login.Usuario, login.Senha });
         }
     }
 }

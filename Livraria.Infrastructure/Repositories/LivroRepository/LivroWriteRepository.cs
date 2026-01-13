@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Dapper.Contrib.Extensions;
 using Livraria.Domain.Entities.Livro;
 using Livraria.Domain.Interfaces.Repositories.Livro;
 using Livraria.Infrastructure.Interfaces;
@@ -31,8 +32,8 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
                 if (livroBanco.id == 0) //SE O SELECT NÃO RETORNAR UM ID FAZER A INSERÇÃO NO BANCO
                 {
                     StringBuilder sb2 = new StringBuilder();
-                    sb2.AppendLine("INSERT INTO [dbo].[Livro] ([titulo], [subtitulo], [isbn], [dt_publicacao], [preco], [qt_estoque], [fk_autor], [fk_categoria])");
-                    sb2.AppendLine("                           VALUES (@Titulo, @Subtitulo, @Isbn, @Dt_Publicacao, @Preco, @Qt_Estoque, @Fk_Autor, @Fk_Categoria);");
+                    sb2.AppendLine("INSERT INTO [dbo].[Livro] ([titulo], [subtitulo], [isbn], [dt_publicacao], [preco], [qt_estoque], [fk_autor])");
+                    sb2.AppendLine("                           VALUES (@Titulo, @Subtitulo, @Isbn, @Dt_Publicacao, @Preco, @Qt_Estoque, @Fk_Autor);");
 
                     //PEGA O ÚLITMO ID GERADO EM UMA MESMA SESSÃO E MESMO ESCOPO APÓS UM INSERT NUMA TABELA
                     sb2.AppendLine("SELECT CAST(SCOPE_IDENTITY() AS INT);");
@@ -45,11 +46,19 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
                         livro.Dt_Publicacao,
                         livro.Preco,
                         livro.Qt_Estoque,
-                        livro.Fk_Autor,
-                        livro.Fk_Categoria
+                        livro.Fk_Autor
                     };
 
                     idLivro = await Connection.QuerySingleAsync<int>(sb2.ToString(), param, transaction);
+
+                    StringBuilder sb3 = new StringBuilder();
+                    sb3.AppendLine("INSERT INTO [dbo].[Categoria_Livro] ([fk_categoria], [fk_livro])");
+                    sb3.AppendLine("                                           VALUES (@Fk_Categoria, @Fk_Livro)");
+
+                    foreach (var categoria in livro.Fk_Categoria)
+                    {
+                        await Connection.ExecuteAsync(sb3.ToString(), new { Fk_Categoria = categoria, Fk_Livro = idLivro }, transaction);
+                    }
                 }
                 else //SE O SELECT RETORNAR UM ID FAZER A ATUALIZAÇÃO DO ESTOQUE
                 {
@@ -99,6 +108,12 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
             };
 
             return await Connection.ExecuteAsync(sb.ToString(), param, transaction) > 0;
+        }
+
+        public override async Task<bool> Update(LivroEntity livro)
+        {
+
+            throw new NotImplementedException();
         }
     }
 }

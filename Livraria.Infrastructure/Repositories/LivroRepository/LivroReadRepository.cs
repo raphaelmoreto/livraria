@@ -24,12 +24,21 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
             sb.AppendLine("            l.[dt_publicacao],");
             sb.AppendLine("            l.[preco],");
             sb.AppendLine("            l.[qt_estoque] AS 'quantidade',");
-            sb.AppendLine("            c.[nome] AS 'categoria',");
+            sb.AppendLine("            STRING_AGG(c.[nome], ', ' ) AS 'categorias',");
             sb.AppendLine("            l.[subtitulo],");
             sb.AppendLine("            a.[nome] AS 'autor'");
             sb.AppendLine("FROM [dbo].[Livro] l");
-            sb.AppendLine("LEFT JOIN [dbo].[Categoria] c ON l.[fk_categoria] = c.[id]");
+            sb.AppendLine("INNER JOIN Categoria_Livro cl ON cl.fk_livro = l.id");
+            sb.AppendLine("INNER JOIN [dbo].[Categoria] c ON c.[id] = cl.[fk_categoria]");
             sb.AppendLine("LEFT JOIN [dbo].[Autor] a ON l.[fk_autor] = a.[id]");
+            sb.AppendLine("GROUP BY l.[id],");
+            sb.AppendLine("                l.[titulo],");
+            sb.AppendLine("                l.[subtitulo],");
+            sb.AppendLine("                l.[isbn],");
+            sb.AppendLine("                l.[dt_publicacao],");
+            sb.AppendLine("                l.[preco],");
+            sb.AppendLine("                l.[qt_estoque],");
+            sb.AppendLine("                a.[nome]");
             sb.AppendLine("ORDER BY l.[titulo]");
             sb.AppendLine("OFFSET @Offset ROWS");
             sb.AppendLine("FETCH NEXT @PageSize ROWS ONLY;");
@@ -46,12 +55,22 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
             sb.AppendLine("            l.[dt_publicacao],");
             sb.AppendLine("            l.[preco],");
             sb.AppendLine("            l.[qt_estoque] AS 'quantidade',");
-            sb.AppendLine("            c.[nome] AS 'categoria',");
+            sb.AppendLine("            STRING_AGG(c.[nome], ', ' ) AS 'categorias',");
             sb.AppendLine("            l.[subtitulo],");
             sb.AppendLine("            a.[nome] AS 'autor'");
             sb.AppendLine("FROM [dbo].[Livro] l");
-            sb.AppendLine("LEFT JOIN [dbo].[Categoria] c ON l.[fk_categoria] = c.[id]");
+            sb.AppendLine("INNER JOIN Categoria_Livro cl ON cl.fk_livro = l.id");
+            sb.AppendLine("INNER JOIN [dbo].[Categoria] c ON c.[id] = cl.[fk_categoria]");
             sb.AppendLine("LEFT JOIN [dbo].[Autor] a ON l.[fk_autor] = a.[id]");
+            sb.AppendLine("GROUP BY l.[id],");
+            sb.AppendLine("                l.[titulo],");
+            sb.AppendLine("                l.[subtitulo],");
+            sb.AppendLine("                l.[isbn],");
+            sb.AppendLine("                l.[dt_publicacao],");
+            sb.AppendLine("                l.[preco],");
+            sb.AppendLine("                l.[qt_estoque],");
+            sb.AppendLine("                a.[nome]");
+            sb.AppendLine("ORDER BY l.[titulo]");
 
             return await Connection.QueryAsync<LivroOutputDto>(sb.ToString());
         }
@@ -65,13 +84,22 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
             sb.AppendLine("            l.[dt_publicacao],");
             sb.AppendLine("            l.[preco],");
             sb.AppendLine("            l.[qt_estoque] AS 'quantidade',");
-            sb.AppendLine("            c.[nome] AS 'categoria',");
+            sb.AppendLine("            STRING_AGG(c.[nome], ', ') AS 'categorias',");
             sb.AppendLine("            l.[subtitulo],");
             sb.AppendLine("            a.[nome] AS 'autor'");
             sb.AppendLine("FROM [dbo].[Livro] l");
-            sb.AppendLine("LEFT JOIN [dbo].[Categoria] c ON l.[fk_categoria] = c.[id]");
+            sb.AppendLine("INNER JOIN Categoria_Livro cl ON cl.fk_livro = l.id");
+            sb.AppendLine("INNER JOIN [dbo].[Categoria] c ON c.[id] = cl.[fk_categoria]");
             sb.AppendLine("LEFT JOIN [dbo].[Autor] a ON l.[fk_autor] = a.[id]");
             sb.AppendLine("WHERE l.[id] = @Id");
+            sb.AppendLine("GROUP BY l.id,");
+            sb.AppendLine("                l.[titulo],");
+            sb.AppendLine("                l.[subtitulo],");
+            sb.AppendLine("                l.[isbn],");
+            sb.AppendLine("                l.[dt_publicacao],");
+            sb.AppendLine("                l.[preco],");
+            sb.AppendLine("                l.[qt_estoque],");
+            sb.AppendLine("                a.[nome]");
 
             return await Connection.QueryFirstOrDefaultAsync<LivroOutputDto>(sb.ToString(), new { Id = id });
         }

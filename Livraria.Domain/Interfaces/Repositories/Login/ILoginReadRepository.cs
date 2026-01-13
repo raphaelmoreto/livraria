@@ -4,6 +4,6 @@ namespace Livraria.Domain.Interfaces.Repositories.Login
 {
     public interface ILoginReadRepository
     {
-        Task<int> ValidarLogin(LoginDto login);
+        Task<LoginOutputDto?> ValidarLogin(LoginInputDto login);
     }
 }

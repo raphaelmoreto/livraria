@@ -55,11 +55,14 @@ namespace Livraria.Application.Services.Livro
 
         public async Task<IServiceResponse> Insert(LivroInputDto dto, string usuarioLogado)
         {
-            var idCategoria = await categoriaReadRepository.VerificarIdDaCategoria(dto.Categoria);
-            if (!idCategoria)
+            foreach (var categoria in dto.Fk_Categoria)
             {
-                Response.Mensagem = "CATEGORIA NÃO ENCONTRADA NO BANCO!";
-                return Response;
+                var idCategoria = await categoriaReadRepository.VerificarIdDaCategoria(categoria);
+                if (!idCategoria)
+                {
+                    Response.Mensagem = $"CATEGORIA DE Nº{categoria} NÃO ENCONTRADA NO BANCO!";
+                    return Response;
+                }
             }
 
             int idAutor = 0;
@@ -84,7 +87,7 @@ namespace Livraria.Application.Services.Livro
                 dto.Dt_Publicacao,
                 dto.Preco,
                 dto.Quantidade,
-                dto.Categoria,
+                dto.Fk_Categoria,
                 dto.Subtitulo,
                 idAutor
             );
@@ -109,11 +112,14 @@ namespace Livraria.Application.Services.Livro
                 return Response;
             }
 
-            var idCategoria = await categoriaReadRepository.VerificarIdDaCategoria(dto.Categoria);
-            if (!idCategoria)
+            foreach (var categoria in dto.Fk_Categoria)
             {
-                Response.Mensagem = "CATEGORIA NÃO ENCONTRADA NO BANCO!";
-                return Response;
+                var idCategoria = await categoriaReadRepository.VerificarIdDaCategoria(categoria);
+                if (!idCategoria)
+                {
+                    Response.Mensagem = $"CATEGORIA DE Nº{categoria} NÃO ENCONTRADA NO BANCO!";
+                    return Response;
+                }
             }
 
             int idAutor = 0;
@@ -142,12 +148,12 @@ namespace Livraria.Application.Services.Livro
             livro.AtribuirIsbn(dto.Isbn);
             livro.AtribuirDataPublicacao(dto.Dt_Publicacao);
             livro.AtribuirPreco(dto.Preco);
-            livro.AtribuirCategoria(dto.Categoria);
+            livro.AtribuirCategoria(dto.Fk_Categoria);
             livro.AtribuirSubtitulo(dto.Subtitulo);
             livro.AtribuirAutor(idAutor);
             livro.Validar();
 
-            var update = await repositoryLivro.Update(livro);
+            var update = await repositoryLivro.Update(livro); //ToDo: FAZER UPDATE PARA O LIVRO
             if (!update)
             {
                 Response.Mensagem = $"ERRO! {update}";

@@ -11,16 +11,6 @@ namespace Livraria.Infrastructure.Repositories.CategoriaRepository
     {
         public CategoriaWriteRepository(IDatabaseConnection dbConnection) : base(dbConnection) { }
 
-        //public async Task<bool> BuscarCategoriaPorNome(string nomeCategoria)
-        //{
-        //    StringBuilder sb = new StringBuilder();
-        //    sb.AppendLine("SELECT COUNT([nome])");
-        //    sb.AppendLine("FROM [dbo].[Categoria]");
-        //    sb.AppendLine("WHERE [nome] = @Nome");
-
-        //    return await Connection.QuerySingleAsync<int>(sb.ToString(), new { Nome = nomeCategoria }) > 0;
-        //}
-
         public override async Task<bool> Insert(CategoriaLivroEntity categoria)
         {
             StringBuilder sb = new StringBuilder();

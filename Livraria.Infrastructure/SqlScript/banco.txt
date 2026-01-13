@@ -2,6 +2,16 @@ CREATE DATABASE Livraria;
 
 USE Livraria;
 
+CREATE TABLE Perfil_Usuario (
+	id INT PRIMARY KEY IDENTITY(1,1),
+	tipo VARCHAR(32) NOT NULL
+);
+
+INSERT INTO [Perfil_Usuario] ([tipo])
+					  VALUES ('ADMINISTRADOR'),
+							 ('COMUM'),
+							 ('FUNCIONÁRIO');
+
 CREATE TABLE Usuario (
 	id INT PRIMARY KEY IDENTITY(1,1),
 	nome VARCHAR(255) NOT NULL,
@@ -10,8 +20,13 @@ CREATE TABLE Usuario (
 	senha VARCHAR(255) NOT NULL,
 	dt_cadastro DATE NOT NULL,
 	dt_exclusao DATE,
+	fk_perfil INT,
 	ativo BIT DEFAULT 1
 );
+
+ALTER TABLE Usuario
+ADD CONSTRAINT fk_usuario_perfil
+FOREIGN KEY (fk_perfil) REFERENCES Perfil_Usuario (id)
 
 CREATE TABLE Categoria (
 	id INT PRIMARY KEY IDENTITY(1,1),
@@ -35,6 +50,22 @@ INSERT INTO [Categoria] ([nome])
 						('ROMANCE HISTÓRICO'),
 						('SUSPENSE'),
 						('TERROR');
+
+CREATE TABLE Livro (
+	id INT PRIMARY KEY IDENTITY(1,1),
+	titulo VARCHAR(255) NOT NULL,
+	subtitulo VARCHAR(255) DEFAULT '',
+	isbn VARCHAR(15) UNIQUE NOT NULL, --Número Internacional Padronizado de Livro e é a base para gerar o código de barras
+	dt_publicacao DATE NOT NULL,
+	preco DECIMAL(18,2) NOT NULL,
+	qt_estoque INT NOT NULL DEFAULT 0,
+	fk_autor INT
+);
+
+CREATE TABLE Categoria_Livro (
+	fk_categoria INT NOT NULL,
+	fk_livro INT NOT NULL
+);
 
 CREATE TABLE Autor (
 	id INT PRIMARY KEY IDENTITY(1,1),
@@ -74,62 +105,216 @@ INSERT INTO [Autor] ([nome])
 						('VICTOR MARIE HUGO'),
 						('WILLIAM SHAKESPEARE');
 
-CREATE TABLE Livro (
-	id INT PRIMARY KEY IDENTITY(1,1),
-	titulo VARCHAR(255) NOT NULL,
-	subtitulo VARCHAR(255) DEFAULT '',
-	isbn VARCHAR(15) UNIQUE NOT NULL, --Número Internacional Padronizado de Livro e é a base para gerar o código de barras
-	dt_publicacao DATE NOT NULL,
-	preco DECIMAL(18,2) NOT NULL,
-	qt_estoque INT NOT NULL DEFAULT 0,
-	fk_autor INT,
-	fk_categoria INT
-);
-
 ALTER TABLE Livro
 ADD CONSTRAINT fk_livro_autor
 FOREIGN KEY (fk_autor) REFERENCES Autor (id);
 
-ALTER TABLE Livro
-ADD CONSTRAINT fk_livro_categoria
-FOREIGN KEY (fk_categoria) REFERENCES Categoria (id);
+INSERT INTO Livro (titulo, subtitulo, isbn, dt_publicacao, preco, qt_estoque, fk_autor)
+           VALUES ('ASSASSINATO NO EXPRESSO DO ORIENTE', 'UMA AVENTURA DE HERCULE POIROT', '9780007119318', '1934-01-01', 39.90, 15, 1),
+                  ('O ESTRANGEIRO', 'ROMANCE EXISTENCIALISTA', '9788532520015', '1942-01-01', 32.50, 10, 2),
+                  ('ADMIRÁVEL MUNDO NOVO', 'UM CLÁSSICO DISTÓPICO', '9780060850524', '1932-01-01', 42.00, 18, 3),
+                  ('O CÃO DOS BASKERVILLES', 'UMA AVENTURA DE SHERLOCK HOLMES', '9780553212600', '1902-01-01', 29.90, 12, 5),
+                  ('DOM CASMURRO', 'ROMANCE REALISTA BRASILEIRO', '9788572321232', '1899-01-01', 25.90, 20, 24),
+                  ('O MORRO DOS VENTOS UIVANTES', 'EDIÇÃO ESPECIAL', '9780141439556', '1847-01-01', 38.00, 8, 9),
+                  ('O SENHOR DOS ANÉIS: A SOCIEDADE DO ANEL', 'VOLUME 1 DA TRILOGIA', '9780544003415', '1954-07-29', 59.90, 25, 18),
+                  ('HARRY POTTER E A PEDRA FILOSOFAL', 'EDIÇÃO COMEMORATIVA', '9780439708180', '1997-06-26', 44.90, 30, 17),
+                  ('CEM ANOS DE SOLIDÃO', 'ROMANCE LATINO-AMERICANO', '9780307474728', '1967-01-01', 52.00, 14, 13),
+                  ('VINTE MIL LÉGUAS SUBMARINAS', 'AS GRANDES VIAGENS DO CAPITÃO NEMO', '9780553212525', '1870-01-01', 34.90, 22, 22),
+                  ('FRANKENSTEIN', 'O MODERNO PROMETEU', '9780486282114', '1818-01-01', 29.90, 16, 26),
+                  ('ORGULHO E PRECONCEITO', 'ROMANCE CLÁSSICO', '9780141040349', '1813-01-01', 28.90, 18, 19),
+                  ('A ILÍADA', 'EPOS CLÁSSICO GREGO', '9780140275360', '0800-01-01', 39.90, 10, 16),
+                  ('1984', 'UM CLÁSSICO DISTÓPICO', '9780451524935', '1949-06-08', 36.90, 12, 14),
+                  ('O MÉDICO E O MONSTRO', 'EDIÇÃO DEFINITIVA', '9780486266886', '1886-01-01', 27.90, 14, 28),
+                  ('A METAMORFOSE', 'EDIÇÃO COMENTADA', '9780553213690', '1915-01-01', 27.90, 20, 12),
+                  ('O PROCESSO', 'ROMANCE INCOMPLETO', '9780805209990', '1925-01-01', 32.90, 14, 12),
+                  ('O VELHO E O MAR', 'EDIÇÃO ESPECIAL', '9780684801223', '1952-01-01', 29.90, 18, 10),
+                  ('AS AVENTURAS DE SHERLOCK HOLMES', 'COLETÂNEA COMPLETA', '9780141034356', '1892-01-01', 39.90, 15, 5),
+                  ('OS MISERÁVEIS', 'ROMANCE HISTÓRICO', '9780451419439', '1862-01-01', 58.00, 20, 30),
+                  ('CRIME E CASTIGO', 'ROMANCE PSICOLÓGICO', '9780486415871', '1866-01-01', 34.90, 22, 11),
+                  ('HOMENS E RATOS', 'ROMANCE NORTE-AMERICANO', '9780140177399', '1937-01-01', 26.90, 12, 10),
+                  ('A DIVINA COMÉDIA', 'PARTE: INFERNO', '9780142437224', '1320-01-01', 55.90, 10, 7),
+                  ('O PEREGRINO', 'EDIÇÃO COMENTADA', '9780143106457', '1678-01-01', 29.90, 8, 7),
+                  ('O RETRATO DE DORIAN GRAY', 'ROMANCE GÓTICO', '9780141442465', '1890-01-01', 33.90, 16, 28),
+                  ('A ILHA DO DOUTOR MOREAU', 'FICÇÃO CIENTÍFICA CLÁSSICA', '9780486290270', '1896-01-01', 27.90, 14, 1),
+                  ('A GUERRA DOS MUNDOS', 'EDIÇÃO ILUSTRADA', '9780553213263', '1898-01-01', 31.90, 18, 15),
+                  ('A MORTE DE IVÂN ILITCH', 'ROMANCE CURTO', '9780486264646', '1886-01-01', 22.90, 15, 29),
+                  ('ANNA KARÊNINA', 'ROMANCE CLÁSSICO RUSSO', '9780143035009', '1877-01-01', 41.90, 12, 29),
+                  ('O CORVO E OUTROS POEMAS', 'COLETÂNEA POÉTICA', '9780486266855', '1845-01-01', 28.90, 20, 8),
+                  ('CANTOS', 'A OBRA COMPLETA', '9780140448199', '1325-01-01', 49.90, 7, 7),
+                  ('DON QUIXOTE', 'PARTE 1 E PARTE 2', '9780060934347', '1605-01-01', 54.90, 12, 27),
+                  ('AS AVENTURAS DE TOM SAWYER', 'EDIÇÃO COM ILUSTRAÇÕES', '9780486400778', '1876-01-01', 24.90, 18, 25),
+                  ('O MÁGICO DE OZ', 'EDIÇÃO DE LUXO', '9780142427505', '1900-01-01', 29.90, 25, 25),
+                  ('ALICE NO PAÍS DAS MARAVILHAS', 'EDIÇÃO ILUSTRADA', '9780141439769', '1865-01-01', 32.90, 20, 23);
 
-INSERT INTO Livro (titulo, subtitulo, isbn, dt_publicacao, preco, qt_estoque, fk_autor, fk_categoria)
-           VALUES ('ASSASSINATO NO EXPRESSO DO ORIENTE', 'UMA AVENTURA DE HERCULE POIROT', '9780007119318', '1934-01-01', 39.90, 15, 1, 11),
-                  ('O ESTRANGEIRO', 'ROMANCE EXISTENCIALISTA', '9788532520015', '1942-01-01', 32.50, 10, 2, 6),
-                  ('ADMIRÁVEL MUNDO NOVO', 'UM CLÁSSICO DISTÓPICO', '9780060850524', '1932-01-01', 42.00, 18, 3, 5),
-                  ('O CÃO DOS BASKERVILLES', 'UMA AVENTURA DE SHERLOCK HOLMES', '9780553212600', '1902-01-01', 29.90, 12, 5, 11),
-                  ('DOM CASMURRO', 'ROMANCE REALISTA BRASILEIRO', '9788572321232', '1899-01-01', 25.90, 20, 24, 13),
-                  ('O MORRO DOS VENTOS UIVANTES', 'EDIÇÃO ESPECIAL', '9780141439556', '1847-01-01', 38.00, 8, 9, 6),
-                  ('O SENHOR DOS ANÉIS: A SOCIEDADE DO ANEL', 'VOLUME 1 DA TRILOGIA', '9780544003415', '1954-07-29', 59.90, 25, 18, 7),
-                  ('HARRY POTTER E A PEDRA FILOSOFAL', 'EDIÇÃO COMEMORATIVA', '9780439708180', '1997-06-26', 44.90, 30, 17, 10),
-                  ('CEM ANOS DE SOLIDÃO', 'ROMANCE LATINO-AMERICANO', '9780307474728', '1967-01-01', 52.00, 14, 13, 13),
-                  ('VINTE MIL LÉGUAS SUBMARINAS', 'AS GRANDES VIAGENS DO CAPITÃO NEMO', '9780553212525', '1870-01-01', 34.90, 22, 22, 9),
-                  ('FRANKENSTEIN', 'O MODERNO PROMETEU', '9780486282114', '1818-01-01', 29.90, 16, 26, 16),
-                  ('ORGULHO E PRECONCEITO', 'ROMANCE CLÁSSICO', '9780141040349', '1813-01-01', 28.90, 18, 19, 13),
-                  ('A ILÍADA', 'EPOS CLÁSSICO GREGO', '9780140275360', '0800-01-01', 39.90, 10, 16, 2),
-                  ('1984', 'UM CLÁSSICO DISTÓPICO', '9780451524935', '1949-06-08', 36.90, 12, 14, 5),
-                  ('O MÉDICO E O MONSTRO', 'EDIÇÃO DEFINITIVA', '9780486266886', '1886-01-01', 27.90, 14, 28, 16),
-                  ('A METAMORFOSE', 'EDIÇÃO COMENTADA', '9780553213690', '1915-01-01', 27.90, 20, 12, 8),
-                  ('O PROCESSO', 'ROMANCE INCOMPLETO', '9780805209990', '1925-01-01', 32.90, 14, 12, 6),
-                  ('O VELHO E O MAR', 'EDIÇÃO ESPECIAL', '9780684801223', '1952-01-01', 29.90, 18, 10, 6),
-                  ('AS AVENTURAS DE SHERLOCK HOLMES', 'COLETÂNEA COMPLETA', '9780141034356', '1892-01-01', 39.90, 15, 5, 11),
-                  ('OS MISERÁVEIS', 'ROMANCE HISTÓRICO', '9780451419439', '1862-01-01', 58.00, 20, 30, 14),
-                  ('CRIME E CASTIGO', 'ROMANCE PSICOLÓGICO', '9780486415871', '1866-01-01', 34.90, 22, 11, 6),
-                  ('HOMENS E RATOS', 'ROMANCE NORTE-AMERICANO', '9780140177399', '1937-01-01', 26.90, 12, 10, 6),
-                  ('A DIVINA COMÉDIA', 'PARTE: INFERNO', '9780142437224', '1320-01-01', 55.90, 10, 7, 2),
-                  ('O PEREGRINO', 'EDIÇÃO COMENTADA', '9780143106457', '1678-01-01', 29.90, 8, 7, 2),
-                  ('O RETRATO DE DORIAN GRAY', 'ROMANCE GÓTICO', '9780141442465', '1890-01-01', 33.90, 16, 28, 16),
-                  ('A ILHA DO DOUTOR MOREAU', 'FICÇÃO CIENTÍFICA CLÁSSICA', '9780486290270', '1896-01-01', 27.90, 14, 15, 9),
-                  ('A GUERRA DOS MUNDOS', 'EDIÇÃO ILUSTRADA', '9780553213263', '1898-01-01', 31.90, 18, 15, 9),
-                  ('A MORTE DE IVÂN ILITCH', 'ROMANCE CURTO', '9780486264646', '1886-01-01', 22.90, 15, 29, 6),
-                  ('ANNA KARÊNINA', 'ROMANCE CLÁSSICO RUSSO', '9780143035009', '1877-01-01', 41.90, 12, 29, 13),
-                  ('O CORVO E OUTROS POEMAS', 'COLETÂNEA POÉTICA', '9780486266855', '1845-01-01', 28.90, 20, 8, 12),
-                  ('CANTOS', 'A OBRA COMPLETA', '9780140448199', '1325-01-01', 49.90, 7, 7, 12),
-                  ('DON QUIXOTE', 'PARTE 1 E PARTE 2', '9780060934347', '1605-01-01', 54.90, 12, 27, 13),
-                  ('AS AVENTURAS DE TOM SAWYER', 'EDIÇÃO COM ILUSTRAÇÕES', '9780486400778', '1876-01-01', 24.90, 18, 25, 1),
-                  ('O MÁGICO DE OZ', 'EDIÇÃO DE LUXO', '9780142427505', '1900-01-01', 29.90, 25, 25, 10),
-                  ('ALICE NO PAÍS DAS MARAVILHAS', 'EDIÇÃO ILUSTRADA', '9780141439769', '1865-01-01', 32.90, 20, 23, 10);
+INSERT INTO [Categoria_Livro] ([fk_livro], [fk_categoria])
+VALUES -- 1. ASSASSINATO NO EXPRESSO DO ORIENTE
+		(1, 11), -- Mistério
+		(1, 15), -- Suspense
+		(1, 2),  -- Clássicos
+
+		-- 2. O ESTRANGEIRO
+		(2, 6),  -- Drama
+		(2, 13), -- Romance
+		(2, 2),  -- Clássicos
+
+		-- 3. ADMIRÁVEL MUNDO NOVO
+		(3, 5),  -- Distopia
+		(3, 9),  -- Ficção Científica
+		(3, 2),  -- Clássicos
+
+		-- 4. O CÃO DOS BASKERVILLES
+		(4, 11), -- Mistério
+		(4, 15), -- Suspense
+		(4, 2),  -- Clássicos
+
+		-- 5. DOM CASMURRO
+		(5, 13), -- Romance
+		(5, 6),  -- Drama
+		(5, 2),  -- Clássicos
+
+		-- 6. O MORRO DOS VENTOS UIVANTES
+		(6, 13),
+		(6, 6),
+		(6, 2),
+
+		-- 7. O SENHOR DOS ANÉIS
+		(7, 1),  -- Aventura
+		(7, 7),  -- Fantasia
+		(7, 2),  -- Clássicos
+
+		-- 8. HARRY POTTER E A PEDRA FILOSOFAL
+		(8, 7),  -- Fantasia
+		(8, 10), -- Literatura Infantil
+		(8, 1),  -- Aventura
+
+		-- 9. CEM ANOS DE SOLIDÃO
+		(9, 13),
+		(9, 6),
+		(9, 2),
+
+		-- 10. VINTE MIL LÉGUAS SUBMARINAS
+		(10, 1),
+		(10, 9),
+		(10, 2),
+
+		-- 11. FRANKENSTEIN
+		(11, 9),
+		(11, 16),
+		(11, 2),
+
+		-- 12. ORGULHO E PRECONCEITO
+		(12, 13),
+		(12, 6),
+		(12, 2),
+
+		-- 13. A ILÍADA
+		(13, 2),
+		(13, 14),
+
+		-- 14. 1984
+		(14, 5),
+		(14, 9),
+		(14, 2),
+
+		-- 15. O MÉDICO E O MONSTRO
+		(15, 16),
+		(15, 6),
+		(15, 2),
+
+		-- 16. A METAMORFOSE
+		(16, 6),
+		(16, 13),
+		(16, 2),
+
+		-- 17. O PROCESSO
+		(17, 6),
+		(17, 13),
+		(17, 2),
+
+		-- 18. O VELHO E O MAR
+		(18, 13),
+		(18, 6),
+		(18, 2),
+
+		-- 19. AS AVENTURAS DE SHERLOCK HOLMES
+		(19, 11),
+		(19, 15),
+		(19, 2),
+
+		-- 20. OS MISERÁVEIS
+		(20, 13),
+		(20, 14),
+		(20, 2),
+
+		-- 21. CRIME E CASTIGO
+		(21, 6),
+		(21, 13),
+		(21, 2),
+
+		-- 22. HOMENS E RATOS
+		(22, 6),
+		(22, 13),
+		(22, 2),
+
+		-- 23. A DIVINA COMÉDIA
+		(23, 2),
+		(23, 12),
+
+		-- 24. O PEREGRINO
+		(24, 2),
+		(24, 14),
+
+		-- 25. O RETRATO DE DORIAN GRAY
+		(25, 6),
+		(25, 16),
+		(25, 2),
+
+		-- 26. A ILHA DO DOUTOR MOREAU
+		(26, 9),
+		(26, 16),
+		(26, 2),
+
+		-- 27. A GUERRA DOS MUNDOS
+		(27, 9),
+		(27, 1),
+		(27, 2),
+
+		-- 28. A MORTE DE IVÂN ILITCH
+		(28, 6),
+		(28, 13),
+		(28, 2),
+
+		-- 29. ANNA KARÊNINA
+		(29, 13),
+		(29, 6),
+		(29, 2),
+
+		-- 30. O CORVO E OUTROS POEMAS
+		(30, 12),
+		(30, 2),
+
+		-- 31. CANTOS
+		(31, 12),
+		(31, 2),
+
+		-- 32. DON QUIXOTE
+		(32, 1),
+		(32, 13),
+		(32, 2),
+
+		-- 33. AS AVENTURAS DE TOM SAWYER
+		(33, 1),
+		(33, 10),
+
+		-- 34. O MÁGICO DE OZ
+		(34, 7),
+		(34, 10),
+		(34, 1),
+
+		-- 35. ALICE NO PAÍS DAS MARAVILHAS
+		(35, 7),
+		(35, 10),
+		(35, 1);
 
 CREATE TABLE Origem (
 	id INT PRIMARY KEY IDENTITY(1,1),

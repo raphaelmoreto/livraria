@@ -43,7 +43,6 @@ namespace Livraria.API.Controllers.Usuario
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> PostUsuario([FromBody] UsuarioInputDto usuario)
         {
             try

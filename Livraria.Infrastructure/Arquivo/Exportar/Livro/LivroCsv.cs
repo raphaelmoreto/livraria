@@ -21,7 +21,7 @@ namespace Livraria.Infrastructure.Arquivo.Exportar.Livro
                     $"{livro.Isbn};" +
                     $"{livro.Titulo};" +
                     $"{livro.Subtitulo};" +
-                    $"{livro.Categoria};" +
+                    $"{livro.Categorias};" +
                     $"{livro.Autor};" +
                     $"{livro.Dt_Publicacao.ToString("dd/MM/yyyy")};" +
                     $"{livro.Preco.ToString("F2", CultureInfo.InvariantCulture)};" +

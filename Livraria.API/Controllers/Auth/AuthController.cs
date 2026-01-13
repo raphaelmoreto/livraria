@@ -21,17 +21,17 @@ namespace Livraria.API.Controllers.Auth
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        public async Task<IActionResult> Login([FromBody] LoginInputDto loginDto)
         {
             try
             {
                 if (!string.IsNullOrWhiteSpace(loginDto.Usuario) && !string.IsNullOrWhiteSpace(loginDto.Senha))
                 {
-                    var idUsuario = await loginReadRepository.ValidarLogin(loginDto);
-                    if (idUsuario > 0)
+                    var usuario = await loginReadRepository.ValidarLogin(loginDto);
+                    if (usuario != null)
                     {
-                        var token = tokenService.GerarToken(idUsuario);
-                        return Ok(token);
+                        var token = tokenService.GerarToken(usuario);
+                        return Ok( new { token, usuario });
                     }
                 }
 

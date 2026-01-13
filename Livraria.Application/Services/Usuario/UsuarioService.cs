@@ -42,12 +42,20 @@ namespace Livraria.Application.Services.Usuario
 
         public async Task<IServiceResponse> Insert(UsuarioInputDto dto)
         {
+            var idPerfil = await repositoryUsuario.VerificarIdDoPerfil(dto.Fk_Perfil);
+            if (!idPerfil)
+            {
+                Response.Mensagem = "PERFIL DE USUÁRIO NÃO ENCONTRADO";
+                return Response;
+            }
+
             var usuario = new UsuarioEntity
             (
                 dto.Nome,
                 dto.Usuario,
                 dto.Email,
-                dto.Senha
+                dto.Senha,
+                dto.Fk_Perfil
             );
 
             var insert = await repositoryUsuario.Insert(usuario);
@@ -70,6 +78,13 @@ namespace Livraria.Application.Services.Usuario
                 return Response;
             }
 
+            var idPerfil = await repositoryUsuario.VerificarIdDoPerfil(dto.Fk_Perfil);
+            if (!idPerfil)
+            {
+                Response.Mensagem = "PERFIL DE USUÁRIO NÃO ENCONTRADO";
+                return Response;
+            }
+
             var usuario = await repositoryUsuario.GetById(id);
             if (usuario == null)
             {
@@ -78,8 +93,10 @@ namespace Livraria.Application.Services.Usuario
             }
 
             usuario.AtribuirNome(dto.Nome);
+            usuario.AtribuirUsuario(dto.Usuario);
             usuario.AtribuirEmail(dto.Email);
             usuario.AtribuirSenha(dto.Senha);
+            usuario.AtribuirPerfil(dto.Fk_Perfil);
             usuario.Validar();
 
             var usuarioAtualizado = await repositoryUsuario.Update(usuario);

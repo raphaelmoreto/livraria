@@ -7,7 +7,7 @@ namespace Livraria.Domain.Dtos.Livro
         string Isbn,
         DateTime Dt_Publicacao,
         decimal Preco,
-        int Categoria,
+        List<int> Fk_Categoria,
         int Quantidade,
         string? Subtitulo = null,
         int? Autor = null
@@ -21,7 +21,7 @@ namespace Livraria.Domain.Dtos.Livro
         DateTime Dt_Publicacao,
         decimal Preco,
         int Quantidade,
-        string Categoria,
+        string Categorias,
         string? Subtitulo = null,
         string? Autor = null
     );

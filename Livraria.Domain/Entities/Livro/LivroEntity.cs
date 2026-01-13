@@ -21,11 +21,11 @@ namespace Livraria.Domain.Entities.Livro
 
         public int Fk_Autor {  get; private set; }
 
-        public int Fk_Categoria { get; private set; }
+        public List<int> Fk_Categoria { get; private set; }
 
         public LivroEntity() { }
 
-        public LivroEntity(string titulo, string isbn, DateTime dt_publicacao, decimal preco, int qt_estoque, int fk_categoria, string? subtitulo = null, int? fk_autor = null)
+        public LivroEntity(string titulo, string isbn, DateTime dt_publicacao, decimal preco, int qt_estoque, List<int> fk_categoria, string? subtitulo = null, int? fk_autor = null)
         {
             AtribuirTitulo(titulo);
             AtribuirIsbn(isbn);
@@ -127,9 +127,9 @@ namespace Livraria.Domain.Entities.Livro
             Fk_Autor = fk_autor.Value;
         }
 
-        public void AtribuirCategoria(int fk_categoria)
+        public void AtribuirCategoria(List<int> fk_categoria)
         {
-            if (fk_categoria <= 0)
+            if (fk_categoria.Count == 0)
             {
                 DomainValidationException.AtribuirExcecao("CATEGORIA DO LIVRO OBRIGATÓRIO");
                 return;

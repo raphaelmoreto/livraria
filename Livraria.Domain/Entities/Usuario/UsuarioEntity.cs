@@ -15,14 +15,17 @@ namespace Livraria.Domain.Entities.Usuario
 
         public string Senha { get; private set; }
 
+        public int Fk_Perfil { get; private set; }
+
         public UsuarioEntity() { }
 
-        public UsuarioEntity(string nome, string usuario, string email, string senha)
+        public UsuarioEntity(string nome, string usuario, string email, string senha, int fk_Perfil)
         {
             AtribuirNome(nome);
             AtribuirUsuario(usuario);
             AtribuirEmail(email);
             AtribuirSenha(senha);
+            AtribuirPerfil(fk_Perfil);
             Validar();
         }
 
@@ -56,16 +59,17 @@ namespace Livraria.Domain.Entities.Usuario
 
         public void AtribuirEmail(string email)
         {
+            //ToDo: FAZER REGEX PARA VERIFICAÇÃO DE E-MAIL
             if (string.IsNullOrWhiteSpace(email))
             {
                 DomainValidationException.AtribuirExcecao("EMAIL OBRIGATÓRIO");
                 return;
             }
 
-            if (email == Email)
+            if (email.ToLower() == Email)
                 return;
 
-            Email = email;
+            Email = email.ToLower();
         }
 
         public void AtribuirSenha(string senha)
@@ -80,6 +84,20 @@ namespace Livraria.Domain.Entities.Usuario
                 return;
 
             Senha = senha;
+        }
+
+        public void AtribuirPerfil(int fk_Perfil)
+        {
+            if (fk_Perfil == 0)
+            {
+                DomainValidationException.AtribuirExcecao("PERFIL DE USUÁRIO NÃO DECLARADO");
+                return;
+            }
+
+            if (fk_Perfil == Fk_Perfil)
+                return;
+
+            Fk_Perfil = fk_Perfil;
         }
 
         public override void Validar()
