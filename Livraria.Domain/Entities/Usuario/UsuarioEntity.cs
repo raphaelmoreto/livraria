@@ -59,7 +59,6 @@ namespace Livraria.Domain.Entities.Usuario
 
         public void AtribuirEmail(string email)
         {
-            //ToDo: FAZER REGEX PARA VERIFICAÇÃO DE E-MAIL
             if (string.IsNullOrWhiteSpace(email))
             {
                 DomainValidationException.AtribuirExcecao("EMAIL OBRIGATÓRIO");

@@ -112,8 +112,40 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
 
         public override async Task<bool> Update(LivroEntity livro)
         {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("UPDATE [dbo].[Livros]");
+            sb.AppendLine("SET [titulo] = @Titulo,");
+            sb.AppendLine("      [subtitulo] = @Subtitulo,");
+            sb.AppendLine("      [isbn] = @Isbn,");
+            sb.AppendLine("      [dt_publicacao] = @Dt_Publicacao,");
+            sb.AppendLine("      [preco] = @Preco,");
+            sb.AppendLine("      [qt_estoque] = @Qt_Estoque");
+            sb.AppendLine("      [fk_autor] = @Fk_Autor");
+            sb.AppendLine("WHERE [id] = @Id");
 
-            throw new NotImplementedException();
+            var param = new
+            {
+                livro.Id,
+                livro.Titulo,
+                livro.Subtitulo,
+                livro.Isbn,
+                livro.Dt_Publicacao,
+                livro.Preco,
+                livro.Qt_Estoque,
+                livro.Fk_Autor
+            };
+
+            return await Connection.ExecuteAsync(sb.ToString(), param) > 0;
+        }
+
+        public async Task<bool> RemoverCategorias(int idLivro, int categoria)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("DELETE FROM [dbo].[Categoria_Livro]");
+            sb.AppendLine("WHERE [fk_livro] = @Fk_Livro");
+            sb.AppendLine("AND [fk_categoria] = @Categoria");
+
+            return await Connection.ExecuteAsync(sb.ToString(), new { Fk_Livro = idLivro, Categoria = categoria }) > 0;
         }
     }
 }

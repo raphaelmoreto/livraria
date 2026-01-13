@@ -8,5 +8,7 @@ namespace Livraria.Domain.Interfaces.Repositories.Livro
         //Task<bool> BuscarLivroPorNome(string nomeLivro, string isbn);
 
         Task<bool> Insert(LivroEntity livro, string usuarioLogado);
+
+        Task<bool> RemoverCategorias(int idLivro, int categoria);
     }
 }

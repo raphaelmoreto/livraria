@@ -4,6 +4,7 @@ using Livraria.Application.Services.Base;
 using Livraria.Domain.Dtos.Usuario;
 using Livraria.Domain.Entities.Usuario;
 using Livraria.Domain.Interfaces.Repositories.Usuario;
+using System.Text.RegularExpressions;
 
 namespace Livraria.Application.Services.Usuario
 {
@@ -49,6 +50,14 @@ namespace Livraria.Application.Services.Usuario
                 return Response;
             }
 
+            var regexEmail = new Regex(@"^[\w.-]+@[\w-]+\.[a-zA-Z]{2,}$");
+            bool validarEmail = regexEmail.IsMatch(dto.Email);
+            if (!validarEmail)
+            {
+                Response.Mensagem = $"EMAIL {dto.Email} FORA DO PADRÃO";
+                return Response;
+            }
+
             var usuario = new UsuarioEntity
             (
                 dto.Nome,
@@ -75,6 +84,14 @@ namespace Livraria.Application.Services.Usuario
             if (id <= 0)
             {
                 Response.Mensagem = "ID DO USUÁRIO NÃO INFORMADO!";
+                return Response;
+            }
+
+            var regexEmail = new Regex(@"^[\w.-]+@[\w-]+\.[a-zA-Z]{2,}$");
+            bool validarEmail = regexEmail.IsMatch(dto.Email);
+            if (!validarEmail)
+            {
+                Response.Mensagem = $"EMAIL {dto.Email} FORA DO PADRÃO";
                 return Response;
             }
 

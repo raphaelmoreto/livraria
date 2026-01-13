@@ -23,6 +23,23 @@ namespace Livraria.API.Controllers.Livro
             this.livroRead = livroRead;
         }
 
+        [HttpDelete("remover-categorias/{idLivro}")]
+        public async Task<IActionResult> RemoverCategorias([FromRoute] int idLivro, List<int> categorias)
+        {
+            try
+            {
+                var result = await livroService.RemoverCategorias(idLivro, categorias);
+                if (!result.Success)
+                    return Conflict(result);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"ERRO INTERNO: {ex.Message}");
+            }
+        }
+
         [HttpGet("download-livros")]
         public async Task<IActionResult> DownloadLivros([FromQuery] string extensao)
         {

@@ -9,5 +9,7 @@ namespace Livraria.Application.Interfaces.Services.Livro
         Task<byte[]> DownloadLivros(string extensao);
 
         Task<IServiceResponse> Insert(LivroInputDto dto, string usuarioLogado);
+
+        Task<IServiceResponse> RemoverCategorias(int idLivro, List<int> categorias);
     }
 }

@@ -104,9 +104,48 @@ namespace Livraria.Application.Services.Livro
             return Response;
         }
 
+        public async Task<IServiceResponse> RemoverCategorias(int idLivro, List<int> categorias)
+        {
+            if (idLivro <= 0)
+            {
+                Response.Mensagem = "ID DO AUTOR NÃO INFORMADO!";
+                return Response;
+            }
+
+            if (categorias.Count <= 0)
+            {
+                Response.Mensagem = "LISTA DE CATEGORIAS VÁZIA";
+                return Response;
+            }
+
+            foreach (var categoria in categorias)
+            {
+                var idCategoria = await categoriaReadRepository.VerificarIdDaCategoria(categoria);
+                if (!idCategoria)
+                {
+                    Response.Mensagem = $"CATEGORIA DE Nº{categoria} NÃO ENCONTRADA NO BANCO!";
+                    return Response;
+                }
+            }
+
+            foreach (var categoria in categorias)
+            {
+                bool exclusaoCategoria = await repositoryLivro.RemoverCategorias(idLivro, categoria);
+                if (!exclusaoCategoria)
+                {
+                    Response.Mensagem = $"ERRO AO EXCLUIR CATEGORIA Nº{categoria}";
+                    return Response;
+                }
+            }
+
+            Response.Success = true;
+            Response.Mensagem = "CATEGORIAS REMOVIDAS COM SUCESSO";
+            return Response;
+        }
+
         public async Task<IServiceResponse> Update(int id, LivroInputDto dto)
         {
-            if (id < 0)
+            if (id <= 0)
             {
                 Response.Mensagem = "ID DO AUTOR NÃO INFORMADO!";
                 return Response;
