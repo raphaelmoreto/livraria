@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Dapper.Contrib.Extensions;
 using Livraria.Domain.Entities.Livro;
 using Livraria.Domain.Interfaces.Repositories.Livro;
 using Livraria.Infrastructure.Interfaces;
