@@ -1,0 +1,23 @@
+<div class="card">
+    <div class="card-header">
+        <h2> {{ livro.titulo }} </h2>
+        <small> {{ livro.subtitulo }} </small>
+    </div>
+
+    <img src="./../../../../assets/img/aleatorio.png" alt="imagem aletaória">
+
+    <div class="card-content">
+        <p><strong>Autor:</strong> {{ livro.autor | dashIfEmpty }} </p>
+        <p><strong>Categoria:</strong> {{ livro.categorias }} </p>
+        <p><strong>Data de Publicação:</strong> {{ livro.dt_Publicacao | date:'dd/MM/yyyy' | dashIfEmpty }} </p>
+        <p><strong>Quantidade em estoque:</strong> {{ livro.quantidade }} </p>
+
+        <p class="card-preco">
+            {{ livro.preco | currency:'BRL':'symbol' }}
+        </p>
+    </div>
+
+    <div class="card-actions">
+
+    </div>
+</div>

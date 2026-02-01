@@ -1,4 +1,4 @@
-import { environment } from './../../../environments/environment';
+import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -6,10 +6,12 @@ import { Injectable } from '@angular/core';
     providedIn: 'root' //O SERVIÇO FICA DISPONÍVEL NA APLICAÇÃO INTEIRA
 })
 
-export class ApiService {
+export abstract class ApiService<T> {
     private baseUrl = environment.apiUrl;
 
-    constructor (private http: HttpClient) { }
+    constructor (private http: HttpClient, route: string) {
+        this.baseUrl += `/${route}`;
+    }
 
     delete<T> (endpoint: string) {
         return this.http.delete<T>(`${this.baseUrl}/${endpoint}`);

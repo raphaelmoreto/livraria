@@ -55,6 +55,7 @@ namespace Livraria.API.Controllers.Livro
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetLivros()
         {
             try

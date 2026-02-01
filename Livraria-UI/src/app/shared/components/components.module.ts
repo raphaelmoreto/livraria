@@ -1,18 +1,29 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
-import { LoginModule } from "./login/login.module";
-import { MenuLateralModule } from "./menu-lateral/menu-lateral.module";
-import { MenuPrincipalModule } from "./menu-principal/menu-principal.module";
+import { CardComponent } from './card/card.component';
+import { LoginComponent } from "./login/login.component";
+import { MenuLateralComponent } from "./menu-lateral/menu-lateral.component";
+import { MenuPrincipalComponent } from "./menu-principal/menu-principal.component";
+import { PipesModule } from "../pipes/pipes.module";
 
 @NgModule({
+    declarations: [
+        CardComponent,
+        LoginComponent,
+        MenuLateralComponent,
+        MenuPrincipalComponent
+    ],
     imports: [
         CommonModule,
-        LoginModule,
-        MenuLateralModule,
-        MenuPrincipalModule,
+        PipesModule
     ],
-    declarations: [ ],
+    exports: [
+        CardComponent,
+        LoginComponent,
+        MenuLateralComponent,
+        MenuPrincipalComponent
+    ]
 })
 
-export class ComponentModule { }
+export class ComponentsModule { }

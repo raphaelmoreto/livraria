@@ -1,9 +1,20 @@
-<header>
-    <app-menu-principal></app-menu-principal>
-</header>
-<main>
-    <app-menu-lateral></app-menu-lateral>
-</main>
-<footer>
+<div class="app-container">
+    <header>
+        <app-menu-principal></app-menu-principal>
+    </header>
 
-</footer>
+    <main class="app-layout">
+        <app-menu-lateral></app-menu-lateral>
+
+        <section class="conteudo">
+            <app-card
+                *ngFor="let livro of lstLivros$ | async; trackBy: trackByLivroId"
+                [livro]="livro" >
+            </app-card>
+        </section>
+    </main>
+
+    <footer>
+
+    </footer>
+</div>
