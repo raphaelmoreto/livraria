@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-menu-principal',
@@ -7,5 +7,9 @@ import { Component } from '@angular/core';
 })
 
 export class MenuPrincipalComponent {
+    @Output() loginClick = new EventEmitter<void>();
 
+    abrirLogin() {
+        this.loginClick.emit();
+    }
 }

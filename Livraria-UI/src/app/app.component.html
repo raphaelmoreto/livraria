@@ -1,6 +1,6 @@
 <div class="app-container">
     <header>
-        <app-menu-principal></app-menu-principal>
+        <app-menu-principal (loginClick)="abrirModalLogin()"></app-menu-principal>
     </header>
 
     <main class="app-layout">
@@ -17,4 +17,10 @@
     <footer>
 
     </footer>
+
+    <!-- <app-login-modal
+        [aberto]="modalLogin"
+        (fecharModal)="fecharModalLogin()"
+    >
+    </app-login-modal> -->
 </div>

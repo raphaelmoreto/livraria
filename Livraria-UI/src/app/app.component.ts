@@ -12,11 +12,12 @@ import { Observable, tap } from 'rxjs';
 export class AppComponent implements OnInit {
     //INDICA QUE NÃO HÁ UMA LISTA AGORA, MAS IRÁ RECEBER A LISTA NO FUTURO
     lstLivros$!: Observable<ILivro[]>;
+    modalLogin: boolean = false;
 
     constructor (private livroService: LivroService) { }
 
-    ngOnInit(): void {
-        this.buscarLivros();
+    abrirModalLogin() {
+        this.modalLogin = true;
     }
 
     buscarLivros(): void {
@@ -26,6 +27,14 @@ export class AppComponent implements OnInit {
         //         console.log(response)
         //     })
         // );
+    }
+
+    fecharModalLogin() {
+        this.modalLogin = false;
+    }
+
+    ngOnInit(): void {
+        this.buscarLivros();
     }
 
     trackByLivroId(index: number, livro: ILivro): number {
