@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { ApiService } from '../../../core/services/api.service';
+import { Component } from '@angular/core';
+import { IUsuarioInput } from 'src/app/core/models/usuario-input.model';
 
 @Component({
   selector: 'app-menu-principal',
@@ -7,9 +9,19 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 
 export class MenuPrincipalComponent {
-    @Output() loginClick = new EventEmitter<void>();
+    modalLogin: boolean = false;
 
-    abrirLogin() {
-        this.loginClick.emit();
+    constructor () { }
+
+    abrirModalLogin(): void {
+        this.modalLogin = true;
+    }
+
+    fecharModalLogin(): void {
+        this.modalLogin = false;
+    }
+
+    cadastro(usuario: IUsuarioInput): void {
+        // this.apiService.post<IUsuarioInput>('/usuario', usuario);
     }
 }

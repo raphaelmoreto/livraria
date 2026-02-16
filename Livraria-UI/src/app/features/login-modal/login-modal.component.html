@@ -1,0 +1,39 @@
+<div class="overlay" *ngIf="aberto" (click)="fechar()">
+    <div class="container" [class.active]="isActive" (click)="$event.stopPropagation()">
+        <div class="form-container sign-in">
+            <form>
+                <h1>Entre</h1>
+                <input type="text" placeholder="Usuário">
+                <input type="password" placeholder="Senha">
+                <a href="#">Esqueceu sua senha?</a>
+                <button type="submit">Acessar</button>
+            </form>
+        </div>
+
+        <div class="form-container sign-up">
+            <form [formGroup]="usuarioLogin" (ngSubmit)="onClickedCadastro()">
+                <h1>Criar conta</h1>
+                <input formControlName="nome" placeholder="Nome" type="text">
+                <input formControlName="email" placeholder="Email" type="email">
+                <input formControlName="senha" placeholder="Senha" type="password">
+                <button type="submit">Cadastrar</button>
+            </form>
+        </div>
+
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Bem-vindo de volta!</h1>
+                    <p>Insira seus dados pessoais</p>
+                    <button class="hidden" type="button" (click)="login()">Acessar</button>
+                </div>
+
+                <div class="toggle-panel toggle-right">
+                    <h1>Olá!</h1>
+                    <p>Registre-se com seus dados</p>
+                    <button class="hidden" type="button" (click)="register()">Cadastrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

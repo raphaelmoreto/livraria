@@ -13,8 +13,8 @@ $cor-botao: #222222;
     color: $cor-texto;
     display: flex;
     height: 56px;
-    justify-content: space-between;
     padding: 0 16px;
+    position: relative;
 
     &-botao {
         align-items: center;
@@ -51,9 +51,12 @@ $cor-botao: #222222;
 
     .centro {
         display: flex;
-        flex: 1;
         justify-content: center;
         max-width: 600px;
+        left: 50%;
+        position: absolute;
+        transform: translateX(-50%);
+        width: 100%;       
 
         .menu-principal-botao {
             background-color: $cor-botao;
@@ -61,7 +64,16 @@ $cor-botao: #222222;
         }
     }
 
-    .menu-lateral-login {
+    .direita {
+        margin-left: auto;
+        z-index: 2;
+    }
+
+    .esquerda {
+        z-index: 2;
+    }
+
+    .menu-principal-login {
         align-items: center;
         border-radius: 20px;
         cursor: pointer;

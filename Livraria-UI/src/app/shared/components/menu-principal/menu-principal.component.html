@@ -9,9 +9,16 @@
     </div>
 
     <div class="menu-principal-items direita">
-        <div class="menu-lateral-login" (click)="abrirLogin()">
+        <div class="menu-principal-login" (click)="abrirModalLogin()">
             <button class="material-icons menu-principal-botao">account_circle</button>
             <span>Fazer login</span>
         </div>
     </div>
+
+    <app-login-modal
+        [aberto]="modalLogin"
+        (clickedCadastro)="cadastro($event)"
+        (fecharModal)="fecharModalLogin()"
+    >
+    </app-login-modal>
 </div>
