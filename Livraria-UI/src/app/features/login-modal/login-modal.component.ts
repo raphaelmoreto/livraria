@@ -13,8 +13,9 @@ export class LoginModalComponent {
 
     isActive: boolean = false;
 
-    usuarioLogin = new FormGroup({
+    usuarioCadastro = new FormGroup({
         nome: new FormControl<string>(''),
+        usuario: new FormControl<string>(''),
         email: new FormControl<string>(''),
         senha: new FormControl<string>(''),
         fk_perfil: new FormControl<number>(2) // 2 = USUÁRIO COMUM NO SISTEMA
@@ -37,7 +38,7 @@ export class LoginModalComponent {
 
     onClickedCadastro(): void {
         // "getRawValue()" TRANSFORMA O "FormGroup" EM UM OBJETO COMUM
-        const usuario: IUsuarioInput = this.usuarioLogin.getRawValue();
-        this.clickedCadastroEmitt.emit(usuario);
+        const usuarioCadastro: IUsuarioInput = this.usuarioCadastro.getRawValue();
+        this.clickedCadastroEmitt.emit(usuarioCadastro);
     }
 }

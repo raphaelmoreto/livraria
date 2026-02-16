@@ -1,6 +1,6 @@
-import { ApiService } from '../../../core/services/api.service';
 import { Component } from '@angular/core';
 import { IUsuarioInput } from 'src/app/core/models/usuario-input.model';
+import { UsuarioService } from 'src/app/features/usuario/services/usuario.service';
 
 @Component({
   selector: 'app-menu-principal',
@@ -11,7 +11,7 @@ import { IUsuarioInput } from 'src/app/core/models/usuario-input.model';
 export class MenuPrincipalComponent {
     modalLogin: boolean = false;
 
-    constructor () { }
+    constructor (private usuarioService: UsuarioService) { }
 
     abrirModalLogin(): void {
         this.modalLogin = true;
@@ -21,7 +21,15 @@ export class MenuPrincipalComponent {
         this.modalLogin = false;
     }
 
-    cadastro(usuario: IUsuarioInput): void {
-        // this.apiService.post<IUsuarioInput>('/usuario', usuario);
+    cadastro(usuarioCadastro: IUsuarioInput): void {
+        this.usuarioService.criarConta(usuarioCadastro)
+        .subscribe({
+            next: (res) => {
+                console.log(res);
+            },
+            error: (err) => {
+                console.log(err.error.success, err.error.menssagem);
+            }
+        });
     }
 }

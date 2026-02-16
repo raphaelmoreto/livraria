@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
     constructor (private livroService: LivroService) { }
 
     buscarLivros(): void {
-        this.lstLivros$ = this.livroService.listar()
+        this.lstLivros$ = this.livroService.listar();
         // .pipe(
         //     tap(response => {
         //         console.log(response)

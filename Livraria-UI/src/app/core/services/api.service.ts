@@ -6,6 +6,13 @@ import { Injectable } from '@angular/core';
     providedIn: 'root' //O SERVIÇO FICA DISPONÍVEL NA APLICAÇÃO INTEIRA
 })
 
+/*
+"pipe", "map" e "subscribe" FAZEM PARTE DO FLUXO DE TRATAMENTO DE DADOS ASSÍNCRONOS RETORNADOS PELA API (Observables):
+    • pipe: É COMO SE FOSSE UM TUBO ONDE SE PASSA OS DADOS. SERVE PARA VOCÊ MODIFICAR OS DADOS ANTES DE RECEBER.
+    • map: FICA DENTRO DO "pipe". É ELE QUEM ALTERA/MODIFICA OS DADOS
+    • subscribe: É QUANDO VOCÊ RECEBE O RETORNO
+*/
+
 export abstract class ApiService<T> extends BaseService {
     constructor (http: HttpClient, route: string) {
         super (http, route);

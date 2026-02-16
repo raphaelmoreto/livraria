@@ -11,9 +11,10 @@
         </div>
 
         <div class="form-container sign-up">
-            <form [formGroup]="usuarioLogin" (ngSubmit)="onClickedCadastro()">
+            <form [formGroup]="usuarioCadastro" (ngSubmit)="onClickedCadastro()">
                 <h1>Criar conta</h1>
                 <input formControlName="nome" placeholder="Nome" type="text">
+                <input formControlName="usuario" placeholder="Usuario" type="text">
                 <input formControlName="email" placeholder="Email" type="email">
                 <input formControlName="senha" placeholder="Senha" type="password">
                 <button type="submit">Cadastrar</button>

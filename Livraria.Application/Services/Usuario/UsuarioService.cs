@@ -50,7 +50,7 @@ namespace Livraria.Application.Services.Usuario
                 return Response;
             }
 
-            var regexEmail = new Regex(@"^[\w.-]+@[\w-]+\.[a-zA-Z]{2,}$");
+            var regexEmail = new Regex(@"^[\w.-]+@([\w-]+\.)+[a-zA-Z]{2,}$");
             bool validarEmail = regexEmail.IsMatch(dto.Email);
             if (!validarEmail)
             {
