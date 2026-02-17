@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { IUsuarioInput } from '../../core/models/usuario-input.model';
+import { IUsuarioCadastro } from '../usuario/models/usuario-cadastro.model';
+import { IUsuarioLogin } from '../usuario/models/usuario-login.model';
 
 @Component({
     selector: 'app-login-modal',
@@ -21,14 +22,20 @@ export class LoginModalComponent {
         fk_perfil: new FormControl<number>(2) // 2 = USUÁRIO COMUM NO SISTEMA
     });
 
-    @Output('clickedCadastro') clickedCadastroEmitt = new EventEmitter<IUsuarioInput>();
+    usuarioLogin = new FormGroup({
+        usuario: new FormControl<string>(''),
+        senha: new FormControl<string>('')
+    });
+
+    @Output('clickedCadastro') clickedCadastroEmitt = new EventEmitter<IUsuarioCadastro>();
+    @Output('clickedLogin') clickedLoginEmitt = new EventEmitter<IUsuarioLogin>();
     @Output() fecharModal = new EventEmitter<void>();
 
     register(): void {
         this.isActive = true;
     }
 
-    login() {
+    login(): void {
         this.isActive = false;
     }
 
@@ -38,7 +45,12 @@ export class LoginModalComponent {
 
     onClickedCadastro(): void {
         // "getRawValue()" TRANSFORMA O "FormGroup" EM UM OBJETO COMUM
-        const usuarioCadastro: IUsuarioInput = this.usuarioCadastro.getRawValue();
+        const usuarioCadastro: IUsuarioCadastro = this.usuarioCadastro.getRawValue();
         this.clickedCadastroEmitt.emit(usuarioCadastro);
+    }
+
+    onClickedLogin(): void {
+        const usuarioLogin: IUsuarioLogin = this.usuarioLogin.getRawValue();
+        this.clickedLoginEmitt.emit(usuarioLogin);
     }
 }

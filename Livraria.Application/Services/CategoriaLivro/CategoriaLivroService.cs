@@ -36,12 +36,11 @@ namespace Livraria.Application.Services.CategoriaLivro
             var insert = await repositoryCategoria.Insert(categoria);
             if (!insert)
             {
-                Response.Mensagem = $"ERRO! {insert}";
+                Response.SetError($"ERRO! {insert}");
                 return Response;
             }
 
-            Response.Success = true;
-            Response.Mensagem = "CATEGORIA CADASTRADA COM SUCESSO";
+            Response.SetSuccess("CATEGORIA CADASTRADA COM SUCESSO");
             return Response;
         }
 
@@ -49,14 +48,14 @@ namespace Livraria.Application.Services.CategoriaLivro
         {
             if (id <= 0)
             {
-                Response.Mensagem = "ID DA CATEGORIA NÃO INFORMADA";
+                Response.SetError("ID DA CATEGORIA NÃO INFORMADA");
                 return Response;
             }
 
             var categoria = await repositoryCategoria.GetById(id);
             if (categoria == null)
             {
-                Response.Mensagem = "CATEGORIA NÃO ENCONTRADA NO BANCO!";
+                Response.SetError("CATEGORIA NÃO ENCONTRADA NO BANCO!");
                 return Response;
             }
 
@@ -66,12 +65,11 @@ namespace Livraria.Application.Services.CategoriaLivro
             var categoriaAtualizada = await repositoryCategoria.Update(categoria);
             if (!categoriaAtualizada)
             {
-                Response.Mensagem = $"ERRO! {categoriaAtualizada}";
+                Response.SetError($"ERRO! {categoriaAtualizada}");
                 return Response;
             }
 
-            Response.Success = true;
-            Response.Mensagem = "CATEGORIA ATUALIZADA COM SUCESSO";
+            Response.SetSuccess("CATEGORIA ATUALIZADA COM SUCESSO");
             return Response;
         }
     }

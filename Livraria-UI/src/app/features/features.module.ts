@@ -5,11 +5,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { CardLivroComponent } from './livros/components/card-livro/card-livro.component';
 import { LoginModalComponent } from './login-modal/login-modal.component';
+import { ToastComponent } from './toast/components/toast/toast.component';
 
 @NgModule({
     declarations: [
         CardLivroComponent,
-        LoginModalComponent
+        LoginModalComponent,
+        ToastComponent
     ],
     imports: [
         CommonModule,
@@ -18,7 +20,8 @@ import { LoginModalComponent } from './login-modal/login-modal.component';
     ],
     exports: [
         CardLivroComponent,
-        LoginModalComponent
+        LoginModalComponent,
+        ToastComponent
     ]
 })
 

@@ -1,10 +1,10 @@
 import { BaseModel } from "./base.model";
 
-export interface Usuario extends BaseModel {
+export interface IUsuario extends BaseModel {
     tipo: string;
 }
 
-export interface LoginResponse {
+export interface ILoginResponse {
     token: string;
-    usuario: Usuario;
+    usuario: IUsuario;
 }

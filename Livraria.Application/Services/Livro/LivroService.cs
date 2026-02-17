@@ -47,10 +47,8 @@ namespace Livraria.Application.Services.Livro
             var lstLivros = (await livroReadRepository.GetAll()).ToList();
 
             var exportar = exportador.FirstOrDefault(e => e.SuportaExtensao(extensao));
-            if (exportar is null)
-                throw new NotSupportedException("EXTENSÃO NÃO SUPORTADA");
 
-            return exportar.CriarBytes(lstLivros);
+            return exportar is null ? throw new NotSupportedException("EXTENSÃO NÃO SUPORTADA") : exportar.CriarBytes(lstLivros);
         }
 
         public async Task<IServiceResponse> Insert(LivroInputDto dto, string usuarioLogado)
@@ -60,7 +58,7 @@ namespace Livraria.Application.Services.Livro
                 var idCategoria = await categoriaReadRepository.VerificarIdDaCategoria(categoria);
                 if (!idCategoria)
                 {
-                    Response.Mensagem = $"CATEGORIA DE Nº{categoria} NÃO ENCONTRADA NO BANCO!";
+                    Response.SetError($"CATEGORIA DE Nº{categoria} NÃO ENCONTRADA NO BANCO!");
                     return Response;
                 }
             }
@@ -71,7 +69,7 @@ namespace Livraria.Application.Services.Livro
                 var idAutorBanco = await autorReadRepository.VerificarIdDoAutor(dto.Autor.Value);
                 if (!idAutorBanco)
                 {
-                    Response.Mensagem = "AUTOR NÃO ENCONTRADO NO BANCO!";
+                    Response.SetError("AUTOR NÃO ENCONTRADO NO BANCO!");
                     return Response;
                 }
                 else
@@ -95,12 +93,11 @@ namespace Livraria.Application.Services.Livro
             var insert = await repositoryLivro.Insert(livro, usuarioLogado);
             if (!insert)
             {
-                Response.Mensagem = $"ERRO! {insert}";
+                Response.SetError($"ERRO! {insert}");
                 return Response;
             }
 
-            Response.Success = true;
-            Response.Mensagem = "LIVRO CADASTRADO COM SUCESSO";
+            Response.SetSuccess("LIVRO CADASTRADO COM SUCESSO");
             return Response;
         }
 
@@ -108,13 +105,13 @@ namespace Livraria.Application.Services.Livro
         {
             if (idLivro <= 0)
             {
-                Response.Mensagem = "ID DO AUTOR NÃO INFORMADO!";
+                Response.SetError("ID DO AUTOR NÃO INFORMADO!");
                 return Response;
             }
 
             if (categorias.Count <= 0)
             {
-                Response.Mensagem = "LISTA DE CATEGORIAS VÁZIA";
+                Response.SetError("LISTA DE CATEGORIAS VÁZIA");
                 return Response;
             }
 
@@ -123,7 +120,7 @@ namespace Livraria.Application.Services.Livro
                 var idCategoria = await categoriaReadRepository.VerificarIdDaCategoria(categoria);
                 if (!idCategoria)
                 {
-                    Response.Mensagem = $"CATEGORIA DE Nº{categoria} NÃO ENCONTRADA NO BANCO!";
+                    Response.SetError($"CATEGORIA DE Nº{categoria} NÃO ENCONTRADA NO BANCO!");
                     return Response;
                 }
             }
@@ -133,13 +130,12 @@ namespace Livraria.Application.Services.Livro
                 bool exclusaoCategoria = await repositoryLivro.RemoverCategorias(idLivro, categoria);
                 if (!exclusaoCategoria)
                 {
-                    Response.Mensagem = $"ERRO AO EXCLUIR CATEGORIA Nº{categoria}";
+                    Response.SetError($"ERRO AO EXCLUIR CATEGORIA Nº{categoria}");
                     return Response;
                 }
             }
 
-            Response.Success = true;
-            Response.Mensagem = "CATEGORIAS REMOVIDAS COM SUCESSO";
+            Response.SetSuccess("CATEGORIAS REMOVIDAS COM SUCESSO");
             return Response;
         }
 
@@ -147,7 +143,7 @@ namespace Livraria.Application.Services.Livro
         {
             if (id <= 0)
             {
-                Response.Mensagem = "ID DO AUTOR NÃO INFORMADO!";
+                Response.SetError("ID DO AUTOR NÃO INFORMADO!");
                 return Response;
             }
 
@@ -156,7 +152,7 @@ namespace Livraria.Application.Services.Livro
                 var idCategoria = await categoriaReadRepository.VerificarIdDaCategoria(categoria);
                 if (!idCategoria)
                 {
-                    Response.Mensagem = $"CATEGORIA DE Nº{categoria} NÃO ENCONTRADA NO BANCO!";
+                    Response.SetError($"CATEGORIA DE Nº{categoria} NÃO ENCONTRADA NO BANCO!");
                     return Response;
                 }
             }
@@ -167,7 +163,7 @@ namespace Livraria.Application.Services.Livro
                 var idAutorBanco = await autorReadRepository.VerificarIdDoAutor(dto.Autor.Value);
                 if (!idAutorBanco)
                 {
-                    Response.Mensagem = "AUTOR NÃO ENCONTRADO NO BANCO!";
+                    Response.SetError("AUTOR NÃO ENCONTRADO NO BANCO!");
                     return Response;
                 }
                 else
@@ -179,7 +175,7 @@ namespace Livraria.Application.Services.Livro
             var livro = await repositoryLivro.GetById(id);
             if (livro == null)
             {
-                Response.Mensagem = "LIVRO NÃO ENCONTRADO NO BANCO!";
+                Response.SetError("LIVRO NÃO ENCONTRADO NO BANCO!");
                 return Response;
             }
 
@@ -195,12 +191,11 @@ namespace Livraria.Application.Services.Livro
             var update = await repositoryLivro.Update(livro); //ToDo: FAZER UPDATE PARA O LIVRO
             if (!update)
             {
-                Response.Mensagem = $"ERRO! {update}";
+                Response.SetError($"ERRO! {update}");
                 return Response;
             }
 
-            Response.Success = true;
-            Response.Mensagem = "LIVRO ATUALIZADO COM SUCESSO";
+            Response.SetSuccess("LIVRO ATUALIZADO COM SUCESSO");
             return Response;
         }
     }

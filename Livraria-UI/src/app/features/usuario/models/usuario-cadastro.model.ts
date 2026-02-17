@@ -1,4 +1,4 @@
-export interface IUsuarioInput {
+export interface IUsuarioCadastro {
     nome: string | null;
     usuario: string | null;
     email: string | null;

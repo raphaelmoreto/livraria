@@ -1,9 +1,18 @@
-﻿namespace Livraria.Application.Interfaces.Services.Response
+﻿
+namespace Livraria.Application.Interfaces.Services.Response
 {
     public interface IServiceResponse
     {
-        bool Success { get; set; }
+        string Tipo { get; }
 
-        string Mensagem { get; set; }
+        bool Success { get; }
+
+        string Mensagem { get; }
+
+        void SetError(string mensagem);
+
+        void SetSuccess(string mensagem);
+
+        void SetWarning(string mensagem);
     }
 }

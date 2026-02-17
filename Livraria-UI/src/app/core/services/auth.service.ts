@@ -1,18 +1,19 @@
-import { BaseService } from './base.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoginResponse } from '../models/auth.model';
+import { IUsuarioLogin } from 'src/app/features/usuario/models/usuario-login.model';
+import { ILoginResponse } from '../models/auth.model';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { ApiService } from './api.service';
 
 @Injectable({
     providedIn: 'root'
 })
 
-export class AuthService extends BaseService {
+export class AuthService extends ApiService<ILoginResponse> {
     //"BehaviorSubject" SEMPRE É COMO SE FOSSE UMA CAIXA QUE GUARDA A ÚLTIMA COISA QUE VOCÊ COLOCOU DENTRO DELA. SEMPRE QUE QUISER VER, ELE MOSTRA ESSA ÚLTIMA COISA
-    //LoginResponse['usuario'] SIGNIFICA O TIPO. PODE ARMAZENAR UM USUÁRIO OU PODE ESTAR VÁZIA
-    private usuarioSubject = new BehaviorSubject<LoginResponse['usuario'] | null>(null);
+    //ILoginResponse['usuario'] SIGNIFICA O TIPO. PODE ARMAZENAR UM USUÁRIO OU PODE ESTAR VÁZIA
+    private usuarioSubject = new BehaviorSubject<ILoginResponse['usuario'] | null>(null);
 
     //É COMO SE FOSSE UM "readonly" PARA OBSERVAR O QUE ESTÁ NA CAIXA NO MOMENTO ATUAL
     usuario$ = this.usuarioSubject.asObservable();
@@ -26,19 +27,19 @@ export class AuthService extends BaseService {
         }
     }
 
-    login(email: string, senha: string): Observable<LoginResponse> {
-        return this.http.post<LoginResponse>(`/login`, { email, senha })
-            .pipe(
-                tap(res => {
-                    localStorage.setItem('token', res.token); //GUARDA O TOKEN DE LOGIN NO NAVEGADOR
+    login(usuarioLogin: IUsuarioLogin): Observable<ILoginResponse> {
+        return this.http.post<ILoginResponse>(`${this.baseUrl}/login`, usuarioLogin)
+        .pipe(
+            tap( (res) => {
+                localStorage.setItem('token', res.token); //GUARDA O TOKEN DE LOGIN NO NAVEGADOR
 
-                    //GUARDA OS DADOS DO USUÁRIO (TRANSFORMANDOS EM STRING) NO NAVEGADOR
-                    localStorage.setItem('usuario', JSON.stringify(res.usuario));
-                    
-                    //AVISA PARA QUEM ESTÁ OLHANDO QUE ALGUÉM ESTÁ LOGADO
-                    this.usuarioSubject.next(res.usuario);
-                })
-            );
+                //GUARDA OS DADOS DO USUÁRIO (TRANSFORMANDOS EM STRING) NO NAVEGADOR
+                localStorage.setItem('usuario', JSON.stringify(res.usuario));
+                
+                //AVISA PARA QUEM ESTÁ OLHANDO QUE ALGUÉM ESTÁ LOGADO
+                this.usuarioSubject.next(res.usuario);
+            })
+        );
     }
 
     logout(): void {

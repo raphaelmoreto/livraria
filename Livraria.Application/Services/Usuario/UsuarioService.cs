@@ -25,19 +25,18 @@ namespace Livraria.Application.Services.Usuario
         {
             if (id < 0)
             {
-                Response.Mensagem = "ID DO USUÁRIO NÃO INFORMADO!";
+                Response.SetError("ID DO USUÁRIO NÃO INFORMADO!");
                 return Response;
             }
 
             var deleteUsuario = await repositoryUsuario.DeletarCadastro(id);
             if (!deleteUsuario)
             {
-                Response.Mensagem = $"ERRO! {deleteUsuario}";
+                Response.SetError($"ERRO! {deleteUsuario}");
                 return Response;
             }
 
-            Response.Success = true;
-            Response.Mensagem = "USUÁRIO DELETADO COM SUCESSO";
+            Response.SetSuccess("USUÁRIO DELETADO COM SUCESSO");
             return Response;
         }
 
@@ -46,7 +45,7 @@ namespace Livraria.Application.Services.Usuario
             var idPerfil = await repositoryUsuario.VerificarIdDoPerfil(dto.Fk_Perfil);
             if (!idPerfil)
             {
-                Response.Mensagem = "PERFIL DE USUÁRIO NÃO ENCONTRADO";
+                Response.SetError("PERFIL DE USUÁRIO NÃO ENCONTRADO");
                 return Response;
             }
 
@@ -54,7 +53,7 @@ namespace Livraria.Application.Services.Usuario
             bool validarEmail = regexEmail.IsMatch(dto.Email);
             if (!validarEmail)
             {
-                Response.Mensagem = $"EMAIL {dto.Email} FORA DO PADRÃO";
+                Response.SetWarning($"EMAIL {dto.Email} FORA DO PADRÃO");
                 return Response;
             }
 
@@ -70,12 +69,11 @@ namespace Livraria.Application.Services.Usuario
             var insert = await repositoryUsuario.Insert(usuario);
             if (!insert)
             {
-                Response.Mensagem = $"ERRO! {insert}";
+                Response.SetError($"ERRO! {insert}");
                 return Response;
             }
 
-            Response.Success = true;
-            Response.Mensagem = "USUÁRIO CADASTRADO COM SUCESSO";
+            Response.SetSuccess("USUÁRIO CADASTRADO COM SUCESSO");
             return Response;
         }
 
@@ -83,7 +81,7 @@ namespace Livraria.Application.Services.Usuario
         {
             if (id <= 0)
             {
-                Response.Mensagem = "ID DO USUÁRIO NÃO INFORMADO!";
+                Response.SetError("ID DO USUÁRIO NÃO INFORMADO!");
                 return Response;
             }
 
@@ -91,21 +89,21 @@ namespace Livraria.Application.Services.Usuario
             bool validarEmail = regexEmail.IsMatch(dto.Email);
             if (!validarEmail)
             {
-                Response.Mensagem = $"EMAIL {dto.Email} FORA DO PADRÃO";
+                Response.SetWarning($"EMAIL {dto.Email} FORA DO PADRÃO");
                 return Response;
             }
 
             var idPerfil = await repositoryUsuario.VerificarIdDoPerfil(dto.Fk_Perfil);
             if (!idPerfil)
             {
-                Response.Mensagem = "PERFIL DE USUÁRIO NÃO ENCONTRADO";
+                Response.SetError("PERFIL DE USUÁRIO NÃO ENCONTRADO");
                 return Response;
             }
 
             var usuario = await repositoryUsuario.GetById(id);
             if (usuario == null)
             {
-                Response.Mensagem = "USUÁRIO NÃO ENCONTRADO NO BANCO";
+                Response.SetError("USUÁRIO NÃO ENCONTRADO NO BANCO");
                 return Response;
             }
 
@@ -119,12 +117,11 @@ namespace Livraria.Application.Services.Usuario
             var usuarioAtualizado = await repositoryUsuario.Update(usuario);
             if (!usuarioAtualizado)
             {
-                Response.Mensagem = $"ERRO! {usuarioAtualizado}";
+                Response.SetError($"ERRO! {usuarioAtualizado}");
                 return Response;
             }
 
-            Response.Success = true;
-            Response.Mensagem = "USUÁRIO ATUALIZADO COM SUCESSO";
+            Response.SetSuccess("USUÁRIO ATUALIZADO COM SUCESSO");
             return Response;
         }
     }

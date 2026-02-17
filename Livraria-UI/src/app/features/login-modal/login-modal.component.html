@@ -1,10 +1,10 @@
 <div class="overlay" *ngIf="aberto" (click)="fechar()">
     <div class="container" [class.active]="isActive" (click)="$event.stopPropagation()">
         <div class="form-container sign-in">
-            <form>
+            <form [formGroup]="usuarioLogin" (ngSubmit)="onClickedLogin()">
                 <h1>Entre</h1>
-                <input type="text" placeholder="Usuário">
-                <input type="password" placeholder="Senha">
+                <input formControlName="usuario" placeholder="Usuário" type="text">
+                <input formControlName="senha" placeholder="Senha" type="password">
                 <a href="#">Esqueceu sua senha?</a>
                 <button type="submit">Acessar</button>
             </form>

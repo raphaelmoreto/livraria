@@ -35,12 +35,11 @@ namespace Livraria.Application.Services.Autor
             var insert = await repositoryAutor.Insert(autor);
             if (!insert)
             {
-                Response.Mensagem = $"ERRO! {insert}";
+                Response.SetError($"ERRO! {insert}");
                 return Response;
             }
-            
-            Response.Success = true;
-            Response.Mensagem = "AUTOR INSERIDO COM SUCESSO";
+
+            Response.SetSuccess("AUTOR INSERIDO COM SUCESSO");
             return Response;
         }
 
@@ -48,14 +47,14 @@ namespace Livraria.Application.Services.Autor
         {
             if (id <= 0)
             {
-                Response.Mensagem = "ID DO AUTOR NÃO INFORMADO!";
+                Response.SetError("ID DO AUTOR NÃO INFORMADO!");
                 return Response;
             }
 
             var autor = await repositoryAutor.GetById(id);
             if (autor == null)
             {
-                Response.Mensagem = "AUTOR NÃO ENCONTRADO NO BANCO!";
+                Response.SetError("AUTOR NÃO ENCONTRADO NO BANCO!");
                 return Response;
             }
 
@@ -65,12 +64,11 @@ namespace Livraria.Application.Services.Autor
             var autorAtualizado = await repositoryAutor.Update(autor);
             if (!autorAtualizado)
             {
-                Response.Mensagem = $"ERRO! {autorAtualizado}";
+                Response.SetError($"ERRO! {autorAtualizado}");
                 return Response;
             }
 
-            Response.Success = true;
-            Response.Mensagem = "AUTOR ATUALIZADO COM SUCESSO";
+            Response.SetSuccess("AUTOR ATUALIZADO COM SUCESSO");
             return Response;
         }
     }
