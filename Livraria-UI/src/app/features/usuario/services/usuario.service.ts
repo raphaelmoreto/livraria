@@ -1,9 +1,8 @@
-import { ApiService } from 'src/app/core/services/api.service';
+import { ApiService } from '@core/services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IApiResponse } from 'src/app/core/models/apiResponse.model';
-import { IUsuarioCadastro } from 'src/app/features/usuario/models/usuario-cadastro.model';
-import { IUsuarioLogin } from 'src/app/features/usuario/models/usuario-login.model';
+import { IApiResponse } from '@core/models/apiResponse.model';
+import { IUsuarioCadastro } from '../models/usuario-cadastro.model';
 import { Observable } from 'rxjs';
 
 @Injectable({

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ILivro } from './features/livros/models/livro.model';
-import { LivroService } from './features/livros/services/livro.service';
+import { ILivro } from '@features/livros/models/livro.model';
+import { LivroService } from '@features/livros/services/livro.service';
 import { Observable, tap } from 'rxjs';
 
 @Component({

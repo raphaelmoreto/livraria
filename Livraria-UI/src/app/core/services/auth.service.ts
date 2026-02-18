@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IUsuarioLogin } from 'src/app/features/usuario/models/usuario-login.model';
+import { IUsuarioLogin } from '@features/usuario/models/usuario-login.model';
 import { ILoginResponse } from '../models/auth.model';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';

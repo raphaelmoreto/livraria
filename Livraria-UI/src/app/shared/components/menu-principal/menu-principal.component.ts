@@ -1,10 +1,10 @@
-import { AuthService } from './../../../core/services/auth.service';
+import { AuthService } from '@core/services/auth.service';
 import { Component, ViewChild } from '@angular/core';
-import { IUsuarioCadastro } from 'src/app/features/usuario/models/usuario-cadastro.model';
-import { IUsuarioLogin } from 'src/app/features/usuario/models/usuario-login.model';
-import { LoginModalComponent } from '../../../features/login-modal/login-modal.component';
-import { UsuarioService } from 'src/app/features/usuario/services/usuario.service';
-import { ToastService } from 'src/app/features/toast/services/toast.service';
+import { IUsuarioCadastro } from '@features/usuario/models/usuario-cadastro.model';
+import { IUsuarioLogin } from '@features/usuario/models/usuario-login.model';
+import { LoginModalComponent } from '../login-modal/login-modal.component';
+import { UsuarioService } from '@features/usuario/services/usuario.service';
+import { ToastService } from '@features/toast/services/toast.service';
 
 @Component({
   selector: 'app-menu-principal',

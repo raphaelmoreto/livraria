@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ILivro } from 'src/app/features/livros/models/livro.model';
+import { ILivro } from '@features/livros/models/livro.model';
 
 @Component({
   selector: 'app-card-livro',

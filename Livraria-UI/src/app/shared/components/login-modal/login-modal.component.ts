@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { IUsuarioCadastro } from '../usuario/models/usuario-cadastro.model';
-import { IUsuarioLogin } from '../usuario/models/usuario-login.model';
+import { IUsuarioCadastro } from '@features/usuario/models/usuario-cadastro.model';
+import { IUsuarioLogin } from '@features/usuario/models/usuario-login.model';
 
 @Component({
     selector: 'app-login-modal',

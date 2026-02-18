@@ -1,4 +1,4 @@
-import { ApiService } from 'src/app/core/services/api.service';
+import { ApiService } from '@core/services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ILivro } from '../models/livro.model';
