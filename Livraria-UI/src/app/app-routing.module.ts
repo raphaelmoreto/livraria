@@ -1,13 +1,19 @@
 import { AuthGuard } from '@core/guards/auth.guard';
+import { ConfiguracoesComponent } /* ↓ */
+    from '@features/configuracoes/components/configuracoes/configuracoes.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AppComponent } from './app.component';
+import { HomeComponent } from '@features/home/components/home/home.component';
 
 const routes: Routes = [
     {
         path: '',
-        component: AppComponent
+        component: HomeComponent
+    },
+    { 
+        path: 'configuracoes',
+        component: ConfiguracoesComponent
     },
     {
         path: '**', redirectTo: ''

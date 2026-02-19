@@ -3,19 +3,26 @@ import { CommonModule } from '@angular/common';
 import { PipesModule } from '@shared/pipes/pipes.module';
 
 import { CardLivroComponent } from './livros/components/card-livro/card-livro.component';
+import { ConfiguracoesComponent } from './configuracoes/components/configuracoes/configuracoes.component';
+import { ComponentsModule } from '@shared/components/components.module';
+import { HomeComponent } from './home/components/home/home.component';
 import { ToastComponent } from './toast/components/toast/toast.component';
 
 @NgModule({
     declarations: [
         CardLivroComponent,
-        ToastComponent
+        ConfiguracoesComponent,
+        HomeComponent,
+        ToastComponent,
     ],
     imports: [
         CommonModule,
-        PipesModule
+        ComponentsModule,
+        PipesModule,
     ],
     exports: [
         CardLivroComponent,
+        HomeComponent,
         ToastComponent
     ]
 })
