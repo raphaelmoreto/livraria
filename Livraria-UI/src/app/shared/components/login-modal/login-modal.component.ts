@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IUsuarioCadastro } from '@features/usuario/models/usuario-cadastro.model';
 import { IUsuarioLogin } from '@features/usuario/models/usuario-login.model';
+import { ToastService } from '@features/toast/services/toast.service';
 
 @Component({
     selector: 'app-login-modal',
@@ -15,17 +16,19 @@ export class LoginModalComponent {
     isActive: boolean = false;
 
     usuarioCadastro = new FormGroup({
-        nome: new FormControl<string>(''),
-        usuario: new FormControl<string>(''),
-        email: new FormControl<string>(''),
-        senha: new FormControl<string>(''),
-        fk_perfil: new FormControl<number>(2) // 2 = USUÁRIO COMUM NO SISTEMA
+        nome: new FormControl<string>('', Validators.required),
+        usuario: new FormControl<string>('', Validators.required),
+        email: new FormControl<string>('', Validators.required),
+        senha: new FormControl<string>('', Validators.required),
+        fk_perfil: new FormControl<number>(2, Validators.required) // 2 = USUÁRIO COMUM NO SISTEMA
     });
 
     usuarioLogin = new FormGroup({
-        usuario: new FormControl<string>(''),
-        senha: new FormControl<string>('')
+        usuario: new FormControl<string>('', Validators.required),
+        senha: new FormControl<string>('', Validators.required)
     });
+
+    constructor (private toast: ToastService) { }
 
     @Output('clickedCadastro') clickedCadastroEmitt = new EventEmitter<IUsuarioCadastro>();
     @Output('clickedLogin') clickedLoginEmitt = new EventEmitter<IUsuarioLogin>();
@@ -44,13 +47,23 @@ export class LoginModalComponent {
     }
 
     onClickedCadastro(): void {
-        // "getRawValue()" TRANSFORMA O "FormGroup" EM UM OBJETO COMUM
-        const usuarioCadastro: IUsuarioCadastro = this.usuarioCadastro.getRawValue();
-        this.clickedCadastroEmitt.emit(usuarioCadastro);
+        if (this.usuarioCadastro.invalid) {
+            this.usuarioCadastro.markAllAsTouched();
+            this.toast.warning('POR FAVOR, PREENCHER TODOS OS CAMPOS');
+        } else {
+            // "getRawValue()" TRANSFORMA O "FormGroup" EM UM OBJETO COMUM
+            const usuarioCadastro: IUsuarioCadastro = this.usuarioCadastro.getRawValue();
+            this.clickedCadastroEmitt.emit(usuarioCadastro);
+        }
     }
 
     onClickedLogin(): void {
-        const usuarioLogin: IUsuarioLogin = this.usuarioLogin.getRawValue();
-        this.clickedLoginEmitt.emit(usuarioLogin);
+        if (this.usuarioLogin.invalid) {
+            this.usuarioLogin.markAsTouched();
+            this.toast.warning('POR FAVOR, PREENCHER TODOS OS CAMPOS');
+        } else {
+            const usuarioLogin: IUsuarioLogin = this.usuarioLogin.getRawValue();
+            this.clickedLoginEmitt.emit(usuarioLogin);
+        }
     }
 }

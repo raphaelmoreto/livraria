@@ -1,4 +1,4 @@
-import { AuthGuard } from '@core/guards/auth.guard';
+import { authGuard } from '@core/guards/auth.guard';
 import { ConfiguracoesComponent } /* ↓ */
     from '@features/configuracoes/components/configuracoes/configuracoes.component';
 import { NgModule } from '@angular/core';
@@ -13,7 +13,8 @@ const routes: Routes = [
     },
     { 
         path: 'configuracoes',
-        component: ConfiguracoesComponent
+        component: ConfiguracoesComponent,
+        canActivate: [authGuard]
     },
     {
         path: '**', redirectTo: ''

@@ -15,10 +15,10 @@ import { AppRoutingModule } from "src/app/app-routing.module";
         MenuPrincipalComponent
     ],
     imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    AppRoutingModule
-],
+        CommonModule,
+        ReactiveFormsModule,
+        AppRoutingModule
+    ],
     exports: [
         LoginModalComponent,
         MenuLateralComponent,

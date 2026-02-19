@@ -13,7 +13,7 @@ import { ToastService } from '@features/toast/services/toast.service';
 })
 
 export class MenuPrincipalComponent {
-    modalLogin: boolean = false;
+    modalAberto: boolean = false;
 
     @ViewChild(LoginModalComponent) loginModal!: LoginModalComponent;
 
@@ -24,7 +24,7 @@ export class MenuPrincipalComponent {
     ) { }
 
     abrirModalLogin(): void {
-        this.modalLogin = true;
+        this.modalAberto = true;
     }
 
     cadastro(usuarioCadastro: IUsuarioCadastro): void {
@@ -32,6 +32,7 @@ export class MenuPrincipalComponent {
         .subscribe({
             next: (res) => {
                 this.toast.success(res.mensagem);
+                this.loginModal.usuarioCadastro.reset();
                 this.loginModal.login();
             },
             error: (err) => {
@@ -45,7 +46,7 @@ export class MenuPrincipalComponent {
     }
 
     fecharModalLogin(): void {
-        this.modalLogin = false;
+        this.modalAberto = false;
     }
 
     login(usuarioLogin: IUsuarioLogin): void {
@@ -53,10 +54,10 @@ export class MenuPrincipalComponent {
         .subscribe({
             next: () => {
                 this.toast.success('LOGIN EFETUADO COM SUCESSO');
+                this.loginModal.usuarioLogin.reset();
                 this.fecharModalLogin();
             },
             error: (err) => {
-                console.log(err);
                 this.toast.error(err.error.erro);
             }
         });

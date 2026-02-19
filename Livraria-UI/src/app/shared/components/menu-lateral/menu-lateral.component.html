@@ -2,7 +2,12 @@
     <nav class="menu-lateral-nav">
 
         <div class="menu-lateral-grupo">
-            <button class="menu-lateral-item ativo">
+            <button
+                class="menu-lateral-item"
+                routerLink="/"
+                routerLinkActive="ativo"
+                [routerLinkActiveOptions]="{ exact: true }"
+            >
                 <span class="material-icons">home</span>
                 <span>Início</span>
             </button>
@@ -15,6 +20,7 @@
                 class="menu-lateral-item"
                 routerLink="/configuracoes"
                 routerLinkActive="ativo"
+                [routerLinkActiveOptions]="{ exact: true }"
             >
                 <span class="material-icons">settings</span>
                 <span>Configurações</span>
@@ -25,7 +31,8 @@
                 <span>Ajuda</span>
             </button>
             
-            <button class="menu-lateral-item">
+            <button class="menu-lateral-item"
+            >
                 <span class="material-icons">feedback</span>
                 <span>Enviar feedback</span>
             </button>

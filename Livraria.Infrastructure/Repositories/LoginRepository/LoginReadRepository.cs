@@ -17,7 +17,7 @@ namespace Livraria.Infrastructure.Repositories.LoginRepository
             sb.AppendLine("SELECT u.[id],");
             sb.AppendLine("            p.[tipo]");
             sb.AppendLine("FROM [dbo].[Usuario] u");
-            sb.AppendLine("INNER JOIN [dbo].[Perfil_Usuario] p ON u.id = p.id");
+            sb.AppendLine("INNER JOIN [dbo].[Perfil_Usuario] p ON u.[fk_perfil] = p.[id]");
             sb.AppendLine("WHERE [u].[usuario] = @Usuario");
             sb.AppendLine("AND [u].[senha] = @Senha");
             sb.AppendLine("AND [u].[Ativo] = 1");
