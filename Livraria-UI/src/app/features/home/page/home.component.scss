@@ -1,0 +1,61 @@
+$fundo-botao: #512da8;
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.app-layout {
+    display: flex;
+    flex: 1;
+}
+
+.botao-carregar {
+    display: flex;
+    justify-content: center;
+    padding: 24px 0 40px 0;
+
+    button {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: none;
+        font-size: 22px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        background-color: $fundo-botao;
+        color: #fff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+
+        &:hover:not(:disabled) {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+        }
+
+        &:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+
+        &:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+    }
+}
+
+.conteudo-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.conteudo {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    padding: 24px;
+}

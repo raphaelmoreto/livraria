@@ -91,7 +91,8 @@ namespace Livraria.API.Controllers.Livro
             }
         }
 
-        [HttpGet("busca-por-paginação")]
+        [HttpGet("busca-por-paginacao")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetPorPaginacao(int page = 1, int pageSize = 20)
         {
             try

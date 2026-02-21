@@ -13,6 +13,10 @@ export class LivroService extends ApiService<ILivro> {
         super(http, 'livro');
     }
 
+    buscaPorPaginacao(page: number, pageSize: number = 10): Observable<ILivro[]> {
+        return this.get<ILivro[]>(`busca-por-paginacao?page=${page}&pageSize=${pageSize}`);
+    }
+
     listar(): Observable<ILivro[]> {
         return this.get<ILivro[]>('');
     }

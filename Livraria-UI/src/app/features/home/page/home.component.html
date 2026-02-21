@@ -1,0 +1,31 @@
+<div class="app-container">
+    <header>
+        <app-menu-principal></app-menu-principal>
+    </header>
+
+    <main class="app-layout">
+        <app-menu-lateral></app-menu-lateral>
+
+        <div class="conteudo-wrapper">
+            <section class="conteudo">
+                <app-card-livro
+                    *ngFor="let livro of lstLivros; trackBy: trackByLivroId"
+                    [livro]="livro"
+                >
+                </app-card-livro>
+            </section>
+
+            <div class="botao-carregar">
+                <button (click)="carregarMais()" [disabled]="carregando">
+                    {{ carregando ? 'Carregando...' : '+' }}
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+
+    </footer>
+</div>
+
+<app-toast></app-toast>

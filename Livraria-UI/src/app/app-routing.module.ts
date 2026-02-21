@@ -1,10 +1,10 @@
 import { authGuard } from '@core/guards/auth.guard';
 import { ConfiguracoesComponent } /* ↓ */
-    from '@features/configuracoes/components/configuracoes/configuracoes.component';
+    from '@features/configuracoes/page/configuracoes.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { HomeComponent } from '@features/home/components/home/home.component';
+import { HomeComponent } from '@features/home/page/home.component';
 
 const routes: Routes = [
     {
