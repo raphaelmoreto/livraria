@@ -30,7 +30,8 @@ namespace Livraria.Application.Services.Token
                     new Claim[]
                     {
                         new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
-                        new Claim(ClaimTypes.Role, usuario.Tipo)
+                        new Claim(ClaimTypes.Name, usuario.Nome),
+                        new Claim(ClaimTypes.Role, usuario.Role)
                     }
                 ),
                 //QUANDO O TOKEN EXPIRA.

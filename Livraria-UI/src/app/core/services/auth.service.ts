@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { IUsuarioLogin } from '@features/usuario/models/usuario-login.model';
 import { ILoginResponse } from '../models/auth.model';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -18,6 +18,10 @@ export class AuthService extends ApiService<ILoginResponse> {
     //É COMO SE FOSSE UM "readonly" PARA OBSERVAR O QUE ESTÁ NA CAIXA NO MOMENTO ATUAL
     usuario$ = this.usuarioSubject.asObservable();
 
+    role$ = this.usuario$.pipe(
+        map(usuario => usuario?.role ?? null)
+    );
+
     constructor(http: HttpClient) {
         super (http, 'auth');
 
@@ -25,6 +29,15 @@ export class AuthService extends ApiService<ILoginResponse> {
         if (storedUser) {
             this.usuarioSubject.next(JSON.parse(storedUser));
         }
+    }
+
+    getToken(): string | null {
+        return localStorage.getItem('token');
+    }
+
+    isLoggedIn(): boolean {
+        //O "!!" JEITO RÁPIDO DE CONVERTER QUALQUER VALOR EM "true" OU "false"
+        return !!this.getToken();
     }
 
     login(usuarioLogin: IUsuarioLogin): Observable<ILoginResponse> {
@@ -46,14 +59,5 @@ export class AuthService extends ApiService<ILoginResponse> {
         localStorage.removeItem('token');
         localStorage.removeItem('usuario');
         this.usuarioSubject.next(null);
-    }
-
-    getToken(): string | null {
-        return localStorage.getItem('token');
-    }
-
-    isLoggedIn(): boolean {
-        //O "!!" JEITO RÁPIDO DE CONVERTER QUALQUER VALOR EM "true" OU "false"
-        return !!this.getToken();
     }
 }

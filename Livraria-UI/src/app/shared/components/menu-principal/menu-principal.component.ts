@@ -17,6 +17,8 @@ export class MenuPrincipalComponent {
 
     @ViewChild(LoginModalComponent) loginModal!: LoginModalComponent;
 
+    usuarioLogado$ = this.authService.usuario$;
+
     constructor (
         private authService: AuthService,
         private toast: ToastService,
@@ -53,6 +55,7 @@ export class MenuPrincipalComponent {
         this.authService.login(usuarioLogin)
         .subscribe({
             next: () => {
+                console.log(this.authService.role$);
                 this.toast.success('LOGIN EFETUADO COM SUCESSO');
                 this.loginModal.usuarioLogin.reset();
                 this.fecharModalLogin();

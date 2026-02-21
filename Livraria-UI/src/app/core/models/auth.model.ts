@@ -1,7 +1,8 @@
 import { BaseModel } from "./base.model";
 
 export interface IUsuario extends BaseModel {
-    tipo: string;
+    nome: string;
+    role: string;
 }
 
 export interface ILoginResponse {

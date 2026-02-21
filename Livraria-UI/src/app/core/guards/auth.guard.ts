@@ -1,6 +1,6 @@
 import { AuthService } from '@core/services/auth.service';
 import { CanActivate, CanActivateFn, Router } from '@angular/router';
-import { Injectable } from '@angular/core';
+// import { Injectable } from '@angular/core';
 import { inject } from '@angular/core';
 
 //MODO ANTIGO ↓
@@ -24,8 +24,9 @@ export const authGuard: CanActivateFn = () => {
     const authService = inject(AuthService);
     const router = inject(Router);
 
-    if (authService.isLoggedIn()) {
-        return true;
+    if (!authService.isLoggedIn()) {
+        router.navigate(['/']);
+        return false;
     }
 
     router.navigate(['/']);

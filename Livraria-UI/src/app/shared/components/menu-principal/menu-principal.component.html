@@ -9,10 +9,22 @@
     </div>
 
     <div class="menu-principal-items direita">
-        <div class="menu-principal-login" (click)="abrirModalLogin()">
-            <button class="material-icons menu-principal-botao">account_circle</button>
-            <span>Fazer login</span>
-        </div>
+        <ng-container *ngIf="usuarioLogado$ | async as usuario; else naoLogado">
+            <div class="menu-principal-login">
+                <span class="menu-principal-usuario">
+                    {{ usuario.nome }}
+                </span>
+            </div>
+        </ng-container>
+
+        <ng-template #naoLogado>
+            <div class="menu-principal-login" (click)="abrirModalLogin()">
+                <button class="material-icons menu-principal-botao">
+                    account_circle
+                </button>
+                <span>Fazer login</span>
+            </div>
+        </ng-template>
     </div>
 
     <app-login-modal
