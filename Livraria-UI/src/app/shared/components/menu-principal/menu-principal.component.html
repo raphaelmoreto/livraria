@@ -10,10 +10,18 @@
 
     <div class="menu-principal-items direita">
         <ng-container *ngIf="usuarioLogado$ | async as usuario; else naoLogado">
-            <div class="menu-principal-login">
+            <div class="menu-principal-login" (click)="toggleDropdown()">
                 <span class="menu-principal-usuario">
                     {{ usuario.nome }}
                 </span>
+
+                <div 
+                    class="menu-principal-dropdown" 
+                    *ngIf="dropdownAberto"
+                    (click)="$event.stopPropagation()"
+                >
+                    <button (click)="logout()">Sair</button>
+                </div>
             </div>
         </ng-container>
 

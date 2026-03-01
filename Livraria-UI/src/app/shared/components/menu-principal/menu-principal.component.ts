@@ -3,8 +3,9 @@ import { Component, ViewChild } from '@angular/core';
 import { IUsuarioCadastro } from '@features/usuario/models/usuario-cadastro.model';
 import { IUsuarioLogin } from '@features/usuario/models/usuario-login.model';
 import { LoginModalComponent } from '../login-modal/login-modal.component';
-import { UsuarioService } from '@features/usuario/services/usuario.service';
+import { Router } from '@angular/router';
 import { ToastService } from '@features/toast/services/toast.service';
+import { UsuarioService } from '@features/usuario/services/usuario.service';
 
 @Component({
   selector: 'app-menu-principal',
@@ -13,6 +14,7 @@ import { ToastService } from '@features/toast/services/toast.service';
 })
 
 export class MenuPrincipalComponent {
+    dropdownAberto: boolean = false;
     modalAberto: boolean = false;
 
     @ViewChild(LoginModalComponent) loginModal!: LoginModalComponent;
@@ -21,6 +23,7 @@ export class MenuPrincipalComponent {
 
     constructor (
         private authService: AuthService,
+        private router: Router,
         private toast: ToastService,
         private usuarioService: UsuarioService
     ) { }
@@ -47,6 +50,10 @@ export class MenuPrincipalComponent {
         });
     }
 
+    fecharDropdown(): void {
+        this.dropdownAberto = false;
+    }
+
     fecharModalLogin(): void {
         this.modalAberto = false;
     }
@@ -64,5 +71,15 @@ export class MenuPrincipalComponent {
                 this.toast.error(err.error.erro);
             }
         });
+    }
+
+    logout(): void {
+        this.authService.logout();
+        this.fecharDropdown();
+        this.router.navigate(['/']);
+    }
+
+    toggleDropdown(): void {
+        this.dropdownAberto = !this.dropdownAberto;
     }
 }
