@@ -36,6 +36,7 @@ export class HomeComponent implements OnInit {
 
         this.livroService.buscaPorPaginacao(this.page, this.pageSize)
         .subscribe((res) => {
+            //O "..." É O "Spread Operator". ELE CRIA UMA NOVA LISTA NA MÉMORIA JUNTANDO AS DUAS INDICADAS
             this.lstLivros = [...this.lstLivros, ...res];
             this.carregando = false;
         });
