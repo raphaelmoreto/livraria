@@ -8,6 +8,7 @@ import { ComponentsModule } from '@shared/components/components.module';
 import { HomeComponent } from './home/page/home.component';
 import { LoadingComponent } from './loading/components/loading/loading.component';
 import { ToastComponent } from './toast/components/toast/toast.component';
+import { AppRoutingModule } from "src/app/app-routing.module";
 
 @NgModule({
     declarations: [
@@ -18,10 +19,11 @@ import { ToastComponent } from './toast/components/toast/toast.component';
         ToastComponent
     ],
     imports: [
-        CommonModule,
-        ComponentsModule,
-        PipesModule,
-    ],
+    CommonModule,
+    ComponentsModule,
+    PipesModule,
+    AppRoutingModule
+],
     exports: [
         CardLivroComponent,
         HomeComponent,

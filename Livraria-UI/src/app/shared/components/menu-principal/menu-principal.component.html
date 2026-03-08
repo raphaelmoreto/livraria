@@ -3,7 +3,7 @@
         <button class="material-icons menu-principal-botao">menu</button>
     </div>
 
-    <div class="menu-principal-items centro">
+    <div class="menu-principal-items centro" *ngIf="isHome">
         <input type="text" placeholder="Pesquisar" class="menu-principal-pesquisa">
         <button class="material-icons menu-principal-botao">search</button>
     </div>
@@ -27,7 +27,7 @@
 
         <ng-template #naoLogado>
             <div class="menu-principal-login" (click)="abrirModalLogin()">
-                <button class="material-icons menu-principal-botao">
+                <button class="material-icons menu-principal-botao" type="button">
                     account_circle
                 </button>
                 <span>Fazer login</span>

@@ -3,8 +3,29 @@
         <app-menu-principal></app-menu-principal>
     </header>
 
-    <main>
+    <main class="layout">
         <app-menu-lateral></app-menu-lateral>
+
+        <div class="conteudo-wrapper">
+            <section class="conteudo">
+                <div class="erro-container">
+                    <div class="erro-card">
+                        <h1 class="erro-codigo">404</h1>
+
+                        <h2 class="erro-titulo">Página não encontrada</h2>
+
+                        <p class="erro-descricao">
+                            O programador teve preguiça para continuar com o projeto,
+                            com isso, a tela está incompleta!
+                        </p>
+
+                        <a class="erro-botao" routerLink="/">
+                            Voltar para a página inicial
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
     </main>
 
     <footer>

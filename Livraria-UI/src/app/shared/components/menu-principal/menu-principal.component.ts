@@ -58,6 +58,10 @@ export class MenuPrincipalComponent {
         this.modalAberto = false;
     }
 
+    get isHome(): boolean {
+        return this.router.url === '/';
+    }
+
     login(usuarioLogin: IUsuarioLogin): void {
         this.authService.login(usuarioLogin)
         .subscribe({

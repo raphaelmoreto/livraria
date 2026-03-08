@@ -24,11 +24,12 @@ export const authGuard: CanActivateFn = () => {
     const authService = inject(AuthService);
     const router = inject(Router);
 
-    if (!authService.isLoggedIn()) {
-        router.navigate(['/']);
-        return false;
+    if (authService.isLoggedIn()) {
+        return true;
     }
 
-    router.navigate(['/']);
-    return false;
+    return router.createUrlTree(['/']);
+
+    // router.navigate(['/']);
+    // return false;
 };

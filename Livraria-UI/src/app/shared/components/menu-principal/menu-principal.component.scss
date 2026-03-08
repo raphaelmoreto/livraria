@@ -12,8 +12,12 @@ $cor-texto: #ffffff;
     color: $cor-texto;
     display: flex;
     height: 56px;
+    left: 0;
     padding: 0 16px;
-    position: relative;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
 
     &-botao {
         align-items: center;

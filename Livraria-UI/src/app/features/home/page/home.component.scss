@@ -57,5 +57,6 @@ $fundo-botao: #512da8;
     display: grid;
     gap: 24px;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    margin-top: 56px;
     padding: 24px;
 }

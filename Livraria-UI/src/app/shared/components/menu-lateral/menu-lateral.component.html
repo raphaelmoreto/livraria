@@ -1,8 +1,7 @@
 <aside class="menu-lateral">
     <nav class="menu-lateral-nav">
-
         <div class="menu-lateral-grupo">
-            <button
+            <a
                 class="menu-lateral-item"
                 routerLink="/"
                 routerLinkActive="ativo"
@@ -10,32 +9,33 @@
             >
                 <span class="material-icons">home</span>
                 <span>Início</span>
-            </button>
+            </a>
         </div>
 
         <hr class="menu-lateral-divisor">
 
         <div class="menu-lateral-grupo menu-lateral-grupo-mais">
-            <button
+            <a
                 class="menu-lateral-item"
                 routerLink="/configuracoes"
                 routerLinkActive="ativo"
                 [routerLinkActiveOptions]="{ exact: true }"
+                type="button"
             >
                 <span class="material-icons">settings</span>
                 <span>Configurações</span>
-            </button>
+            </a>
 
-            <button class="menu-lateral-item">
+            <a class="menu-lateral-item">
                 <span class="material-icons">help_outline</span>
                 <span>Ajuda</span>
-            </button>
+            </a>
             
-            <button class="menu-lateral-item"
+            <a class="menu-lateral-item"
             >
                 <span class="material-icons">feedback</span>
                 <span>Enviar feedback</span>
-            </button>
+            </a>
         </div>
 
         <hr class="menu-lateral-divisor">
