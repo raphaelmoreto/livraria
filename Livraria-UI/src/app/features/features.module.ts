@@ -6,6 +6,7 @@ import { CardLivroComponent } from './livros/components/card-livro/card-livro.co
 import { ConfiguracoesComponent } from './configuracoes/page/configuracoes.component';
 import { ComponentsModule } from '@shared/components/components.module';
 import { HomeComponent } from './home/page/home.component';
+import { LoadingComponent } from './loading/components/loading/loading.component';
 import { ToastComponent } from './toast/components/toast/toast.component';
 
 @NgModule({
@@ -13,7 +14,8 @@ import { ToastComponent } from './toast/components/toast/toast.component';
         CardLivroComponent,
         ConfiguracoesComponent,
         HomeComponent,
-        ToastComponent,
+        LoadingComponent,
+        ToastComponent
     ],
     imports: [
         CommonModule,
@@ -23,6 +25,7 @@ import { ToastComponent } from './toast/components/toast/toast.component';
     exports: [
         CardLivroComponent,
         HomeComponent,
+        LoadingComponent,
         ToastComponent
     ]
 })

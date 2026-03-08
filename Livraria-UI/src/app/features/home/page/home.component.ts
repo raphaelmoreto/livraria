@@ -11,22 +11,13 @@ import { Observable, tap } from 'rxjs';
 
 export class HomeComponent implements OnInit {
     //INDICA QUE NÃO HÁ UMA LISTA AGORA, MAS IRÁ RECEBER A LISTA NO FUTURO
-    carregando: boolean = false;
     // lstLivros$!: Observable<ILivro[]>;
+    carregando: boolean = false;
     lstLivros: ILivro[] = [];
     page: number = 1;
     pageSize: number = 10;
 
     constructor (private livroService: LivroService) { }
-
-    // buscarLivros(): void {
-    //     this.lstLivros$ = this.livroService.listar();
-    //     .pipe(
-    //         tap(response => {
-    //             console.log(response)
-    //         })
-    //     );
-    // }
 
     buscaPorPaginacao(): void {
         if (this.carregando)
@@ -40,6 +31,8 @@ export class HomeComponent implements OnInit {
             this.lstLivros = [...this.lstLivros, ...res];
             this.carregando = false;
         });
+
+        
     }
 
     carregarMais(): void {

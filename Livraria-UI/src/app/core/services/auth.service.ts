@@ -11,7 +11,7 @@ import { ApiService } from './api.service';
 })
 
 export class AuthService extends ApiService<ILoginResponse> {
-    //"BehaviorSubject" SEMPRE É COMO SE FOSSE UMA CAIXA QUE GUARDA A ÚLTIMA COISA QUE VOCÊ COLOCOU DENTRO DELA. SEMPRE QUE QUISER VER, ELE MOSTRA ESSA ÚLTIMA COISA
+    //"BehaviorSubject" SEMPRE É COMO SE FOSSE UMA CAIXA QUE GUARDA A ÚLTIMA COISA QUE VOCÊ COLOCOU DENTRO DELA. SEMPRE QUE QUISER VER, ELE MOSTRA ESSA ÚLTIMA COISA. QUALQUE COMPONENT PODE ESCUTAR ESSA MUDANÇA.
     //ILoginResponse['usuario'] SIGNIFICA O TIPO. PODE ARMAZENAR UM USUÁRIO OU PODE ESTAR VÁZIA
     private usuarioSubject = new BehaviorSubject<ILoginResponse['usuario'] | null>(null);
 
