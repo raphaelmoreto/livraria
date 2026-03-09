@@ -20,18 +20,26 @@
                 routerLink="/configuracoes"
                 routerLinkActive="ativo"
                 [routerLinkActiveOptions]="{ exact: true }"
-                type="button"
             >
                 <span class="material-icons">settings</span>
                 <span>Configurações</span>
             </a>
 
-            <a class="menu-lateral-item">
+            <a 
+                class="menu-lateral-item"
+                routerLink="/ajuda"
+                routerLinkActive="ativo"
+                [routerLinkActiveOptions]="{ exact: true }"
+            >
                 <span class="material-icons">help_outline</span>
                 <span>Ajuda</span>
             </a>
             
-            <a class="menu-lateral-item"
+            <a
+                class="menu-lateral-item"
+                routerLink="/feedback"
+                routerLinkActive="ativo"
+                [routerLinkActiveOptions]="{ exact: true }"
             >
                 <span class="material-icons">feedback</span>
                 <span>Enviar feedback</span>

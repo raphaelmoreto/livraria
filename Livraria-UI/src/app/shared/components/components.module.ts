@@ -7,6 +7,7 @@ import { ButtonComponent } from './button/button.component';
 import { LoginModalComponent } from "./login-modal/login-modal.component";
 import { MenuLateralComponent } from "./menu-lateral/menu-lateral.component";
 import { MenuPrincipalComponent } from "./menu-principal/menu-principal.component";
+import { PaginaErroComponent } from './pagina-erro/pagina-erro.component';
 
 @NgModule({
     declarations: [
@@ -14,6 +15,7 @@ import { MenuPrincipalComponent } from "./menu-principal/menu-principal.componen
         LoginModalComponent,
         MenuLateralComponent,
         MenuPrincipalComponent,
+        PaginaErroComponent
     ],
     imports: [
         AppRoutingModule,
@@ -24,7 +26,8 @@ import { MenuPrincipalComponent } from "./menu-principal/menu-principal.componen
         ButtonComponent,
         LoginModalComponent,
         MenuLateralComponent,
-        MenuPrincipalComponent
+        MenuPrincipalComponent,
+        PaginaErroComponent
     ]
 })
 
