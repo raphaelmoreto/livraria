@@ -127,8 +127,6 @@ https://localhost:xxxx/swagger
 
 ---
 
----
-
 ## 🧠 Boas Práticas Aplicadas
 
 * Separação por camadas
