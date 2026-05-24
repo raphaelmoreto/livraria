@@ -5,6 +5,7 @@
         private static readonly Dictionary<string, string> MimeType = new()
         {
             { ".csv", "text/csv" },
+            { ".pdf",  "application/pdf"},
             { ".txt", "text/plain" },
             { ".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }
         };
