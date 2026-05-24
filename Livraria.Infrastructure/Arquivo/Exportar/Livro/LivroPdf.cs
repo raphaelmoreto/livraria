@@ -37,7 +37,7 @@ namespace Livraria.Infrastructure.Arquivo.Exportar.Livro
                                 .Padding(15)
                                 .Text("RELATÓRIO DE LIVROS")
                                 .Bold()
-                                .FontColor(RoxoClaro)
+                                .FontColor(Roxo)
                                 .FontSize(22);
 
                             column.Item()

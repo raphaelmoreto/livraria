@@ -1,10 +1,6 @@
-$cor-borda: #fff;
-$cor-input: #eee;
-$fundo-botao: #512da8;
+@import '/src/app/shared/styles/variables';
+
 $fundo-form: #ccc;
-$fundo-container: #fff;
-$text-dark: #333;
-$toggle: #5c6bc0;
 
 .overlay {
     position: fixed;
@@ -17,7 +13,7 @@ $toggle: #5c6bc0;
 }
 
 .container {
-    background-color: $fundo-container;
+    background-color: $cor-branco;
     border-radius: 30px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     position: relative;
@@ -34,14 +30,14 @@ $toggle: #5c6bc0;
     }
 
     a {
-        color: $text-dark;
+        color: $cor-fundo;
         font-size: 13px;
         text-decoration: none;
         margin: 15px 0 10px;
     }
 
     button {
-        background-color: $fundo-botao;
+        background-color: $cor-principal;
         color: #fff;
         font-size: 12px;
         padding: 10px 45px;
@@ -70,7 +66,7 @@ $toggle: #5c6bc0;
     }
 
     input {
-        background-color: $cor-input;
+        background-color: $cor-branco;
         border: none;
         margin: 8px 0;
         padding: 10px 15px;
@@ -146,7 +142,7 @@ $toggle: #5c6bc0;
 }
 
 .toggle {
-    background: linear-gradient(to right, $toggle, $fundo-botao);
+    background: linear-gradient(to right, $cor-destaque, $cor-principal);
     color: #fff;
     position: relative;
     left: -100%;

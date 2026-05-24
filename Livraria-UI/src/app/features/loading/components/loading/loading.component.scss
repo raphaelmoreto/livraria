@@ -1,6 +1,6 @@
+@import '/src/app/shared/styles/variables';
+
 $overlay-bg: rgba(0, 0, 0, 0.5);
-$spinner-color: #512da8;
-$spinner-bg: #f3f3f3;
 
 .overlay {
   position: fixed;
@@ -21,8 +21,8 @@ $spinner-bg: #f3f3f3;
   color: white;
 
   .girador {
-    border: 6px solid $spinner-bg;
-    border-top: 6px solid $spinner-color;
+    border: 6px solid $cor-branco;
+    border-top: 6px solid $cor-principal;
 
     border-radius: 50%;
     width: 50px;

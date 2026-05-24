@@ -1,6 +1,6 @@
-$card-fundo: #ffffff;
+@import '/src/app/shared/styles/variables';
+
 $card-borda: #eeeeee;
-$card-texto-secundario: #666666;
 $card-sombra-hover: -4px;
 
 :host {
@@ -8,7 +8,7 @@ $card-sombra-hover: -4px;
 }
 
 .card {
-    background-color: $card-fundo;
+    background-color: $cor-branco;
     border-radius: 12px;
     display: flex;
     flex-direction: column;
@@ -36,7 +36,7 @@ $card-sombra-hover: -4px;
         }
 
         small {
-            color: $card-texto-secundario;
+            color: $cor-texto2;
         }
     }
 

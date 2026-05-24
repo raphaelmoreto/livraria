@@ -1,12 +1,9 @@
-$cor-fundo: #0f0f0f;
-$cor-texto: white;
-$cor-hover: #512da8;
+@import '/src/app/shared/styles/variables';
 $cor-divisor: #303030;
-$cor-ativo: #512da8;
 
 .menu-lateral {
     background-color: $cor-fundo;
-    color: $cor-texto;
+    color: $cor-texto1;
     height: 100vh;
     margin-top: 56px;
     overflow-y: auto; // PERMITE ROLAGEM SE O CONTEÚDO FOR MUITO
@@ -46,7 +43,7 @@ $cor-ativo: #512da8;
         align-items: center;
         background: transparent;
         border-radius: 10px;
-        color: $cor-texto;
+        color: $cor-texto1;
         cursor: pointer;
         display: flex;
         font-size: 14px;
@@ -62,11 +59,11 @@ $cor-ativo: #512da8;
         }
 
         &:hover {
-            background-color: $cor-hover;
+            background-color: $cor-principal;
         }
 
         &.ativo {
-            background-color: $cor-ativo;
+            background-color: $cor-principal;
             font-weight: 500;
         }
     }

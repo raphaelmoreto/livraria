@@ -1,8 +1,5 @@
+@import '/src/app/shared/styles/variables';
 $altura-header: 56px;
-$cor-fundo: #0f0f0f;
-$cor-roxo: #7c3aed;
-$cor-secundaria: #a1a1aa;
-$cor-texto: #ffffff;
 
 .erro-botao {
     display: inline-block;
@@ -10,7 +7,7 @@ $cor-texto: #ffffff;
 
     padding: 12px 28px;
 
-    background-color: $cor-roxo;
+    background-color: $cor-principal;
     color: white;
 
     text-decoration: none;
@@ -20,7 +17,7 @@ $cor-texto: #ffffff;
 }
 
 .erro-botao:hover {
-    background-color: #6d28d9;
+    background-color: $cor-secundaria;
 }
 
 .erro-card {
@@ -36,7 +33,7 @@ $cor-texto: #ffffff;
     font-size: 120px;
     margin: 0;
     font-weight: bold;
-    color: $cor-roxo;
+    color: $cor-principal;
 }
 
 .erro-container {
@@ -53,10 +50,10 @@ $cor-texto: #ffffff;
 .erro-titulo {
     margin-top: 10px;
     font-size: 28px;
-    color: $cor-texto;
+    color: $cor-branco;
 }
 
 .erro-descricao {
     margin-top: 10px;
-    color: $cor-secundaria;
+    color: $cor-texto2;
 }
