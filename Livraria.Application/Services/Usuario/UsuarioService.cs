@@ -1,5 +1,6 @@
 ﻿using Livraria.Application.Interfaces.Services.Response;
 using Livraria.Application.Interfaces.Services.Usuario;
+using Livraria.Application.Response;
 using Livraria.Application.Services.Base;
 using Livraria.Domain.Dtos.Usuario;
 using Livraria.Domain.Entities.Usuario;
@@ -12,11 +13,7 @@ namespace Livraria.Application.Services.Usuario
     {
         private readonly IUsuarioWriteRepository repositoryUsuario;
 
-        public UsuarioService
-        (
-            IServiceResponse serviceResponse,
-            IUsuarioWriteRepository repositoryUsuario
-        ) : base(serviceResponse)
+        public UsuarioService(IUsuarioWriteRepository repositoryUsuario)
         {
             this.repositoryUsuario = repositoryUsuario;
         }
@@ -24,38 +21,25 @@ namespace Livraria.Application.Services.Usuario
         public async Task<IServiceResponse> Delete(int id)
         {
             if (id < 0)
-            {
-                Response.SetError("ID DO USUÁRIO NÃO INFORMADO!");
-                return Response;
-            }
+                return ServiceResponse.Error("ID DO USUÁRIO NÃO INFORMADO!");
 
             var deleteUsuario = await repositoryUsuario.DeletarCadastro(id);
             if (!deleteUsuario)
-            {
-                Response.SetError($"ERRO! {deleteUsuario}");
-                return Response;
-            }
+                return ServiceResponse.Error($"ERRO! {deleteUsuario}");
 
-            Response.SetSuccess("USUÁRIO DELETADO COM SUCESSO");
-            return Response;
+            return ServiceResponse.Ok("USUÁRIO DELETADO COM SUCESSO");
         }
 
         public async Task<IServiceResponse> Insert(UsuarioInputDto dto)
         {
             var idPerfil = await repositoryUsuario.VerificarIdDoPerfil(dto.Fk_Perfil);
             if (!idPerfil)
-            {
-                Response.SetError("PERFIL DE USUÁRIO NÃO ENCONTRADO");
-                return Response;
-            }
+                return ServiceResponse.Error("PERFIL DE USUÁRIO NÃO ENCONTRADO");
 
             var regexEmail = new Regex(@"^[\w.-]+@([\w-]+\.)+[a-zA-Z]{2,}$");
             bool validarEmail = regexEmail.IsMatch(dto.Email);
             if (!validarEmail)
-            {
-                Response.SetWarning($"EMAIL {dto.Email} FORA DO PADRÃO");
-                return Response;
-            }
+                return ServiceResponse.Error($"EMAIL {dto.Email} FORA DO PADRÃO");
 
             var usuario = new UsuarioEntity
             (
@@ -65,64 +49,47 @@ namespace Livraria.Application.Services.Usuario
                 dto.Senha,
                 dto.Fk_Perfil
             );
+            if (!usuario.Validar())
+                return ServiceResponse.Error("ERRO DE VALIDAÇÃO", usuario.Notifications.Select(x => x.Message));
 
             var insert = await repositoryUsuario.Insert(usuario);
             if (!insert)
-            {
-                Response.SetError($"ERRO! {insert}");
-                return Response;
-            }
+                return ServiceResponse.Error($"ERRO! {insert}");
 
-            Response.SetSuccess("USUÁRIO CADASTRADO COM SUCESSO");
-            return Response;
+            return ServiceResponse.Error("USUÁRIO CADASTRADO COM SUCESSO");
         }
 
         public async Task<IServiceResponse> Update(int id, UsuarioInputDto dto)
         {
             if (id <= 0)
-            {
-                Response.SetError("ID DO USUÁRIO NÃO INFORMADO!");
-                return Response;
-            }
+                return ServiceResponse.Error("ID DO USUÁRIO NÃO INFORMADO!");
 
             var regexEmail = new Regex(@"^[\w.-]+@[\w-]+\.[a-zA-Z]{2,}$");
             bool validarEmail = regexEmail.IsMatch(dto.Email);
             if (!validarEmail)
-            {
-                Response.SetWarning($"EMAIL {dto.Email} FORA DO PADRÃO");
-                return Response;
-            }
+                return ServiceResponse.Error($"EMAIL {dto.Email} FORA DO PADRÃO");
 
             var idPerfil = await repositoryUsuario.VerificarIdDoPerfil(dto.Fk_Perfil);
             if (!idPerfil)
-            {
-                Response.SetError("PERFIL DE USUÁRIO NÃO ENCONTRADO");
-                return Response;
-            }
+                return ServiceResponse.Error("PERFIL DE USUÁRIO NÃO ENCONTRADO");
 
             var usuario = await repositoryUsuario.GetById(id);
             if (usuario == null)
-            {
-                Response.SetError("USUÁRIO NÃO ENCONTRADO NO BANCO");
-                return Response;
-            }
+                return ServiceResponse.Error("USUÁRIO NÃO ENCONTRADO NO BANCO");
 
             usuario.AtribuirNome(dto.Nome);
             usuario.AtribuirUsuario(dto.Usuario);
             usuario.AtribuirEmail(dto.Email);
             usuario.AtribuirSenha(dto.Senha);
             usuario.AtribuirPerfil(dto.Fk_Perfil);
-            usuario.Validar();
+            if (!usuario.Validar())
+                return ServiceResponse.Error("ERRO DE VALIDAÇÃO", usuario.Notifications.Select(x => x.Message));
 
             var usuarioAtualizado = await repositoryUsuario.Update(usuario);
             if (!usuarioAtualizado)
-            {
-                Response.SetError($"ERRO! {usuarioAtualizado}");
-                return Response;
-            }
+                return ServiceResponse.Error($"ERRO! {usuarioAtualizado}");
 
-            Response.SetSuccess("USUÁRIO ATUALIZADO COM SUCESSO");
-            return Response;
+            return ServiceResponse.Ok("USUÁRIO ATUALIZADO COM SUCESSO");
         }
     }
 }

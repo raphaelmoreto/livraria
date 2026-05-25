@@ -1,6 +1,7 @@
 ﻿using Dapper.Contrib.Extensions;
+using Flunt.Notifications;
+using Flunt.Validations;
 using Livraria.Domain.Entities.Base;
-using Livraria.Domain.Validations;
 
 namespace Livraria.Domain.Entities.Usuario
 {
@@ -26,83 +27,62 @@ namespace Livraria.Domain.Entities.Usuario
             AtribuirEmail(email);
             AtribuirSenha(senha);
             AtribuirPerfil(fk_Perfil);
-            Validar();
         }
 
         public void AtribuirNome(string nome)
         {
-            if (string.IsNullOrWhiteSpace(nome))
-            {
-                DomainValidationException.AtribuirExcecao("NOME OBRIGATÓRIO");
-                return;
-            }
-
             if (nome == Nome)
                 return;
 
-            Nome = nome.ToUpper();
+            Nome = nome?.Trim().ToUpper() ?? string.Empty;
         }
 
         public void AtribuirUsuario(string usuario)
         {
-            if (string.IsNullOrWhiteSpace(usuario))
-            {
-                DomainValidationException.AtribuirExcecao("NOME DE USUÁRIO OBRIGATÓRIO");
-                return;
-            }
-
             if (usuario == Usuario)
                 return;
 
-            Usuario = usuario.ToLower();
+            Usuario = usuario?.Trim().ToLower() ?? string.Empty;
         }
 
         public void AtribuirEmail(string email)
         {
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                DomainValidationException.AtribuirExcecao("EMAIL OBRIGATÓRIO");
-                return;
-            }
-
             if (email.ToLower() == Email)
                 return;
 
-            Email = email.ToLower();
+            Email = email?.Trim().ToLower() ?? string.Empty;
         }
 
         public void AtribuirSenha(string senha)
         {
-            if (string.IsNullOrWhiteSpace(senha))
-            {
-                DomainValidationException.AtribuirExcecao("SENHA OBRIGATÓRIO");
-                return;
-            }
-
             if (senha == Senha)
                 return;
 
-            Senha = senha;
+            Senha = senha?.Trim() ?? string.Empty;
         }
 
         public void AtribuirPerfil(int fk_Perfil)
         {
-            if (fk_Perfil == 0)
-            {
-                DomainValidationException.AtribuirExcecao("PERFIL DE USUÁRIO NÃO DECLARADO");
-                return;
-            }
-
             if (fk_Perfil == Fk_Perfil)
                 return;
 
             Fk_Perfil = fk_Perfil;
         }
 
-        public override void Validar()
+        public override bool Validar()
         {
-            if (DomainValidationException.TemExcecoes())
-                throw new AggregateException(DomainValidationException.Excecoes);
+            Clear();
+
+            AddNotifications(new Contract<Notification>()
+                .Requires()
+                .IsNotNullOrWhiteSpace(Nome, "Nome", "NOME DE USUÁRIO OBRIGATÓRIO")
+                .IsNotNullOrWhiteSpace(Usuario, "Usuario", "USUÁRIO OBRIGATÓRIO")
+                .IsNotNullOrWhiteSpace(Email, "Email", "EMAIL OBRIGATÓRIO")
+                .IsNotNullOrWhiteSpace(Senha, "Senha", "SENHA OBRIGATÓRIA")
+                .IsGreaterThan(Fk_Perfil, 0, "Perfil", "PERFIL DE USUÁRIO NÃO DECLARADO")
+            );
+
+            return IsValid;
         }
     }
 }

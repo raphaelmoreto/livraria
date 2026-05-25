@@ -1,38 +1,34 @@
-﻿using Livraria.Application.Enums.Response;
-using Livraria.Application.Interfaces.Services.Response;
+﻿using Livraria.Application.Interfaces.Services.Response;
 
 namespace Livraria.Application.Response
 {
     public class ServiceResponse : IServiceResponse
     {
-        public string Tipo { get; private set; }
-
         public bool Success { get; private set; } = false;
 
         public string Mensagem { get; private set; } = string.Empty;
 
-        public void SetError(string mensagem)
+        public List<string> Notificacoes { get; private set; } = [];
+
+        private ServiceResponse() { }
+
+        public static ServiceResponse Error(string mensagem, IEnumerable<string>? notificacoes = null)
         {
-            Tipo = ResponseEnum.Error.ToString();
-            SetMensagem(mensagem);
+            return new ServiceResponse
+            {
+                Success = false,
+                Mensagem = mensagem,
+                Notificacoes = notificacoes?.ToList() ?? []
+            };
         }
 
-        private void SetMensagem(string mensagem)
+        public static ServiceResponse Ok(string mensagem)
         {
-            Mensagem = mensagem;
-        }
-
-        public void SetSuccess(string mensagem)
-        {
-            Tipo = ResponseEnum.Success.ToString();
-            Success = true;
-            SetMensagem(mensagem);
-        }
-
-        public void SetWarning(string mensagem)
-        {
-            Tipo = ResponseEnum.Warning.ToString();
-            SetMensagem(mensagem);
+            return new ServiceResponse
+            {
+                Success = true,
+                Mensagem = mensagem
+            };
         }
     }
 }

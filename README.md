@@ -38,6 +38,8 @@ Livraria
 * **JWT Authentication**
 * **Swagger** (documentação da API)
 * **EPPlus** (manipulação de arquivos Excel)
+* **QuestPDF** (manipulação de arquivos PDF)
+* **Flunt** (validações e notificações em domínios)
 
 ---
 
@@ -60,12 +62,14 @@ Livraria
 * Entidades
 * Interfaces
 * Dapper.Contrib
+* Flunt
 
 ### 🔹 Livraria.Infrastructure
 
 * Dapper
 * SQL Server (Microsoft.Data.SqlClient)
 * EPPlus (Excel)
+* QuestPDF (PDF)
 * Configurações
 
 ### 🔹 Livraria.IoC

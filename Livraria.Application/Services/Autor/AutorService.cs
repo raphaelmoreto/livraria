@@ -1,5 +1,6 @@
 ﻿using Livraria.Application.Interfaces.Services.Autor;
 using Livraria.Application.Interfaces.Services.Response;
+using Livraria.Application.Response;
 using Livraria.Application.Services.Base;
 using Livraria.Domain.Dtos.Autor;
 using Livraria.Domain.Entities.Autor;
@@ -11,11 +12,7 @@ namespace Livraria.Application.Services.Autor
     {
         private readonly IAutorWriteRepository repositoryAutor;
 
-        public AutorService
-        (
-            IServiceResponse serviceResponse,
-            IAutorWriteRepository repositoryAutor
-        ) : base(serviceResponse)
+        public AutorService(IAutorWriteRepository repositoryAutor)
         {
             this.repositoryAutor = repositoryAutor;
         }
@@ -31,45 +28,34 @@ namespace Livraria.Application.Services.Autor
             (
                 dto.Nome
             );
+            if (!autor.Validar())
+                return ServiceResponse.Error("ERRO DE VALIDAÇÃO", autor.Notifications.Select(x => x.Message));
 
             var insert = await repositoryAutor.Insert(autor);
             if (!insert)
-            {
-                Response.SetError($"ERRO! {insert}");
-                return Response;
-            }
+                return ServiceResponse.Error($"ERRO! {insert}");
 
-            Response.SetSuccess("AUTOR INSERIDO COM SUCESSO");
-            return Response;
+            return ServiceResponse.Ok("AUTOR INSERIDO COM SUCESSO");
         }
 
         public async Task<IServiceResponse> Update(int id, AutorInputDto dto)
         {
             if (id <= 0)
-            {
-                Response.SetError("ID DO AUTOR NÃO INFORMADO!");
-                return Response;
-            }
+                return ServiceResponse.Error("ID DO AUTOR NÃO INFORMADO!");
 
             var autor = await repositoryAutor.GetById(id);
             if (autor == null)
-            {
-                Response.SetError("AUTOR NÃO ENCONTRADO NO BANCO!");
-                return Response;
-            }
+                return ServiceResponse.Error("AUTOR NÃO ENCONTRADO NO BANCO!");
 
             autor.AtribuirNome(dto.Nome);
-            autor.Validar();
+            if (!autor.Validar())
+                return ServiceResponse.Error("ERRO DE VALIDAÇÃO", autor.Notifications.Select(x => x.Message));
 
             var autorAtualizado = await repositoryAutor.Update(autor);
             if (!autorAtualizado)
-            {
-                Response.SetError($"ERRO! {autorAtualizado}");
-                return Response;
-            }
+                return ServiceResponse.Error($"ERRO! {autorAtualizado}");
 
-            Response.SetSuccess("AUTOR ATUALIZADO COM SUCESSO");
-            return Response;
+            return ServiceResponse.Ok("AUTOR ATUALIZADO COM SUCESSO");
         }
     }
 }

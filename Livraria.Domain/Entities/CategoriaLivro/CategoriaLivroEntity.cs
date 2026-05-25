@@ -1,6 +1,7 @@
 ﻿using Dapper.Contrib.Extensions;
+using Flunt.Notifications;
+using Flunt.Validations;
 using Livraria.Domain.Entities.Base;
-using Livraria.Domain.Validations;
 
 namespace Livraria.Domain.Entities.CategoriaLivro
 {
@@ -14,27 +15,26 @@ namespace Livraria.Domain.Entities.CategoriaLivro
         public CategoriaLivroEntity(string nome)
         {
             AtribuirNome(nome);
-            Validar();
         }
 
         public void AtribuirNome(string nome)
         {
-            if (string.IsNullOrWhiteSpace(nome))
-            {
-                DomainValidationException.AtribuirExcecao("NOME DA CATEGORIA NÃO PODE SER NULO/VÁZIO");
-                return;
-            }
-
             if (nome == Nome)
                 return;
 
-            Nome = nome.ToUpper();
+            Nome = nome.Trim().ToUpper() ?? string.Empty;
         }
 
-        public override void Validar()
+        public override bool Validar()
         {
-            if (DomainValidationException.TemExcecoes())
-                throw new AggregateException(DomainValidationException.Excecoes);
+            Clear();
+
+            AddNotifications(new Contract<Notification>()
+                .Requires()
+                .IsNotNullOrWhiteSpace(Nome, "Nome", "NOME DA CATEGORIA NÃO PODE SER NULO/VÁZIO")
+            );
+
+            return IsValid;
         }
     }
 }

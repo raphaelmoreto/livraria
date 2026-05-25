@@ -31,11 +31,6 @@ namespace Livraria.API.Controllers.Usuario
 
                 return Ok(result);
             }
-            catch (AggregateException aggEx)
-            {
-                var excecoes = aggEx.InnerExceptions.Select(ex => ex.Message);
-                return BadRequest(new { excecoes });
-            }
             catch (Exception ex)
             {
                 return StatusCode(500, $"ERRO INTERNO: {ex.Message}");
@@ -56,11 +51,6 @@ namespace Livraria.API.Controllers.Usuario
 
                 return Ok(result);
             }
-            catch (AggregateException aggEx)
-            {
-                var excecoes = aggEx.InnerExceptions.Select(ex => ex.Message);
-                return BadRequest(new { excecoes });
-            }
             catch (Exception ex)
             {
                 return StatusCode(500, $"ERRO INTERNO: {ex.Message}");
@@ -79,11 +69,6 @@ namespace Livraria.API.Controllers.Usuario
                 }
 
                 return Ok(result);
-            }
-            catch (AggregateException aggEx)
-            {
-                var excecoes = aggEx.InnerExceptions.Select(ex => ex.Message);
-                return BadRequest(new { excecoes });
             }
             catch (Exception ex)
             {

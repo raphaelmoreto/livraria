@@ -1,5 +1,6 @@
 ﻿using Livraria.Application.Interfaces.Services.CategoriaLivro;
 using Livraria.Application.Interfaces.Services.Response;
+using Livraria.Application.Response;
 using Livraria.Application.Services.Base;
 using Livraria.Domain.Dtos.CategoriaLivro;
 using Livraria.Domain.Entities.CategoriaLivro;
@@ -11,13 +12,8 @@ namespace Livraria.Application.Services.CategoriaLivro
     {
         private readonly ICategoriaWriteRepository repositoryCategoria;
 
-        public CategoriaLivroService
-        (
-            IServiceResponse serviceResponse,
-            ICategoriaWriteRepository repositoryCategoria
-        ) : base(serviceResponse)
+        public CategoriaLivroService(ICategoriaWriteRepository repositoryCategoria)
         {
-            this.Response = serviceResponse;
             this.repositoryCategoria = repositoryCategoria;
         }
 
@@ -32,45 +28,42 @@ namespace Livraria.Application.Services.CategoriaLivro
             (
                 dto.Nome
             );
+            if (!categoria.Validar())
+                return ServiceResponse.Error
+                (
+                    "ERRO DE VALIDAÇÃO",
+                    categoria.Notifications.Select(x => x.Message)
+                );
 
             var insert = await repositoryCategoria.Insert(categoria);
             if (!insert)
-            {
-                Response.SetError($"ERRO! {insert}");
-                return Response;
-            }
+                return ServiceResponse.Error($"ERRO! {insert}");
 
-            Response.SetSuccess("CATEGORIA CADASTRADA COM SUCESSO");
-            return Response;
+            return ServiceResponse.Ok("CATEGORIA CADASTRADA COM SUCESSO");
         }
 
         public async Task<IServiceResponse> Update(int id, CategoriaLivroInputDto dto)
         {
             if (id <= 0)
-            {
-                Response.SetError("ID DA CATEGORIA NÃO INFORMADA");
-                return Response;
-            }
+                return ServiceResponse.Error("ID DA CATEGORIA NÃO INFORMADA");
 
             var categoria = await repositoryCategoria.GetById(id);
             if (categoria == null)
-            {
-                Response.SetError("CATEGORIA NÃO ENCONTRADA NO BANCO!");
-                return Response;
-            }
+                return ServiceResponse.Error("CATEGORIA NÃO ENCONTRADA NO BANCO!");
 
             categoria.AtribuirNome(dto.Nome);
-            categoria.Validar();
+            if (!categoria.Validar())
+                return ServiceResponse.Error
+                (
+                    "ERRO DE VALIDAÇÃO",
+                    categoria.Notifications.Select(x => x.Message)
+                );
 
             var categoriaAtualizada = await repositoryCategoria.Update(categoria);
             if (!categoriaAtualizada)
-            {
-                Response.SetError($"ERRO! {categoriaAtualizada}");
-                return Response;
-            }
+                return ServiceResponse.Error($"ERRO! {categoriaAtualizada}");
 
-            Response.SetSuccess("CATEGORIA ATUALIZADA COM SUCESSO");
-            return Response;
+            return ServiceResponse.Ok("CATEGORIA ATUALIZADA COM SUCESSO");
         }
     }
 }
