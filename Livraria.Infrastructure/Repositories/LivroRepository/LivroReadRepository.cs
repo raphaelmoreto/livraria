@@ -13,6 +13,8 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
 
         public async Task<IEnumerable<LivroOutputDto>> BuscaPorPaginacao(int page, int pageSize = 20)
         {
+            using var connection = CreateConnection();
+
             //OFFSET É A QUANTIDADE DE LINHAS QUE SERÃO PULADAS
             //PAGESIZE É O LIMITADOR PARA QUANTIDADE DE DADOS A SEREM RETORNARDOS
             var offset = (page - 1) * pageSize;
@@ -43,11 +45,13 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
             sb.AppendLine("OFFSET @Offset ROWS");
             sb.AppendLine("FETCH NEXT @PageSize ROWS ONLY;");
 
-            return await Connection.QueryAsync<LivroOutputDto>(sb.ToString(), new { Offset = offset, PageSize = pageSize });
+            return await connection.QueryAsync<LivroOutputDto>(sb.ToString(), new { Offset = offset, PageSize = pageSize });
         }
 
         public async Task<IEnumerable<LivroOutputDto>> GetAll()
         {
+            using var connection = CreateConnection();
+
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("SELECT l.[id],");
             sb.AppendLine("            l.[titulo],");
@@ -72,11 +76,13 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
             sb.AppendLine("                a.[nome]");
             sb.AppendLine("ORDER BY l.[titulo]");
 
-            return await Connection.QueryAsync<LivroOutputDto>(sb.ToString());
+            return await connection.QueryAsync<LivroOutputDto>(sb.ToString());
         }
 
         public async Task<LivroOutputDto?> GetById(int id)
         {
+            using var connection = CreateConnection();
+
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("SELECT l.[id],");
             sb.AppendLine("            l.[titulo],");
@@ -101,7 +107,7 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
             sb.AppendLine("                l.[qt_estoque],");
             sb.AppendLine("                a.[nome]");
 
-            return await Connection.QueryFirstOrDefaultAsync<LivroOutputDto>(sb.ToString(), new { Id = id });
+            return await connection.QueryFirstOrDefaultAsync<LivroOutputDto>(sb.ToString(), new { Id = id });
         }
     }
 }

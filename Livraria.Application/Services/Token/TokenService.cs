@@ -35,7 +35,7 @@ namespace Livraria.Application.Services.Token
                     }
                 ),
                 //QUANDO O TOKEN EXPIRA.
-                Expires = DateTime.UtcNow.AddMinutes(60),
+                Expires = DateTime.UtcNow.AddMinutes(90),
 
                 //COMO O TOKEN SERÁ ASSINADO
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

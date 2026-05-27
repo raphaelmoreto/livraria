@@ -7,12 +7,18 @@ namespace Livraria.Infrastructure.Repositories._base
     {
         private readonly IDatabaseConnection DbConnection;
 
-        protected readonly IDbConnection Connection;
+        //NÃO UTILIZAR CONEXÃO COMPARTILHADA ENTRE AS CLASSES FILHAS (BaseRead e BaseWrite)! FAZER COM QUE CADA OPERAÇÃO CRIE SUA CONEXÃO (using var connection = DbConnection.GetConnection();)
+        //protected readonly IDbConnection Connection;
 
         public BaseRepository(IDatabaseConnection dbConnection)
         {
             DbConnection = dbConnection;
-            Connection = DbConnection.GetConnection();
+            //Connection = DbConnection.GetConnection();
+        }
+
+        protected IDbConnection CreateConnection()
+        {
+            return DbConnection.GetConnection();
         }
     }
 }

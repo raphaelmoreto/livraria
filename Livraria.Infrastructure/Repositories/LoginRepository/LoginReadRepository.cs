@@ -13,6 +13,8 @@ namespace Livraria.Infrastructure.Repositories.LoginRepository
 
         public async Task<LoginOutputDto?> ValidarLogin(LoginInputDto login)
         {
+            using var connection = CreateConnection();
+
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("SELECT u.[id],");
             sb.AppendLine("            u.[nome],");
@@ -23,7 +25,7 @@ namespace Livraria.Infrastructure.Repositories.LoginRepository
             sb.AppendLine("AND [u].[senha] = @Senha");
             sb.AppendLine("AND [u].[Ativo] = 1");
 
-            return await Connection.QueryFirstOrDefaultAsync<LoginOutputDto>(sb.ToString(), new { login.Usuario, login.Senha });
+            return await connection.QueryFirstOrDefaultAsync<LoginOutputDto>(sb.ToString(), new { login.Usuario, login.Senha });
         }
     }
 }

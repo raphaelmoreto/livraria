@@ -14,7 +14,8 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
 
         public async Task<bool> Insert(LivroEntity livro, string usuarioLogado)
         {
-            using var transaction = BeginTransaction();
+            using var connection = CreateConnection();
+            using var transaction = BeginTransaction(connection);
 
             try
             {
@@ -25,7 +26,7 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
                 sb.AppendLine("WHERE [titulo] = @Titulo");
                 sb.AppendLine("AND [isbn] = @Isbn;");
 
-                var livroBanco = await Connection.QueryFirstOrDefaultAsync<(int id, int qt_estoque)>(sb.ToString(), new { livro.Titulo, livro.Isbn }, transaction);
+                var livroBanco = await connection.QueryFirstOrDefaultAsync<(int id, int qt_estoque)>(sb.ToString(), new { livro.Titulo, livro.Isbn }, transaction);
 
                 int idLivro;
                 if (livroBanco.id == 0) //SE O SELECT NÃO RETORNAR UM ID FAZER A INSERÇÃO NO BANCO
@@ -48,7 +49,7 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
                         livro.Fk_Autor
                     };
 
-                    idLivro = await Connection.QuerySingleAsync<int>(sb2.ToString(), param, transaction);
+                    idLivro = await connection.QuerySingleAsync<int>(sb2.ToString(), param, transaction);
 
                     StringBuilder sb3 = new StringBuilder();
                     sb3.AppendLine("INSERT INTO [dbo].[Categoria_Livro] ([fk_categoria], [fk_livro])");
@@ -56,16 +57,16 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
 
                     foreach (var categoria in livro.Fk_Categoria)
                     {
-                        await Connection.ExecuteAsync(sb3.ToString(), new { Fk_Categoria = categoria, Fk_Livro = idLivro }, transaction);
+                        await connection.ExecuteAsync(sb3.ToString(), new { Fk_Categoria = categoria, Fk_Livro = idLivro }, transaction);
                     }
                 }
                 else //SE O SELECT RETORNAR UM ID FAZER A ATUALIZAÇÃO DO ESTOQUE
                 {
                     idLivro = livroBanco.id;
-                    await AtualizarEstoqueLivro(livro.Qt_Estoque, idLivro, transaction);
+                    await AtualizarEstoqueLivro(livro.Qt_Estoque, idLivro, connection, transaction);
                 }
 
-                var movimentacao = await InserirMovimentacao(livro.Qt_Estoque, idLivro, usuarioLogado, transaction);
+                var movimentacao = await InserirMovimentacao(livro.Qt_Estoque, idLivro, usuarioLogado, connection, transaction);
 
                 if (!movimentacao)
                 {
@@ -83,17 +84,17 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
             }
         }
 
-        private async Task AtualizarEstoqueLivro(int qt_estoque, int idLivro, IDbTransaction transaction)
+        private async Task AtualizarEstoqueLivro(int qt_estoque, int idLivro, IDbConnection connection, IDbTransaction transaction)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("UPDATE [dbo].[Livro]");
             sb.AppendLine("SET [qt_estoque] = [qt_estoque] + @Qt_Estoque");
             sb.AppendLine("WHERE [id] = @Id;");
 
-            await Connection.ExecuteAsync(sb.ToString(), new { qt_estoque, Id = idLivro }, transaction);
+            await connection.ExecuteAsync(sb.ToString(), new { qt_estoque, Id = idLivro }, transaction);
         }
 
-        private async Task<bool> InserirMovimentacao(int qt_estoque, int idLivro, string usuarioLogado, IDbTransaction transaction)
+        private async Task<bool> InserirMovimentacao(int qt_estoque, int idLivro, string usuarioLogado, IDbConnection connection, IDbTransaction transaction)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("INSERT INTO [dbo].[Movimentacao] ([tipo], [dt_movimentacao], [quantidade], [fk_origem], [fk_livro], [fk_usuario])");
@@ -106,11 +107,13 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
                 FK_Usuario = usuarioLogado
             };
 
-            return await Connection.ExecuteAsync(sb.ToString(), param, transaction) > 0;
+            return await connection.ExecuteAsync(sb.ToString(), param, transaction) > 0;
         }
 
         public override async Task<bool> Update(LivroEntity livro)
         {
+            using var connection = CreateConnection();
+
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("UPDATE [dbo].[Livros]");
             sb.AppendLine("SET [titulo] = @Titulo,");
@@ -134,17 +137,19 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
                 livro.Fk_Autor
             };
 
-            return await Connection.ExecuteAsync(sb.ToString(), param) > 0;
+            return await connection.ExecuteAsync(sb.ToString(), param) > 0;
         }
 
         public async Task<bool> RemoverCategorias(int idLivro, int categoria)
         {
+            using var connection = CreateConnection();
+
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("DELETE FROM [dbo].[Categoria_Livro]");
             sb.AppendLine("WHERE [fk_livro] = @Fk_Livro");
             sb.AppendLine("AND [fk_categoria] = @Categoria");
 
-            return await Connection.ExecuteAsync(sb.ToString(), new { Fk_Livro = idLivro, Categoria = categoria }) > 0;
+            return await connection.ExecuteAsync(sb.ToString(), new { Fk_Livro = idLivro, Categoria = categoria }) > 0;
         }
     }
 }

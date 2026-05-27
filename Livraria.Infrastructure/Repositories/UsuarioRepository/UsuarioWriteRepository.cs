@@ -13,6 +13,8 @@ namespace Livraria.Infrastructure.Repositories.UsuarioRepository
 
         public async Task<bool> DeletarCadastro(int id)
         {
+            using var connection = CreateConnection();
+
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("UPDATE [dbo].[Usuario]");
             sb.AppendLine("SET [dt_exclusao] = @Dt_Exclusao,");
@@ -25,11 +27,13 @@ namespace Livraria.Infrastructure.Repositories.UsuarioRepository
                 Dt_Exclusao = DateTime.Now
             };
 
-            return await Connection.ExecuteAsync(sb.ToString(), param) > 0;
+            return await connection.ExecuteAsync(sb.ToString(), param) > 0;
         }
 
         public override async Task<bool> Insert(UsuarioEntity usuario)
         {
+            using var connection = CreateConnection();
+
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("INSERT INTO [dbo].[Usuario] ([nome], [usuario], [email], [senha], [dt_cadastro], [fk_perfil])");
             sb.AppendLine("SELECT @Nome,");
@@ -55,11 +59,13 @@ namespace Livraria.Infrastructure.Repositories.UsuarioRepository
                 usuario.Fk_Perfil
             };
 
-            return await Connection.ExecuteAsync(sb.ToString(), param) > 0;
+            return await connection.ExecuteAsync(sb.ToString(), param) > 0;
         }
 
         public override async Task<bool> Update(UsuarioEntity usuario)
         {
+            using var connection = CreateConnection();
+
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("UPDATE [dbo].[Usuario]");
             sb.AppendLine("SET [nome] = @Nome,");
@@ -79,11 +85,13 @@ namespace Livraria.Infrastructure.Repositories.UsuarioRepository
                 usuario.Fk_Perfil
             };
 
-            return await Connection.ExecuteAsync(sb.ToString(), param) > 0;
+            return await connection.ExecuteAsync(sb.ToString(), param) > 0;
         }
 
         public async Task<bool> VerificarIdDoPerfil(int idPerfil)
         {
+            using var connection = CreateConnection();
+
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("SELECT");
             sb.AppendLine("     CASE");
@@ -93,7 +101,7 @@ namespace Livraria.Infrastructure.Repositories.UsuarioRepository
             sb.AppendLine("FROM [dbo].[Perfil_Usuario]");
             sb.AppendLine("WHERE [Perfil_Usuario].[id] = @Id");
 
-            return await Connection.QuerySingleAsync<int>(sb.ToString(), new { Id = idPerfil }) > 0;
+            return await connection.QuerySingleAsync<int>(sb.ToString(), new { Id = idPerfil }) > 0;
         }
     }
 }

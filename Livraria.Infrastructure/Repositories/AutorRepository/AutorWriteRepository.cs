@@ -23,6 +23,8 @@ namespace Livraria.Infrastructure.Repositories.AutorRepository
 
         public override async Task<bool> Insert(AutorEntity autor)
         {
+            using var connection = CreateConnection();
+
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("INSERT INTO [dbo].[Autor] ([nome])");
             sb.AppendLine("SELECT @Nome");
@@ -32,11 +34,13 @@ namespace Livraria.Infrastructure.Repositories.AutorRepository
             sb.AppendLine("         WHERE autor.nome = @Nome");
             sb.AppendLine(")");
 
-            return await Connection.ExecuteAsync(sb.ToString(), new { autor.Nome }) > 0;
+            return await connection.ExecuteAsync(sb.ToString(), new { autor.Nome }) > 0;
         }
 
         public override async Task<bool> Update(AutorEntity autor)
         {
+            using var connection = CreateConnection();
+
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("UPDATE [dbo].[Autor]");
             sb.AppendLine("SET [nome] = @Nome");
@@ -47,7 +51,7 @@ namespace Livraria.Infrastructure.Repositories.AutorRepository
             sb.AppendLine("         WHERE autor.nome = @Nome");
             sb.AppendLine(")");
 
-            return await Connection.ExecuteAsync(sb.ToString(), new { autor.Id,  autor.Nome }) > 0;
+            return await connection.ExecuteAsync(sb.ToString(), new { autor.Id,  autor.Nome }) > 0;
         }
     }
 }

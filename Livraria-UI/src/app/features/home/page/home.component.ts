@@ -30,9 +30,7 @@ export class HomeComponent implements OnInit {
             //O "..." É O "Spread Operator". ELE CRIA UMA NOVA LISTA NA MÉMORIA JUNTANDO AS DUAS INDICADAS
             this.lstLivros = [...this.lstLivros, ...res];
             this.carregando = false;
-        });
-
-        
+        });        
     }
 
     carregarMais(): void {

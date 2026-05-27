@@ -10,22 +10,42 @@ namespace Livraria.Infrastructure.Repositories.Base
     {
         public BaseWrite(IDatabaseConnection dbConnection) : base(dbConnection) { }
 
-        protected IDbTransaction BeginTransaction()
+        protected IDbTransaction BeginTransaction(IDbConnection connection)
         {
-            if (Connection.State == ConnectionState.Closed)
-                Connection.Open();
+            if (connection.State == ConnectionState.Closed)
+                connection.Open();
 
-            return Connection.BeginTransaction();
+            return connection.BeginTransaction();
         }
 
-        public virtual async Task<bool> Delete(T entity) => await Connection.DeleteAsync(entity);
+        public virtual async Task<bool> Delete(T entity)
+        {
+            using var connection = CreateConnection();
+            return await connection.DeleteAsync(entity);
+        }
 
-        public virtual async Task<T?> GetById(int id) => await Connection.GetAsync<T>(id);
+        public virtual async Task<T?> GetById(int id)
+        {
+            using var connection = CreateConnection();
+            return await connection.GetAsync<T>(id);
+        }
 
-        public virtual async Task<IEnumerable<T>> GetAll() => await Connection.GetAllAsync<T>();
+        public virtual async Task<IEnumerable<T>> GetAll()
+        {
+            using var connection = CreateConnection();
+            return await connection.GetAllAsync<T>();
+        }
 
-        public virtual async Task<bool> Insert(T entity) => await Connection.InsertAsync(entity) > 0;
+        public virtual async Task<bool> Insert(T entity)
+        {
+            using var connection = CreateConnection();
+            return await connection.InsertAsync(entity) > 0;
+        }
 
-        public virtual async Task<bool> Update(T entity) => await Connection.UpdateAsync(entity);
+        public virtual async Task<bool> Update(T entity)
+        {
+            using var connection = CreateConnection();
+            return await connection.UpdateAsync(entity);
+        }
     }
 }

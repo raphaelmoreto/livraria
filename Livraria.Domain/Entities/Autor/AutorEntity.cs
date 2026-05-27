@@ -10,7 +10,7 @@ namespace Livraria.Domain.Entities.Autor
     {
         public string Nome {  get; private set; }
 
-        public AutorEntity() { }
+        private AutorEntity() { }
 
         public AutorEntity(string nome)
         {

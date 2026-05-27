@@ -10,7 +10,7 @@ namespace Livraria.Domain.Entities.CategoriaLivro
     {
         public string Nome {  get; private set; }
 
-        public CategoriaLivroEntity() { }
+        private CategoriaLivroEntity() { }
 
         public CategoriaLivroEntity(string nome)
         {

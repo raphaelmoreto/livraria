@@ -24,7 +24,7 @@ namespace Livraria.Domain.Entities.Livro
 
         public List<int> Fk_Categoria { get; private set; } = [];
 
-        public LivroEntity() { }
+        private LivroEntity() { }
 
         public LivroEntity(string titulo, string isbn, DateTime dt_publicacao, decimal preco, int qt_estoque, List<int> fk_categoria, string? subtitulo = null, int? fk_autor = null)
         {

@@ -18,7 +18,7 @@ namespace Livraria.Domain.Entities.Usuario
 
         public int Fk_Perfil { get; private set; }
 
-        public UsuarioEntity() { }
+        private UsuarioEntity() { }
 
         public UsuarioEntity(string nome, string usuario, string email, string senha, int fk_Perfil)
         {
