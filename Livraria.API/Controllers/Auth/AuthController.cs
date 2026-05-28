@@ -24,14 +24,14 @@ namespace Livraria.API.Controllers.Auth
         public async Task<IActionResult> Login([FromBody] LoginInputDto loginDto)
         {
             if (string.IsNullOrWhiteSpace(loginDto.Usuario) && string.IsNullOrWhiteSpace(loginDto.Senha))
-                return Erro("USUÁRIO E SENHA SÃO OBRIGATÓRIOS");
+                return BadRequest("USUÁRIO E SENHA SÃO OBRIGATÓRIOS");
 
             var usuario = await loginReadRepository.ValidarLogin(loginDto);
             if (usuario is null)
-                return NaoAutorizado("USUÁRIO OU SENHA INVÁLIDOS!");
+                return Unauthorized("USUÁRIO OU SENHA INVÁLIDOS!");
 
             var token = tokenService.GerarToken(usuario);
-            return Sucesso( new { token, usuario });
+            return Ok( new { token, usuario });
         }
     }
 }

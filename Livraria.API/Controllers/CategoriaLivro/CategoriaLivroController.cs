@@ -31,7 +31,7 @@ namespace Livraria.API.Controllers.CategoriaLivro
         public async Task<IActionResult> GetCategorias()
         {
                 var result = await repositoryRead.GetAll();
-                return Sucesso(result);
+                return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -40,9 +40,10 @@ namespace Livraria.API.Controllers.CategoriaLivro
             var result = await repositoryRead.GetById(id);
             if (result == null)
             {
-                return NaoEncontrado("CATEGORIA NÃO ENCONTRADA");
+                return Unauthorized("CATEGORIA NÃO ENCONTRADA");
             }
-            return Sucesso(result);
+
+            return Ok(result);
         }
 
         [HttpPost]
@@ -54,10 +55,10 @@ namespace Livraria.API.Controllers.CategoriaLivro
                 if (result.TipoErro == TipoErro.Conflict)
                     return Conflict(result);
 
-                return RegraNegocio(result);
+                return UnprocessableEntity(result);
             }
 
-            return Sucesso(result);
+            return Ok(result);
         }
 
         [HttpPut("{id}")]
@@ -69,10 +70,10 @@ namespace Livraria.API.Controllers.CategoriaLivro
                 if (result.TipoErro == TipoErro.Conflict)
                     return Conflict(result);
 
-                return RegraNegocio(result);
+                return UnprocessableEntity(result);
             }
 
-            return Sucesso(result);
+            return Ok(result);
         }
     }
 }

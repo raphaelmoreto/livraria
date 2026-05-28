@@ -27,7 +27,7 @@ namespace Livraria.API.Controllers.Autor
         public async Task<IActionResult> GetAutores()
         {
             var result = await autorRead.GetAll();
-            return Sucesso(result);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -36,9 +36,10 @@ namespace Livraria.API.Controllers.Autor
             var result = await autorRead.GetById(id);
             if (result == null)
             {
-                return NaoEncontrado("AUTOR NÃO ENCONTRADO");
+                return NotFound("AUTOR NÃO ENCONTRADO");
             }
-            return Sucesso(result);            
+
+            return Ok(result);            
         }
 
         [HttpPost]
@@ -48,12 +49,12 @@ namespace Livraria.API.Controllers.Autor
             if (!result.Success)
             {
                 if (result.TipoErro == TipoErro.Conflict)
-                    return Conflito(result);
+                    return Conflict(result);
 
-                return RegraNegocio(result);
+                return UnprocessableEntity(result);
             }
 
-            return Sucesso(result);           
+            return Ok(result);           
         }
 
         [HttpPut("{id}")]
@@ -63,9 +64,9 @@ namespace Livraria.API.Controllers.Autor
             if (!result.Success)
             {
                 if (result.TipoErro == TipoErro.Conflict)
-                    return Conflito(result);
+                    return Conflict(result);
 
-                return RegraNegocio(result);
+                return UnprocessableEntity(result);
             }
 
             return Ok(result);

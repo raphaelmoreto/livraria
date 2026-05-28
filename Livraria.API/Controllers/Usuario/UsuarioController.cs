@@ -28,10 +28,10 @@ namespace Livraria.API.Controllers.Usuario
                 if (result.TipoErro == TipoErro.Conflict)
                     return Conflict(result);
 
-                return RegraNegocio(result);
+                return UnprocessableEntity(result);
             }
 
-            return Sucesso(result);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -44,10 +44,10 @@ namespace Livraria.API.Controllers.Usuario
                 if (result.TipoErro == TipoErro.Conflict)
                     return Conflict(result);
 
-                return RegraNegocio(result);
+                return UnprocessableEntity(result);
             }
 
-            return Sucesso(result);
+            return Ok(result);
         }
 
         [HttpPut("{id}")]
@@ -59,7 +59,7 @@ namespace Livraria.API.Controllers.Usuario
                 if (result.TipoErro == TipoErro.Conflict)
                     return Conflict(result);
 
-                return RegraNegocio(result);
+                return UnprocessableEntity(result);
             }
 
             return Ok(result);

@@ -24,7 +24,7 @@ namespace Livraria.API.Controllers.Livro
             this.livroRead = livroRead;
         }
 
-        [HttpDelete("remover-categorias/{idLivro}")]
+        [HttpDelete("remover/categorias/{idLivro}")]
         public async Task<IActionResult> RemoverCategorias([FromRoute] int idLivro, List<int> categorias)
         {
             var result = await livroService.RemoverCategorias(idLivro, categorias);
@@ -33,13 +33,13 @@ namespace Livraria.API.Controllers.Livro
                 if (result.TipoErro == TipoErro.Conflict)
                     return Conflict(result);
 
-                return RegraNegocio(result);
+                return UnprocessableEntity(result);
             }
 
             return Ok(result);
         }
 
-        [HttpGet("download-livros")]
+        [HttpGet("download/livros")]
         public async Task<IActionResult> DownloadLivros([FromQuery] string extensao)
         {
                 var result = await livroService.DownloadLivros(extensao);
@@ -51,7 +51,7 @@ namespace Livraria.API.Controllers.Livro
         public async Task<IActionResult> GetLivros()
         {
             var result = await livroRead.GetAll();
-            return Sucesso(result);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -60,17 +60,18 @@ namespace Livraria.API.Controllers.Livro
             var result = await livroRead.GetById(id);
             if (result == null)
             {
-                return NaoEncontrado("LIVRO NÃO ENCONTRADO");
+                return NotFound("LIVRO NÃO ENCONTRADO");
             }
-            return Sucesso(result);
+
+            return Ok(result);
         }
 
-        [HttpGet("busca-por-paginacao")]
+        [HttpGet("busca/paginacao")]
         [AllowAnonymous]
         public async Task<IActionResult> GetPorPaginacao(int page = 1, int pageSize = 20)
         {
             var result = await livroRead.BuscaPorPaginacao(page, pageSize);
-            return Sucesso(result);
+            return Ok(result);
         }
 
         [HttpPost]
@@ -82,7 +83,7 @@ namespace Livraria.API.Controllers.Livro
                 if (result.TipoErro == TipoErro.Conflict)
                     return Conflict(result);
 
-                return RegraNegocio(result);
+                return UnprocessableEntity(result);
             }
 
             return Ok(result);
@@ -97,7 +98,7 @@ namespace Livraria.API.Controllers.Livro
                 if (result.TipoErro == TipoErro.Conflict)
                     return Conflict(result);
 
-                return RegraNegocio(result);
+                return UnprocessableEntity(result);
             }
             return Ok(result);
         }
