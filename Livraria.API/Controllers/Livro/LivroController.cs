@@ -1,10 +1,11 @@
 ﻿using Livraria.API.Controllers.Base;
 using Livraria.API.Helpers.MimeType;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+using Livraria.Application.Enum.Response;
 using Livraria.Application.Interfaces.Services.Livro;
 using Livraria.Domain.Dtos.Livro;
 using Livraria.Domain.Interfaces.Repositories.Livro;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Livraria.API.Controllers.Livro
 {
@@ -26,125 +27,79 @@ namespace Livraria.API.Controllers.Livro
         [HttpDelete("remover-categorias/{idLivro}")]
         public async Task<IActionResult> RemoverCategorias([FromRoute] int idLivro, List<int> categorias)
         {
-            try
+            var result = await livroService.RemoverCategorias(idLivro, categorias);
+            if (!result.Success)
             {
-                var result = await livroService.RemoverCategorias(idLivro, categorias);
-                if (!result.Success)
+                if (result.TipoErro == TipoErro.Conflict)
                     return Conflict(result);
 
-                return Ok(result);
+                return RegraNegocio(result);
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"ERRO INTERNO: {ex.Message}");
-            }
+
+            return Ok(result);
         }
 
         [HttpGet("download-livros")]
         public async Task<IActionResult> DownloadLivros([FromQuery] string extensao)
         {
-            try
-            {
                 var result = await livroService.DownloadLivros(extensao);
                 return File(result, MimeTypeHelper.GetMimeType(extensao), $"download-livros{extensao}");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
         }
 
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> GetLivros()
         {
-            try
-            {
-                var result = await livroRead.GetAll();
-                if (result == null)
-                {
-                    return NotFound("LISTAGEM DE LIVROS VÁZIA");
-                }
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"ERRO INTERNO: {ex.Message} ");
-            }
+            var result = await livroRead.GetAll();
+            return Sucesso(result);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetLivroPorId([FromRoute] int id)
         {
-            try
+            var result = await livroRead.GetById(id);
+            if (result == null)
             {
-                var result = await livroRead.GetById(id);
-                if (result == null)
-                {
-                    return NotFound("LIVRO NÃO ENCONTRADO");
-                }
-                return Ok(result);
+                return NaoEncontrado("LIVRO NÃO ENCONTRADO");
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"ERRO INTERNO: {ex.Message}");
-            }
+            return Sucesso(result);
         }
 
         [HttpGet("busca-por-paginacao")]
         [AllowAnonymous]
         public async Task<IActionResult> GetPorPaginacao(int page = 1, int pageSize = 20)
         {
-            try
-            {
-                var result = await livroRead.BuscaPorPaginacao(page, pageSize);
-                if (result == null)
-                {
-                    return NotFound("LISTAGEM DE LIVROS VÁZIA");
-                }
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"ERRO INTERNO: {ex.Message}");
-            }
+            var result = await livroRead.BuscaPorPaginacao(page, pageSize);
+            return Sucesso(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> PostLivro([FromBody] LivroInputDto livro)
         {
-            try
+            var result = await livroService.Insert(livro, UsuarioLogado);
+            if (!result.Success)
             {
-                var result = await livroService.Insert(livro, UsuarioLogado);
-                if (!result.Success)
-                {
+                if (result.TipoErro == TipoErro.Conflict)
                     return Conflict(result);
-                }
 
-                return Ok(result);
+                return RegraNegocio(result);
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"ERRO INTERNO: {ex.Message}");
-            }
+
+            return Ok(result);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLivro([FromRoute] int id, [FromBody] LivroInputDto livro)
         {
-            try
+            var result = await livroService.Update(id, livro);
+            if (!result.Success)
             {
-                var result = await livroService.Update(id, livro);
-                if (!result.Success)
-                {
+                if (result.TipoErro == TipoErro.Conflict)
                     return Conflict(result);
-                }
-                return Ok(result);
+
+                return RegraNegocio(result);
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"ERRO INTERNO: {ex.Message}");
-            }
+            return Ok(result);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Livraria.Application.Interfaces.Services.Livro;
+﻿using Livraria.Application.Enum.Response;
+using Livraria.Application.Interfaces.Services.Livro;
 using Livraria.Application.Interfaces.Services.Response;
 using Livraria.Application.Services.Base;
 using Livraria.Application.Response;
@@ -57,7 +58,7 @@ namespace Livraria.Application.Services.Livro
             {
                 var idCategoria = await categoriaReadRepository.VerificarIdDaCategoria(categoria);
                 if (!idCategoria)
-                    return ServiceResponse.Error($"CATEGORIA DE Nº{categoria} NÃO ENCONTRADA NO BANCO!");
+                    return ServiceResponse.Error(TipoErro.NotFound, $"CATEGORIA DE Nº{categoria} NÃO ENCONTRADA NO BANCO!");
             }
 
             int idAutor = 0;
@@ -65,7 +66,7 @@ namespace Livraria.Application.Services.Livro
             {
                 var idAutorBanco = await autorReadRepository.VerificarIdDoAutor(dto.Autor.Value);
                 if (!idAutorBanco)
-                    return ServiceResponse.Error("AUTOR NÃO ENCONTRADO NO BANCO!");
+                    return ServiceResponse.Error(TipoErro.NotFound, "AUTOR NÃO ENCONTRADO NO BANCO!");
 
                 else
                     idAutor = dto.Autor.Value;
@@ -83,11 +84,11 @@ namespace Livraria.Application.Services.Livro
                 idAutor
             );
             if (!livro.Validar())
-                return ServiceResponse.Error("ERRO DE VALIDAÇÃO", livro.Notifications.Select(x => x.Message));
+                return ServiceResponse.Error(TipoErro.Validation, "ERRO DE VALIDAÇÃO", livro.Notifications.Select(x => x.Message));
 
             var insert = await repositoryLivro.Insert(livro, usuarioLogado);
             if (!insert)
-                return ServiceResponse.Error($"ERRO! {insert}");
+                return ServiceResponse.Error(TipoErro.Conflict, $"ERRO! {insert}");
 
             return ServiceResponse.Ok("LIVRO CADASTRADO COM SUCESSO");
         }
@@ -95,23 +96,23 @@ namespace Livraria.Application.Services.Livro
         public async Task<IServiceResponse> RemoverCategorias(int idLivro, List<int> categorias)
         {
             if (idLivro <= 0)
-                return ServiceResponse.Error("ID DO AUTOR NÃO INFORMADO!");
+                return ServiceResponse.Error(TipoErro.NotFound, "ID DO AUTOR NÃO INFORMADO!");
 
             if (categorias.Count <= 0)
-                return ServiceResponse.Error("LISTA DE CATEGORIAS VÁZIA");
+                return ServiceResponse.Error(TipoErro.BadRequest, "LISTA DE CATEGORIAS VÁZIA");
 
             foreach (var categoria in categorias)
             {
                 var idCategoria = await categoriaReadRepository.VerificarIdDaCategoria(categoria);
                 if (!idCategoria)
-                    return ServiceResponse.Error($"CATEGORIA DE Nº{categoria} NÃO ENCONTRADA NO BANCO!");
+                    return ServiceResponse.Error(TipoErro.NotFound, $"CATEGORIA DE Nº{categoria} NÃO ENCONTRADA NO BANCO!");
             }
 
             foreach (var categoria in categorias)
             {
                 bool exclusaoCategoria = await repositoryLivro.RemoverCategorias(idLivro, categoria);
                 if (!exclusaoCategoria)
-                    return ServiceResponse.Error($"ERRO AO EXCLUIR CATEGORIA Nº{categoria}");
+                    return ServiceResponse.Error(TipoErro.Conflict, $"ERRO AO EXCLUIR CATEGORIA Nº{categoria}");
             }
 
             return ServiceResponse.Ok("CATEGORIAS REMOVIDAS COM SUCESSO");
@@ -120,13 +121,13 @@ namespace Livraria.Application.Services.Livro
         public async Task<IServiceResponse> Update(int id, LivroInputDto dto)
         {
             if (id <= 0)
-                return ServiceResponse.Error("ID DO AUTOR NÃO INFORMADO!");
+                return ServiceResponse.Error(TipoErro.NotFound, "ID DO AUTOR NÃO INFORMADO!");
 
             foreach (var categoria in dto.Fk_Categoria)
             {
                 var idCategoria = await categoriaReadRepository.VerificarIdDaCategoria(categoria);
                 if (!idCategoria)
-                    return ServiceResponse.Error($"CATEGORIA DE Nº{categoria} NÃO ENCONTRADA NO BANCO!");
+                    return ServiceResponse.Error(TipoErro.NotFound, $"CATEGORIA DE Nº{categoria} NÃO ENCONTRADA NO BANCO!");
             }
 
             int idAutor = 0;
@@ -134,7 +135,7 @@ namespace Livraria.Application.Services.Livro
             {
                 var idAutorBanco = await autorReadRepository.VerificarIdDoAutor(dto.Autor.Value);
                 if (!idAutorBanco)
-                    return ServiceResponse.Error("AUTOR NÃO ENCONTRADO NO BANCO!");
+                    return ServiceResponse.Error(TipoErro.NotFound, "AUTOR NÃO ENCONTRADO NO BANCO!");
 
                 else
                     idAutor = dto.Autor.Value;
@@ -142,7 +143,7 @@ namespace Livraria.Application.Services.Livro
 
             var livro = await repositoryLivro.GetById(id);
             if (livro == null)
-                return ServiceResponse.Error("LIVRO NÃO ENCONTRADO NO BANCO!");
+                return ServiceResponse.Error(TipoErro.NotFound, "LIVRO NÃO ENCONTRADO NO BANCO!");
 
             livro.AtribuirTitulo(dto.Titulo);
             livro.AtribuirIsbn(dto.Isbn);
@@ -152,11 +153,11 @@ namespace Livraria.Application.Services.Livro
             livro.AtribuirSubtitulo(dto.Subtitulo);
             livro.AtribuirAutor(idAutor);
             if (!livro.Validar())
-                return ServiceResponse.Error("ERRO DE VALIDAÇÃO", livro.Notifications.Select(x => x.Message));
+                return ServiceResponse.Error(TipoErro.Validation, "ERRO DE VALIDAÇÃO", livro.Notifications.Select(x => x.Message));
 
             var update = await repositoryLivro.Update(livro); //ToDo: FAZER UPDATE PARA O LIVRO
             if (!update)
-                return ServiceResponse.Error($"ERRO! {update}");
+                return ServiceResponse.Error(TipoErro.Conflict, $"ERRO! {update}");
 
             return ServiceResponse.Ok("LIVRO ATUALIZADO COM SUCESSO");
         }

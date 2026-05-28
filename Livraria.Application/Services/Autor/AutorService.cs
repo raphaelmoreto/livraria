@@ -1,4 +1,5 @@
-﻿using Livraria.Application.Interfaces.Services.Autor;
+﻿using Livraria.Application.Enum.Response;
+using Livraria.Application.Interfaces.Services.Autor;
 using Livraria.Application.Interfaces.Services.Response;
 using Livraria.Application.Response;
 using Livraria.Application.Services.Base;
@@ -29,11 +30,11 @@ namespace Livraria.Application.Services.Autor
                 dto.Nome
             );
             if (!autor.Validar())
-                return ServiceResponse.Error("ERRO DE VALIDAÇÃO", autor.Notifications.Select(x => x.Message));
+                return ServiceResponse.Error(TipoErro.Validation, "ERRO DE VALIDAÇÃO", autor.Notifications.Select(x => x.Message));
 
             var insert = await repositoryAutor.Insert(autor);
             if (!insert)
-                return ServiceResponse.Error($"ERRO! {insert}");
+                return ServiceResponse.Error(TipoErro.Conflict, $"ERRO! {insert}");
 
             return ServiceResponse.Ok("AUTOR INSERIDO COM SUCESSO");
         }
@@ -41,19 +42,19 @@ namespace Livraria.Application.Services.Autor
         public async Task<IServiceResponse> Update(int id, AutorInputDto dto)
         {
             if (id <= 0)
-                return ServiceResponse.Error("ID DO AUTOR NÃO INFORMADO!");
+                return ServiceResponse.Error(TipoErro.Conflict, "ID DO AUTOR NÃO INFORMADO!");
 
             var autor = await repositoryAutor.GetById(id);
             if (autor == null)
-                return ServiceResponse.Error("AUTOR NÃO ENCONTRADO NO BANCO!");
+                return ServiceResponse.Error(TipoErro.NotFound, "AUTOR NÃO ENCONTRADO NO BANCO!");
 
             autor.AtribuirNome(dto.Nome);
             if (!autor.Validar())
-                return ServiceResponse.Error("ERRO DE VALIDAÇÃO", autor.Notifications.Select(x => x.Message));
+                return ServiceResponse.Error(TipoErro.Validation, "ERRO DE VALIDAÇÃO", autor.Notifications.Select(x => x.Message));
 
             var autorAtualizado = await repositoryAutor.Update(autor);
             if (!autorAtualizado)
-                return ServiceResponse.Error($"ERRO! {autorAtualizado}");
+                return ServiceResponse.Error(TipoErro.Conflict, $"ERRO! {autorAtualizado}");
 
             return ServiceResponse.Ok("AUTOR ATUALIZADO COM SUCESSO");
         }

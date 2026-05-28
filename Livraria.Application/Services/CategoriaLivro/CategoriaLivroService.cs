@@ -1,4 +1,5 @@
-﻿using Livraria.Application.Interfaces.Services.CategoriaLivro;
+﻿using Livraria.Application.Enum.Response;
+using Livraria.Application.Interfaces.Services.CategoriaLivro;
 using Livraria.Application.Interfaces.Services.Response;
 using Livraria.Application.Response;
 using Livraria.Application.Services.Base;
@@ -31,13 +32,14 @@ namespace Livraria.Application.Services.CategoriaLivro
             if (!categoria.Validar())
                 return ServiceResponse.Error
                 (
+                    TipoErro.Validation,
                     "ERRO DE VALIDAÇÃO",
                     categoria.Notifications.Select(x => x.Message)
                 );
 
             var insert = await repositoryCategoria.Insert(categoria);
             if (!insert)
-                return ServiceResponse.Error($"ERRO! {insert}");
+                return ServiceResponse.Error(TipoErro.Conflict, $"ERRO! {insert}");
 
             return ServiceResponse.Ok("CATEGORIA CADASTRADA COM SUCESSO");
         }
@@ -45,23 +47,24 @@ namespace Livraria.Application.Services.CategoriaLivro
         public async Task<IServiceResponse> Update(int id, CategoriaLivroInputDto dto)
         {
             if (id <= 0)
-                return ServiceResponse.Error("ID DA CATEGORIA NÃO INFORMADA");
+                return ServiceResponse.Error(TipoErro.NotFound, "ID DA CATEGORIA NÃO INFORMADA");
 
             var categoria = await repositoryCategoria.GetById(id);
             if (categoria == null)
-                return ServiceResponse.Error("CATEGORIA NÃO ENCONTRADA NO BANCO!");
+                return ServiceResponse.Error(TipoErro.NotFound, "CATEGORIA NÃO ENCONTRADA NO BANCO!");
 
             categoria.AtribuirNome(dto.Nome);
             if (!categoria.Validar())
                 return ServiceResponse.Error
                 (
+                    TipoErro.Validation,
                     "ERRO DE VALIDAÇÃO",
                     categoria.Notifications.Select(x => x.Message)
                 );
 
             var categoriaAtualizada = await repositoryCategoria.Update(categoria);
             if (!categoriaAtualizada)
-                return ServiceResponse.Error($"ERRO! {categoriaAtualizada}");
+                return ServiceResponse.Error(TipoErro.Conflict, $"ERRO! {categoriaAtualizada}");
 
             return ServiceResponse.Ok("CATEGORIA ATUALIZADA COM SUCESSO");
         }

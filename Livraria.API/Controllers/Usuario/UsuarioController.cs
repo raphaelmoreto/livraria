@@ -1,4 +1,5 @@
 ﻿using Livraria.API.Controllers.Base;
+using Livraria.Application.Enum.Response;
 using Livraria.Application.Interfaces.Services.Usuario;
 using Livraria.Domain.Dtos.Usuario;
 using Microsoft.AspNetCore.Authorization;
@@ -21,59 +22,47 @@ namespace Livraria.API.Controllers.Usuario
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUsuario([FromRoute] int id)
         {
-            try
+            var result = await usuarioService.Delete(id);
+            if (!result.Success)
             {
-                var result = await usuarioService.Delete(id);
-                if (!result.Success)
-                {
+                if (result.TipoErro == TipoErro.Conflict)
                     return Conflict(result);
-                }
 
-                return Ok(result);
+                return RegraNegocio(result);
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"ERRO INTERNO: {ex.Message}");
-            }
+
+            return Sucesso(result);
         }
 
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> PostUsuario([FromBody] UsuarioInputDto usuario)
         {
-            try
+            var result = await usuarioService.Insert(usuario);
+            if (!result.Success)
             {
-                var result = await usuarioService.Insert(usuario);
-                if (!result.Success)
-                {
+                if (result.TipoErro == TipoErro.Conflict)
                     return Conflict(result);
-                }
 
-                return Ok(result);
+                return RegraNegocio(result);
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"ERRO INTERNO: {ex.Message}");
-            }
+
+            return Sucesso(result);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUsuario([FromRoute] int id, [FromBody] UsuarioInputDto usuario)
         {
-            try
+            var result = await usuarioService.Update(id, usuario);
+            if (!result.Success)
             {
-                var result = await usuarioService.Update(id, usuario);
-                if (!result.Success)
-                {
+                if (result.TipoErro == TipoErro.Conflict)
                     return Conflict(result);
-                }
 
-                return Ok(result);
+                return RegraNegocio(result);
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"ERRO INTERNO: {ex.Message}");
-            }
+
+            return Ok(result);
         }
     }
 }

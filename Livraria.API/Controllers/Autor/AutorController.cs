@@ -1,4 +1,5 @@
 ﻿using Livraria.API.Controllers.Base;
+using Livraria.Application.Enum.Response;
 using Livraria.Application.Interfaces.Services.Autor;
 using Livraria.Domain.Dtos.Autor;
 using Livraria.Domain.Interfaces.Repositories.Autor;
@@ -25,75 +26,49 @@ namespace Livraria.API.Controllers.Autor
         [HttpGet]
         public async Task<IActionResult> GetAutores()
         {
-            try
-            {
-                var result = await autorRead.GetAll();
-                if (result == null)
-                {
-                    return NotFound("LISTAGEM DE AUTORES VÁZIA");
-                }
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"ERRO INTERNO: {ex.Message}");
-            }
+            var result = await autorRead.GetAll();
+            return Sucesso(result);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAutorPorId([FromRoute] int id)
         {
-            try
+            var result = await autorRead.GetById(id);
+            if (result == null)
             {
-                var result = await autorRead.GetById(id);
-                if (result == null)
-                {
-                    return NotFound("AUTOR NÃO ENCONTRADO");
-                }
-                return Ok(result);
+                return NaoEncontrado("AUTOR NÃO ENCONTRADO");
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"ERRO INTERNO: {ex.Message}");
-            }
+            return Sucesso(result);            
         }
 
         [HttpPost]
         public async Task<IActionResult> PostAutor([FromBody] AutorInputDto autor)
         {
-            try
+            var result = await autorService.Insert(autor);
+            if (!result.Success)
             {
-                var result = await autorService.Insert(autor);
-                if (!result.Success)
-                {
-                    return Conflict(result);
-                }
+                if (result.TipoErro == TipoErro.Conflict)
+                    return Conflito(result);
 
-                return Ok(result);
+                return RegraNegocio(result);
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"ERRO INTERNO: {ex.Message}");
-            }
+
+            return Sucesso(result);           
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAutor([FromRoute] int id, [FromBody] AutorInputDto autor)
         {
-            try
+            var result = await autorService.Update(id, autor);
+            if (!result.Success)
             {
-                var result = await autorService.Update(id, autor);
-                if (!result.Success)
-                {
-                    return Conflict(result);
-                }
+                if (result.TipoErro == TipoErro.Conflict)
+                    return Conflito(result);
 
-                return Ok(result);
+                return RegraNegocio(result);
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"ERRO INTERNO: {ex.Message}");
-            }
+
+            return Ok(result);
         }
     }
 }

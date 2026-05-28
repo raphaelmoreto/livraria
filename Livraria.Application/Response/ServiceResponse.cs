@@ -1,9 +1,12 @@
-﻿using Livraria.Application.Interfaces.Services.Response;
+﻿using Livraria.Application.Enum.Response;
+using Livraria.Application.Interfaces.Services.Response;
 
 namespace Livraria.Application.Response
 {
     public class ServiceResponse : IServiceResponse
     {
+        public TipoErro TipoErro { get; private set; }
+
         public bool Success { get; private set; } = false;
 
         public string Mensagem { get; private set; } = string.Empty;
@@ -12,10 +15,11 @@ namespace Livraria.Application.Response
 
         private ServiceResponse() { }
 
-        public static ServiceResponse Error(string mensagem, IEnumerable<string>? notificacoes = null)
+        public static ServiceResponse Error(TipoErro tipoErro, string mensagem, IEnumerable<string>? notificacoes = null)
         {
             return new ServiceResponse
             {
+                TipoErro = tipoErro,
                 Success = false,
                 Mensagem = mensagem,
                 Notificacoes = notificacoes?.ToList() ?? []

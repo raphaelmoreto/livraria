@@ -1,4 +1,5 @@
 ﻿using Livraria.API.Controllers.Base;
+using Livraria.Application.Enum.Response;
 using Livraria.Application.Interfaces.Services.CategoriaLivro;
 using Livraria.Domain.Dtos.CategoriaLivro;
 using Livraria.Domain.Interfaces.Repositories.CategoriaLivro;
@@ -29,75 +30,49 @@ namespace Livraria.API.Controllers.CategoriaLivro
         [HttpGet]
         public async Task<IActionResult> GetCategorias()
         {
-            try
-            {
                 var result = await repositoryRead.GetAll();
-                if (result == null)
-                {
-                    return NotFound("LISTAGEM DE CATEGORIAS VÁZIA");
-                }
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"ERRO INTERNO {ex.Message}");
-            }
+                return Sucesso(result);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategoriaPorId([FromRoute] int id)
         {
-            try
+            var result = await repositoryRead.GetById(id);
+            if (result == null)
             {
-                var result = await repositoryRead.GetById(id);
-                if (result == null)
-                {
-                    return NotFound("CATEGORIA NÃO ENCONTRADA");
-                }
-                return Ok(result);
+                return NaoEncontrado("CATEGORIA NÃO ENCONTRADA");
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"ERRO INTERNO {ex.Message}");
-            }
+            return Sucesso(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> PostCategoria([FromBody] CategoriaLivroInputDto categoria)
         {
-            try
+            var result = await categoriaLivroService.Insert(categoria);
+            if (!result.Success)
             {
-                var result = await categoriaLivroService.Insert(categoria);
-                if (!result.Success)
-                {
+                if (result.TipoErro == TipoErro.Conflict)
                     return Conflict(result);
-                }
 
-                return Ok(result);
+                return RegraNegocio(result);
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"ERRO INTERNO {ex.Message}");
-            }
+
+            return Sucesso(result);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategoria([FromRoute] int id, [FromBody] CategoriaLivroInputDto categoria)
         {
-            try
+            var result = await categoriaLivroService.Update(id, categoria);
+            if (!result.Success)
             {
-                var result = await categoriaLivroService.Update(id, categoria);
-                if (!result.Success)
-                {
+                if (result.TipoErro == TipoErro.Conflict)
                     return Conflict(result);
-                }
 
-                return Ok(result);
+                return RegraNegocio(result);
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"ERRO INTERNO {ex.Message}");
-            }
+
+            return Sucesso(result);
         }
     }
 }
