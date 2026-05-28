@@ -1,4 +1,5 @@
 using Livraria.API.Configurations;
+using Livraria.API.Middlewares;
 using Livraria.IoC;
 
 namespace Livraria.API
@@ -51,12 +52,21 @@ namespace Livraria.API
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            //PIPELINE É O FLUXO DE EXECUÇÃO DA REQUISIÇÃO COMO ABAIXO
 
-            app.UseCors("AllowAngular"); //REGISTRA O CORS NA PIPELINE
+            //"UseMiddleware<T>()" ADICIONA UM MIDDLEWARE NO PIPELINE DA APLICAÇÃO
+            //<ExceptionMiddleware> MIDDLEWARE QUE SERÁ EXECUTADO
+            app.UseMiddleware<ExceptionMiddleware>();
 
-            app.UseAuthentication(); //SEMPRE QUE CHEGAR UMA REQUISIÇÃO, A API TENTARÁ IDENTIFICAR QUEM É O USUÁRIO
-            app.UseAuthorization();
+            app.UseHttpsRedirection(); //VERIFICA SE A REQUISIÇÃO VEIO EM HTTP
+
+            app.UseCors("AllowAngular"); //REGISTRA O CORS CONFIGURADO ACIMA NA PIPELINE
+
+            //SEMPRE QUE CHEGAR UMA REQUISIÇÃO, A API IRÁ VERIFICAR O TOKEN JWT, COOKIES E IDENTIFICAR QUEM É O USUÁRIO
+            app.UseAuthentication();
+
+            //DEPOIS DE IDENTIFICAR O USUÁRIO, VERIFICA SE TEM PERMISSÃO PARA ACESSAR O ENDPOINT
+            app.UseAuthorization(); 
 
             app.MapControllers();
 

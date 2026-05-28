@@ -11,9 +11,15 @@ namespace Livraria.Application.Services.Token
     {
         private readonly string Secret; //SENHA SECRETA USADA PARA ASSINAR O TOKEN
 
-        public TokenService(string secret)
+        private readonly string Issuer;
+
+        private readonly string Audience;
+
+        public TokenService(string secret, string issuer, string audience)
         {
             Secret = secret;
+            Issuer = issuer;
+            Audience = audience;
         }
 
         public string GerarToken(LoginOutputDto usuario)
@@ -36,6 +42,10 @@ namespace Livraria.Application.Services.Token
                 ),
                 //QUANDO O TOKEN EXPIRA.
                 Expires = DateTime.UtcNow.AddMinutes(90),
+
+                Issuer = this.Issuer,
+
+                Audience = this.Audience,
 
                 //COMO O TOKEN SERÁ ASSINADO
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

@@ -23,7 +23,14 @@ namespace Livraria.IoC
             services.AddScoped<IUsuarioService, UsuarioService>();
 
             //'AddSingleton' É USADO PARA REGISTRAR UM SERVIÇO QUE SERÁ REUTILIZADO DURANTE TODA A VIDA DA APLICAÇÃO 
-            services.AddSingleton<ITokenService>(token => { var secret = configuration["Jwt:SecretKey"]; return new TokenService(secret!); });
+            services.AddSingleton<ITokenService>( 
+                new TokenService
+                (
+                    configuration["Jwt:SecretKey"]!,
+                    configuration["Jwt:Issuer"]!,
+                    configuration["Jwt:Audience"]!
+                )
+            );
 
             return services;
         }
