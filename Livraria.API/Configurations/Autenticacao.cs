@@ -18,10 +18,23 @@ namespace Livraria.API.Configurations
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
                             ValidateIssuer = true, //QUEM GEROU O TOKEN (false = NÃO IMPORTA QUEM GEROU O TOKEN, EU ACEITO.)
-                            ValidateAudience = true, //PARA QUEM O TOKEN FOI GERADO (false = NÃO VOU VALIDAR PARA QUEM O TOKEN É DESTINADO.)
-                            ValidateIssuerSigningKey = true, //VALIDA A ASSINATURA (O SISTEMA SÓ ACEITA TOKENS ASSINADOS COM A SUA CHAVE SECRETA.)
+
+                            //PARA QUEM O TOKEN FOI GERADO (false = NÃO VOU VALIDAR PARA QUEM O TOKEN É DESTINADO.)
+                            ValidateAudience = true,
+
+                            //VALIDA A ASSINATURA (O SISTEMA SÓ ACEITA TOKENS ASSINADOS COM A SUA CHAVE SECRETA.)
+                            ValidateIssuerSigningKey = true, 
+
                             ValidateLifetime = true, //VALIDA SE O TOKEN AINDA ESTÁ DENTRO DO PERÍODO DE VALIDADE
-                            IssuerSigningKey = new SymmetricSecurityKey(key), //INFORMA A CHAVE SECRETA USADA PARA ASSINAR O TOKEN
+
+                            ValidIssuer = configuration["Jwt:Issuer"], //QUAL EMISSOR A API CONSIDERA VÁLIDO?; QUEM GEROU O TOKEN
+
+                            //QUAL AUDIENCE A API DEVE ACEITAR
+                            ValidAudience = configuration["Jwt:Audience"],
+
+                            //INFORMA A CHAVE SECRETA USADA PARA ASSINAR O TOKEN
+                            IssuerSigningKey = new SymmetricSecurityKey(key),
+
                             ClockSkew = TimeSpan.Zero //TOKEN EXPIROU = INVÁLIDO NA HORA
                         };
                     }
