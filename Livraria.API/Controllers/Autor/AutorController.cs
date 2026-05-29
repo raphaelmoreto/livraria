@@ -63,6 +63,12 @@ namespace Livraria.API.Controllers.Autor
             var result = await autorService.Update(id, autor);
             if (!result.Success)
             {
+                if (result.TipoErro == TipoErro.BadRequest)
+                    return BadRequest(result.Mensagem);
+
+                if (result.TipoErro == TipoErro.NotFound)
+                    return NotFound(result.Mensagem);
+
                 if (result.TipoErro == TipoErro.Conflict)
                     return Conflict(result);
 

@@ -30,6 +30,7 @@ namespace Livraria.Application.Response
         {
             return new ServiceResponse
             {
+                TipoErro = TipoErro.Ok,
                 Success = true,
                 Mensagem = mensagem
             };

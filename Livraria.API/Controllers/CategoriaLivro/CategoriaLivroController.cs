@@ -40,7 +40,7 @@ namespace Livraria.API.Controllers.CategoriaLivro
             var result = await repositoryRead.GetById(id);
             if (result == null)
             {
-                return Unauthorized("CATEGORIA NÃO ENCONTRADA");
+                return NotFound("CATEGORIA NÃO ENCONTRADA");
             }
 
             return Ok(result);

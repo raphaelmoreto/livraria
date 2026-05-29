@@ -13,6 +13,7 @@ namespace Livraria.API
 
             // Add services to the container.
 
+            //"AddJsonOptions" CONFIGURA O SERIALIZADOR JSON DA APLPICAÇÃO ASP.NET Core PARA TRATAR enum COMO TEXTO EM VEZ DE NÚMERO
             builder.Services
                 .AddControllers()
                 .AddJsonOptions(options =>

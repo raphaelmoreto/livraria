@@ -34,7 +34,7 @@ namespace Livraria.Application.Services.Autor
 
             var insert = await repositoryAutor.Insert(autor);
             if (!insert)
-                return ServiceResponse.Error(TipoErro.Conflict, $"ERRO! {insert}");
+                return ServiceResponse.Error(TipoErro.Conflict, $"AUTOR JÁ CADASTRADO NA BASE");
 
             return ServiceResponse.Ok("AUTOR INSERIDO COM SUCESSO");
         }
@@ -42,11 +42,11 @@ namespace Livraria.Application.Services.Autor
         public async Task<IServiceResponse> Update(int id, AutorInputDto dto)
         {
             if (id <= 0)
-                return ServiceResponse.Error(TipoErro.Conflict, "ID DO AUTOR NÃO INFORMADO!");
+                return ServiceResponse.Error(TipoErro.BadRequest, "ID DO AUTOR NÃO INFORMADO!");
 
             var autor = await repositoryAutor.GetById(id);
             if (autor == null)
-                return ServiceResponse.Error(TipoErro.NotFound, "AUTOR NÃO ENCONTRADO NO BANCO!");
+                return ServiceResponse.Error(TipoErro.NotFound, "AUTOR NÃO ENCONTRADO NO BASE!");
 
             autor.AtribuirNome(dto.Nome);
             if (!autor.Validar())
@@ -54,7 +54,7 @@ namespace Livraria.Application.Services.Autor
 
             var autorAtualizado = await repositoryAutor.Update(autor);
             if (!autorAtualizado)
-                return ServiceResponse.Error(TipoErro.Conflict, $"ERRO! {autorAtualizado}");
+                return ServiceResponse.Error(TipoErro.Conflict, $"AUTOR JÁ CADASTRADO NA BASE");
 
             return ServiceResponse.Ok("AUTOR ATUALIZADO COM SUCESSO");
         }
