@@ -30,6 +30,7 @@
             _next = next;
         }
 
+        //O MÉTODO "InvokeAsync" É CHAMADO EM TODA REQUISIÇÃO HTTP QUE PASSA PELA PIPELINE DO ASP.NET Core, DESDE QUE O MIDDLEWARE TENHA SIDO REGISTRADO NO Program.cs
         public async Task InvokeAsync(HttpContext context)
         {
             try
@@ -42,7 +43,7 @@
                 context.Response.StatusCode = 500;
 
                 //DEFINE O TIPO DE RESPOSTA DA API. ELA IRÁ RETORNAR SEMPRE UM JSON
-                context.Response.ContentType = "application/json"; 
+                context.Response.ContentType = "application/json";
 
                 await context.Response.WriteAsJsonAsync(new { success = false, erro = ex.Message });
             }

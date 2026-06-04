@@ -30,8 +30,14 @@ namespace Livraria.API.Controllers.Livro
             var result = await livroService.RemoverCategorias(idLivro, categorias);
             if (!result.Success)
             {
-                if (result.TipoErro == TipoErro.Conflict)
+                if (result.TipoRetorno == TipoRetorno.BadRequest)
+                    return BadRequest(result.Mensagem);
+
+                else if (result.TipoRetorno == TipoRetorno.Conflict)
                     return Conflict(result);
+
+                else if (result.TipoRetorno == TipoRetorno.NotFound)
+                    return NotFound(result.Mensagem);
 
                 return UnprocessableEntity(result);
             }
@@ -80,8 +86,11 @@ namespace Livraria.API.Controllers.Livro
             var result = await livroService.Insert(livro, UsuarioLogado);
             if (!result.Success)
             {
-                if (result.TipoErro == TipoErro.Conflict)
+                if (result.TipoRetorno == TipoRetorno.Conflict)
                     return Conflict(result);
+
+                else if (result.TipoRetorno == TipoRetorno.NotFound)
+                    return NotFound(result.Mensagem);
 
                 return UnprocessableEntity(result);
             }
@@ -95,8 +104,11 @@ namespace Livraria.API.Controllers.Livro
             var result = await livroService.Update(id, livro);
             if (!result.Success)
             {
-                if (result.TipoErro == TipoErro.Conflict)
+                if (result.TipoRetorno == TipoRetorno.Conflict)
                     return Conflict(result);
+
+                else if (result.TipoRetorno == TipoRetorno.NotFound)
+                    return NotFound(result.Mensagem);
 
                 return UnprocessableEntity(result);
             }

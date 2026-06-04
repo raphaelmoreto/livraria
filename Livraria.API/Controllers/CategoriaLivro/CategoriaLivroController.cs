@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Livraria.API.Controllers.CategoriaLivro
 {
     [ApiController]
-    [Route("api/categoria-livro")]
+    [Route("api/categoria/livro")]
     [Authorize]
     public class CategoriaLivroController : BaseController
     {
@@ -52,7 +52,7 @@ namespace Livraria.API.Controllers.CategoriaLivro
             var result = await categoriaLivroService.Insert(categoria);
             if (!result.Success)
             {
-                if (result.TipoErro == TipoErro.Conflict)
+                if (result.TipoRetorno == TipoRetorno.Conflict)
                     return Conflict(result);
 
                 return UnprocessableEntity(result);
@@ -67,7 +67,13 @@ namespace Livraria.API.Controllers.CategoriaLivro
             var result = await categoriaLivroService.Update(id, categoria);
             if (!result.Success)
             {
-                if (result.TipoErro == TipoErro.Conflict)
+                if (result.TipoRetorno == TipoRetorno.BadRequest)
+                    return BadRequest(result.Mensagem);
+
+                else if (result.TipoRetorno == TipoRetorno.NotFound)
+                    return NotFound(result.Mensagem);
+
+                else if (result.TipoRetorno == TipoRetorno.Conflict)
                     return Conflict(result);
 
                 return UnprocessableEntity(result);

@@ -48,9 +48,8 @@ namespace Livraria.API
             //CONFIGURAÇÕES DE AUTENTICAÇÃO
             Autenticacao.AddConfiguracaoAutenticacao(builder.Services, builder.Configuration);
 
-            DependecyInjectionOfRepositories.AddInfrastructure(builder.Services);
-            DependecyInjectionOfServices.AddApplication(builder.Services, builder.Configuration);
-            DependecyInjectionOfInfrastructure.AddInfrastructure(builder.Services);
+            DependecyInjectionOfInfrastructure.ConfigurarInfrastructure(builder.Services);
+            DependecyInjectionOfServices.ConfigurarApplication(builder.Services, builder.Configuration);
 
             var app = builder.Build();
 

@@ -22,11 +22,11 @@ namespace Livraria.Application.Services.Usuario
         public async Task<IServiceResponse> Delete(int id)
         {
             if (id < 0)
-                return ServiceResponse.Error(TipoErro.BadRequest, "ID DO USUÁRIO NÃO INFORMADO!");
+                return ServiceResponse.Error(TipoRetorno.BadRequest, "ID DO USUÁRIO NÃO INFORMADO!");
 
             var deleteUsuario = await repositoryUsuario.DeletarCadastro(id);
             if (!deleteUsuario)
-                return ServiceResponse.Error(TipoErro.Conflict, $"ERRO! {deleteUsuario}");
+                return ServiceResponse.Error(TipoRetorno.Conflict, "USUÁRIO NÃO PODE SER DELETADO");
 
             return ServiceResponse.Ok("USUÁRIO DELETADO COM SUCESSO");
         }
@@ -35,12 +35,12 @@ namespace Livraria.Application.Services.Usuario
         {
             var idPerfil = await repositoryUsuario.VerificarIdDoPerfil(dto.Fk_Perfil);
             if (!idPerfil)
-                return ServiceResponse.Error(TipoErro.NotFound, "PERFIL DE USUÁRIO NÃO ENCONTRADO");
+                return ServiceResponse.Error(TipoRetorno.NotFound, "PERFIL DE USUÁRIO NÃO ENCONTRADO");
 
             var regexEmail = new Regex(@"^[\w.-]+@([\w-]+\.)+[a-zA-Z]{2,}$");
             bool validarEmail = regexEmail.IsMatch(dto.Email);
             if (!validarEmail)
-                return ServiceResponse.Error(TipoErro.BadRequest, $"EMAIL {dto.Email} FORA DO PADRÃO");
+                return ServiceResponse.Error(TipoRetorno.BadRequest, $"EMAIL {dto.Email} FORA DO PADRÃO");
 
             var usuario = new UsuarioEntity
             (
@@ -51,11 +51,11 @@ namespace Livraria.Application.Services.Usuario
                 dto.Fk_Perfil
             );
             if (!usuario.Validar())
-                return ServiceResponse.Error(TipoErro.Validation, "ERRO DE VALIDAÇÃO", usuario.Notifications.Select(x => x.Message));
+                return ServiceResponse.Error(TipoRetorno.Validation, "ERRO DE VALIDAÇÃO", usuario.Notifications.Select(x => x.Message));
 
             var insert = await repositoryUsuario.Insert(usuario);
             if (!insert)
-                return ServiceResponse.Error(TipoErro.Conflict, $"ERRO! {insert}");
+                return ServiceResponse.Error(TipoRetorno.Conflict, $"ERRO! USUÁRIO NÃO PODE SER CADASTRADO");
 
             return ServiceResponse.Ok("USUÁRIO CADASTRADO COM SUCESSO");
         }
@@ -63,20 +63,20 @@ namespace Livraria.Application.Services.Usuario
         public async Task<IServiceResponse> Update(int id, UsuarioInputDto dto)
         {
             if (id <= 0)
-                return ServiceResponse.Error(TipoErro.BadRequest, "ID DO USUÁRIO NÃO INFORMADO!");
+                return ServiceResponse.Error(TipoRetorno.BadRequest, "ID DO USUÁRIO NÃO INFORMADO!");
 
             var regexEmail = new Regex(@"^[\w.-]+@[\w-]+\.[a-zA-Z]{2,}$");
             bool validarEmail = regexEmail.IsMatch(dto.Email);
             if (!validarEmail)
-                return ServiceResponse.Error(TipoErro.BadRequest, $"EMAIL {dto.Email} FORA DO PADRÃO");
+                return ServiceResponse.Error(TipoRetorno.BadRequest, $"EMAIL {dto.Email} FORA DO PADRÃO");
 
             var idPerfil = await repositoryUsuario.VerificarIdDoPerfil(dto.Fk_Perfil);
             if (!idPerfil)
-                return ServiceResponse.Error(TipoErro.NotFound, "PERFIL DE USUÁRIO NÃO ENCONTRADO");
+                return ServiceResponse.Error(TipoRetorno.NotFound, "PERFIL DE USUÁRIO NÃO ENCONTRADO");
 
             var usuario = await repositoryUsuario.GetById(id);
             if (usuario == null)
-                return ServiceResponse.Error(TipoErro.NotFound, "USUÁRIO NÃO ENCONTRADO NO BANCO");
+                return ServiceResponse.Error(TipoRetorno.NotFound, "USUÁRIO NÃO ENCONTRADO NO BANCO");
 
             usuario.AtribuirNome(dto.Nome);
             usuario.AtribuirUsuario(dto.Usuario);
@@ -84,11 +84,11 @@ namespace Livraria.Application.Services.Usuario
             usuario.AtribuirSenha(dto.Senha);
             usuario.AtribuirPerfil(dto.Fk_Perfil);
             if (!usuario.Validar())
-                return ServiceResponse.Error(TipoErro.Validation, "ERRO DE VALIDAÇÃO", usuario.Notifications.Select(x => x.Message));
+                return ServiceResponse.Error(TipoRetorno.Validation, "ERRO DE VALIDAÇÃO", usuario.Notifications.Select(x => x.Message));
 
             var usuarioAtualizado = await repositoryUsuario.Update(usuario);
             if (!usuarioAtualizado)
-                return ServiceResponse.Error(TipoErro.Conflict, $"ERRO! {usuarioAtualizado}");
+                return ServiceResponse.Error(TipoRetorno.Conflict, $"ERRO! USUÁRIO NÃO PODE SER CADASTRADO");
 
             return ServiceResponse.Ok("USUÁRIO ATUALIZADO COM SUCESSO");
         }

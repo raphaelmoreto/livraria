@@ -25,7 +25,7 @@ namespace Livraria.API.Controllers.Usuario
             var result = await usuarioService.Delete(id);
             if (!result.Success)
             {
-                if (result.TipoErro == TipoErro.Conflict)
+                if (result.TipoRetorno == TipoRetorno.Conflict)
                     return Conflict(result);
 
                 return UnprocessableEntity(result);
@@ -41,8 +41,14 @@ namespace Livraria.API.Controllers.Usuario
             var result = await usuarioService.Insert(usuario);
             if (!result.Success)
             {
-                if (result.TipoErro == TipoErro.Conflict)
+                if (result.TipoRetorno == TipoRetorno.BadRequest)
+                    return BadRequest(result.Mensagem);
+
+                else if (result.TipoRetorno == TipoRetorno.Conflict)
                     return Conflict(result);
+
+                else if (result.TipoRetorno == TipoRetorno.NotFound)
+                    return NotFound(result.Mensagem);
 
                 return UnprocessableEntity(result);
             }
@@ -56,8 +62,14 @@ namespace Livraria.API.Controllers.Usuario
             var result = await usuarioService.Update(id, usuario);
             if (!result.Success)
             {
-                if (result.TipoErro == TipoErro.Conflict)
+                if (result.TipoRetorno == TipoRetorno.BadRequest)
+                    return BadRequest(result.Mensagem);
+
+                else if (result.TipoRetorno == TipoRetorno.Conflict)
                     return Conflict(result);
+
+                else if (result.TipoRetorno == TipoRetorno.NotFound)
+                    return NotFound(result.Mensagem);
 
                 return UnprocessableEntity(result);
             }

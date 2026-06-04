@@ -1,11 +1,11 @@
 ﻿
 namespace Livraria.Application.Enum.Response
 {
-    public enum TipoErro
+    public enum TipoRetorno
     {
         BadRequest,
         Conflict,
-        //Created,
+        Created,
         Forbidden,
         NoContent,
         NotFound,

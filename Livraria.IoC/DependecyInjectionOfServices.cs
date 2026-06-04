@@ -15,7 +15,7 @@ namespace Livraria.IoC
 {
     public static class DependecyInjectionOfServices
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection ConfigurarApplication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IAutorService, AutorService>();
             services.AddScoped<ICategoriaLivroService, CategoriaLivroService>();

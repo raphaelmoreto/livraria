@@ -19,17 +19,17 @@ namespace Livraria.API.Controllers.Base
         //IDEIA FUTURA
         //protected IActionResult CustomReponse(IServiceResponse result)
         //{
-        //    if (result.TipoErro == TipoErro.Ok)
+        //    if (result.TipoRetorno == TipoRetorno.Ok)
         //        return Ok(result);
 
-        //    return result.TipoErro switch
+        //    return result.TipoRetorno switch
         //    {
-        //        TipoErro.BadRequest => BadRequest(result.Mensagem),
-        //        TipoErro.Conflict => Conflict(result),
-        //        TipoErro.Forbidden => Forbid(),
-        //        TipoErro.NotFound => NotFound(result.Mensagem),
-        //        TipoErro.Unauthorized => Unauthorized(result.Mensagem),
-        //        TipoErro.Validation => UnprocessableEntity(result)
+        //        TipoRetorno.BadRequest => BadRequest(result.Mensagem),
+        //        TipoRetorno.Conflict => Conflict(result),
+        //        TipoRetorno.Forbidden => Forbid(),
+        //        TipoRetorno.NotFound => NotFound(result.Mensagem),
+        //        TipoRetorno.Unauthorized => Unauthorized(result.Mensagem),
+        //        TipoRetorno.Validation => UnprocessableEntity(result)
         //    };
         //}
 

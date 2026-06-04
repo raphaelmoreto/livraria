@@ -48,7 +48,7 @@ namespace Livraria.API.Controllers.Autor
             var result = await autorService.Insert(autor);
             if (!result.Success)
             {
-                if (result.TipoErro == TipoErro.Conflict)
+                if (result.TipoRetorno == TipoRetorno.Conflict)
                     return Conflict(result);
 
                 return UnprocessableEntity(result);
@@ -63,13 +63,13 @@ namespace Livraria.API.Controllers.Autor
             var result = await autorService.Update(id, autor);
             if (!result.Success)
             {
-                if (result.TipoErro == TipoErro.BadRequest)
+                if (result.TipoRetorno == TipoRetorno.BadRequest)
                     return BadRequest(result.Mensagem);
 
-                if (result.TipoErro == TipoErro.NotFound)
+                else if (result.TipoRetorno == TipoRetorno.NotFound)
                     return NotFound(result.Mensagem);
 
-                if (result.TipoErro == TipoErro.Conflict)
+                else if (result.TipoRetorno == TipoRetorno.Conflict)
                     return Conflict(result);
 
                 return UnprocessableEntity(result);

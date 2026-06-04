@@ -4,7 +4,7 @@ namespace Livraria.Application.Interfaces.Services.Response
 {
     public interface IServiceResponse
     {
-        TipoErro TipoErro { get; }
+        TipoRetorno TipoRetorno { get; }
 
         bool Success { get; }
 
