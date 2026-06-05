@@ -1,7 +1,7 @@
 @import '/src/app/shared/styles/variables';
 
 $card-borda: #eeeeee;
-$card-sombra-hover: -4px;
+$card-hover: -4px;
 
 :host {
     display: block;
@@ -18,7 +18,7 @@ $card-sombra-hover: -4px;
     transition: transform 0.2s ease;
 
     &:hover {
-        transform: translateY($card-sombra-hover);
+        transform: translateY($card-hover);
     }
 
     img {
@@ -41,9 +41,11 @@ $card-sombra-hover: -4px;
     }
 
     &-content {
-        flex: 1;
+        display: flex;
+        flex-direction: column;
         font-size: 0.9rem;
-        padding: 16px;
+        gap: 2px;
+        padding: 16px 16px 16px 16px;
 
         p {
             margin: 6px 0;
@@ -51,16 +53,45 @@ $card-sombra-hover: -4px;
     }
 
     &-actions {
+        background-color: $cor-branco;
         border-top: 1px solid $card-borda;
         display: flex;
-        gap: 8px;
+        justify-content: center;
+        gap: 20px;
         padding: 12px 16px;
     }
 
     &-preco {
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        flex: 1;
         font-size: 1.4rem;
         font-weight: bold;
-        margin-top: auto;
-        text-align: right;
+        padding: 0px 16px;
+        text-align: center;
+    }
+
+    &-buttons {
+        background-color: $cor-principal;
+        border: none;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        justify-content: center;
+        font-size: 1.4rem;
+        font-weight: 600;
+        padding: 6px 12px;
+        color: $cor-branco;
+
+        &:active {
+            box-shadow: inset 0px 0px 10px 0px $cor-principal;
+        }
+
+        &:hover {
+            background-color: $cor-destaque;
+            cursor: pointer;
+        }
     }
 }

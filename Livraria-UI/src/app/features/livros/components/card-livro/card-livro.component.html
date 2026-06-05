@@ -11,13 +11,18 @@
         <p><strong>Categoria:</strong> {{ livro.categorias }} </p>
         <p><strong>Data de Publicação:</strong> {{ livro.dt_Publicacao | date:'dd/MM/yyyy' | dashIfEmpty }} </p>
         <p><strong>Quantidade em estoque:</strong> {{ livro.quantidade }} </p>
+    </div>
 
-        <p class="card-preco">
-            {{ livro.preco | currency:'BRL':'symbol' }}
-        </p>
+    <div class="card-preco">
+        <p> {{ livro.preco | currency:'BRL':'symbol' }} </p>
     </div>
 
     <div class="card-actions">
-
+        <button class="card-buttons">
+            <span> Comprar agora </span>
+        </button>
+        <button class="card-buttons">
+            <span class="material-icons"> add_shopping_cart </span>
+        </button>
     </div>
 </div>
