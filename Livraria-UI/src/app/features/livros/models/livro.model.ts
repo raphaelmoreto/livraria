@@ -9,3 +9,9 @@ export interface ILivro extends BaseModel {
     subtitulo: string | null;
     autor: string | null;
 };
+
+export interface ILivroAbreviado extends BaseModel {
+    titulo: string;
+    preco: number;
+    subtitulo: string | null;
+}

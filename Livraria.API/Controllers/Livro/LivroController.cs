@@ -72,6 +72,14 @@ namespace Livraria.API.Controllers.Livro
             return Ok(result);
         }
 
+        [HttpGet("busca/abreviada/paginacao")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAbreviadoPorPaginacao(int page = 1, int pageSize = 20)
+        {
+            var result = await livroRead.BuscaAbreviadaPorPoginacao(page, pageSize);
+            return Ok(result);
+        }
+
         [HttpGet("busca/paginacao")]
         [AllowAnonymous]
         public async Task<IActionResult> GetPorPaginacao(int page = 1, int pageSize = 20)

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ILivro } from '@features/livros/models/livro.model';
+import { ILivroAbreviado } from '@features/livros/models/livro.model';
 
 @Component({
   selector: 'app-card-livro',
@@ -8,5 +8,5 @@ import { ILivro } from '@features/livros/models/livro.model';
 })
 
 export class CardLivroComponent {
-    @Input({ required : true }) livro!: ILivro;
+    @Input({ required : true }) livro!: ILivroAbreviado;
 }

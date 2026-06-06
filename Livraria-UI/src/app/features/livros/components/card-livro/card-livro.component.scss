@@ -1,6 +1,5 @@
 @import '/src/app/shared/styles/variables';
 
-$card-borda: #eeeeee;
 $card-hover: -4px;
 
 :host {
@@ -8,31 +7,29 @@ $card-hover: -4px;
 }
 
 .card {
-    background-color: $cor-branco;
     border-radius: 12px;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 460px; //ALTURA
+    background-color: $cor-fundo;
     min-height: 460px;
-    overflow: hidden;
+    width: 100%; //LARGURA
+    overflow: hidden; //TUDO QUE ULTRAPASSAR O OS LIMITES DO ELEMENTO PAI FICA INVISÍVEL
     transition: transform 0.2s ease;
 
-    &:hover {
-        transform: translateY($card-hover);
-    }
+    &-content {
+        color: $cor-branco;
+        display: flex;
+        flex-direction: column;
+        font-size: 0.9rem;
+        gap: 4px;
+        height: 30%;
+        padding: 16px 16px 12px 16px;
+        text-align: left;
 
-    img {
-        height: 200px;
-        object-fit: cover;
-        width: 100%;
-    }
-
-    &-header {
-        padding: 16px;
-
-        h2 {
-            font-size: 1.05rem;
-            margin: 0;
+        p {
+            font-size: 1.2rem;
+            font-weight: bold;
         }
 
         small {
@@ -40,58 +37,13 @@ $card-hover: -4px;
         }
     }
 
-    &-content {
-        display: flex;
-        flex-direction: column;
-        font-size: 0.9rem;
-        gap: 2px;
-        padding: 16px 16px 16px 16px;
-
-        p {
-            margin: 6px 0;
-        }
+    &:hover {
+        transform: translateY($card-hover);
     }
 
-    &-actions {
-        background-color: $cor-branco;
-        border-top: 1px solid $card-borda;
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        padding: 12px 16px;
-    }
-
-    &-preco {
-        display: flex;
-        flex-direction: column;
-        justify-content: end;
-        flex: 1;
-        font-size: 1.4rem;
-        font-weight: bold;
-        padding: 0px 16px;
-        text-align: center;
-    }
-
-    &-buttons {
-        background-color: $cor-principal;
-        border: none;
-        border-radius: 10px;
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-        justify-content: center;
-        font-size: 1.4rem;
-        font-weight: 600;
-        padding: 6px 12px;
-        color: $cor-branco;
-
-        &:active {
-            box-shadow: inset 0px 0px 10px 0px $cor-principal;
-        }
-
-        &:hover {
-            background-color: $cor-destaque;
-            cursor: pointer;
-        }
+    img {
+        border-radius: 12px;
+        height: 70%;
+        width: 100%;
     }
 }

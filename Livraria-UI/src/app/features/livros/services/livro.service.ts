@@ -1,7 +1,7 @@
 import { ApiService } from '@core/services/api.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ILivro } from '../models/livro.model';
+import { ILivro, ILivroAbreviado } from '../models/livro.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -11,6 +11,10 @@ import { Observable } from 'rxjs';
 export class LivroService extends ApiService<ILivro> {
     constructor(http: HttpClient) {
         super(http, 'livro');
+    }
+
+    buscaAbreviadaPorPoginacao(page: number, pageSize: number = 10): Observable<ILivroAbreviado[]> {
+        return this.get<ILivroAbreviado[]>(`busca/abreviada/paginacao?page=${page}&pageSize=${pageSize}`)
     }
 
     buscaPorPaginacao(page: number, pageSize: number = 10): Observable<ILivro[]> {

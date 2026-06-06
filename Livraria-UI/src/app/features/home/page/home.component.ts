@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ILivro } from '@features/livros/models/livro.model';
+import { ILivroAbreviado } from '@features/livros/models/livro.model';
 import { LivroService } from '@features/livros/services/livro.service';
 import { Observable, tap } from 'rxjs';
 
@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
     //INDICA QUE NÃO HÁ UMA LISTA AGORA, MAS IRÁ RECEBER A LISTA NO FUTURO
     // lstLivros$!: Observable<ILivro[]>;
     carregando: boolean = false;
-    lstLivros: ILivro[] = [];
+    lstLivros: ILivroAbreviado[] = [];
     page: number = 1;
     pageSize: number = 10;
 
@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
 
         this.carregando = true;
 
-        this.livroService.buscaPorPaginacao(this.page, this.pageSize)
+        this.livroService.buscaAbreviadaPorPoginacao(this.page, this.pageSize)
         .subscribe((res) => {
             //O "..." É O "Spread Operator". ELE CRIA UMA NOVA LISTA NA MÉMORIA JUNTANDO AS DUAS INDICADAS
             this.lstLivros = [...this.lstLivros, ...res];
@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit {
         this.buscaPorPaginacao();
     }
 
-    trackByLivroId(index: number, livro: ILivro): number {
+    trackByLivroId(index: number, livro: ILivroAbreviado): number {
         return livro.id;
     }
 }

@@ -13,6 +13,14 @@ namespace Livraria.Domain.Dtos.Livro
         int? Autor = null
     );
 
+    public record LivroOutputAbreviadoDto
+    (
+        int Id,
+        string Titulo,
+        decimal Preco,
+        string? Subtitulo = null
+    );
+
     public record LivroOutputDto
     (
         int Id,

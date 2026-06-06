@@ -11,6 +11,25 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
     {
         public LivroReadRepository(IDatabaseConnection databaseConnection) : base(databaseConnection) { }
 
+        public async Task<IEnumerable<LivroOutputAbreviadoDto>> BuscaAbreviadaPorPoginacao(int page, int pageSize = 20)
+        {
+            using var connection = CreateConnection();
+
+            var offset = (page - 1) * pageSize;
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("SELECT [id],");
+            sb.AppendLine("            [titulo],");
+            sb.AppendLine("            [preco],");
+            sb.AppendLine("            [subtitulo]");
+            sb.AppendLine("FROM [Livraria].[dbo].[Livro]");
+            sb.AppendLine("ORDER BY [titulo]");
+            sb.AppendLine("OFFSET @Offset ROWS");
+            sb.AppendLine("FETCH NEXT @PageSize ROWS ONLY");
+
+            return await connection.QueryAsync<LivroOutputAbreviadoDto>(sb.ToString(), new { Offset = offset, PageSize = pageSize });
+        }
+
         public async Task<IEnumerable<LivroOutputDto>> BuscaPorPaginacao(int page, int pageSize = 20)
         {
             using var connection = CreateConnection();
