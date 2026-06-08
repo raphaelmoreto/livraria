@@ -9,6 +9,7 @@
         <div class="conteudo-wrapper">
             <section class="conteudo">
                 <app-card-livro
+                    (click)="inspecionarLivro(livro.id)"
                     *ngFor="let livro of lstLivros; trackBy: trackByLivroId"
                     [livro]="livro"
                 >

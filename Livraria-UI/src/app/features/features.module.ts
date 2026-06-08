@@ -10,6 +10,7 @@ import { ConfiguracoesComponent } from './configuracoes/page/configuracoes.compo
 import { ComponentsModule } from '@shared/components/components.module';
 import { FeedbackComponent } from './feedback/page/feedback.component';
 import { HomeComponent } from './home/page/home.component';
+import { InspecionarLivroComponent } from './livros/components/inspecionar-livro/inspecionar-livro.component';
 import { LoadingComponent } from './loading/components/loading/loading.component';
 import { ToastComponent } from './toast/components/toast/toast.component';
 
@@ -20,6 +21,7 @@ import { ToastComponent } from './toast/components/toast/toast.component';
         ConfiguracoesComponent,
         FeedbackComponent,
         HomeComponent,
+        InspecionarLivroComponent,
         LoadingComponent,
         ToastComponent
     ],

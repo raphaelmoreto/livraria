@@ -1,0 +1,54 @@
+<div class="container">
+    <header>
+        <app-menu-principal></app-menu-principal>
+    </header>
+
+    <main class="pagina-livro">
+        <app-menu-lateral></app-menu-lateral>
+
+        <section class="conteudo" *ngIf="livro">
+            <h1 class="titulo">
+                {{ livro.titulo }}
+            </h1>
+
+            <p class="subtitulo">
+                {{ livro.subtitulo }}
+            </p>
+
+            <div class="info-rapida">
+                <span>📚 {{ livro.categorias }}</span>
+                <span>👤 {{ livro.autor }}</span>
+                <span>📅 {{ livro.dt_Publicacao | date:'dd/MM/yyyy' }}</span>
+            </div>
+
+            <div class="area-principal">
+                <div class="imagem-livro">
+                    <img src="./../../../../assets/img/aleatorio.png" alt="Imagem do livro">
+                </div>
+
+                <aside class="painel-compra">
+                    <div class="preco">
+                        R$ {{ livro.preco | number:'1.2-2' }}
+                    </div>
+
+                    <button class="btn-comprar">
+                        Comprar Agora
+                    </button>
+
+                    <button class="btn-carrinho">
+                        Adicionar ao Carrinho
+                    </button>
+                </aside>
+
+            </div>
+
+            <section class="detalhes-livro">
+                <h2>Sobre este livro</h2>
+            </section>
+        </section>
+    </main>
+
+    <footer></footer>
+</div>
+
+<app-toast></app-toast>

@@ -7,6 +7,7 @@ import { ConfiguracoesComponent } /* ↓ */
     from '@features/configuracoes/page/configuracoes.component';
 import { FeedbackComponent } from '@features/feedback/page/feedback.component';
 import { HomeComponent } from '@features/home/page/home.component';
+import { InspecionarLivroComponent } from '@features/livros/components/inspecionar-livro/inspecionar-livro.component';
 
 const routes: Routes = [
     {
@@ -27,6 +28,10 @@ const routes: Routes = [
         path: 'feedback',
         component: FeedbackComponent,
         canActivate: [authGuard]
+    },
+    {
+        path: 'livro/:id',
+        component: InspecionarLivroComponent
     },
     {
         path: '**', redirectTo: ''

@@ -61,6 +61,7 @@ namespace Livraria.API.Controllers.Livro
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetLivroPorId([FromRoute] int id)
         {
             var result = await livroRead.GetById(id);

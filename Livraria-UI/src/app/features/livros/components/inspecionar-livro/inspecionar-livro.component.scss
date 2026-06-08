@@ -1,0 +1,138 @@
+@import '/src/app/shared/styles/variables';
+
+.pagina-livro {
+    display: flex;
+    min-height: 100vh;
+    background: $cor-fundo;
+    color: $cor-branco;
+}
+
+.conteudo {
+    flex: 1;
+    padding: 56px 32px;
+}
+
+.titulo {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.subtitulo {
+    font-size: 18px;
+    color: $cor-texto2;
+    margin-bottom: 20px;
+}
+
+.info-rapida {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+    color: $cor-texto2;
+    font-size: 14px;
+}
+
+.area-principal {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.imagem-livro {
+    flex: 1; 
+    height: 650px; 
+    background: $cor-branco; 
+    border-radius: 12px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+.imagem-livro img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    border-radius: 12px; 
+}
+
+.painel-compra {
+    width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.preco {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.btn-comprar {
+    height: 55px;
+    border: none;
+    border-radius: 8px;
+    background: $cor-principal;
+    color: $cor-branco;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn-comprar:hover {
+    background: $cor-secundaria;
+}
+
+.btn-carrinho {
+    height: 55px;
+    border: none;
+    border-radius: 8px;
+    background: #2b2b31;
+    color: $cor-branco;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn-carrinho:hover {
+    background: #3a3a42;
+}
+
+.detalhes-livro {
+    margin-top: 50px;
+    background: #202024;
+    border-radius: 12px;
+    padding: 30px;
+}
+
+@media (max-width: 1200px) {
+    .area-principal {
+        flex-direction: column;
+    }
+
+    .painel-compra {
+        width: 100%;
+    }
+
+    .imagem-livro {
+        width: 100%;
+        min-height: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .titulo {
+        font-size: 32px;
+    }
+
+    .grid-detalhes {
+        grid-template-columns: 1fr;
+    }
+
+    .conteudo {
+        padding: 24px 16px;
+    }
+}
