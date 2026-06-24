@@ -12,6 +12,12 @@ namespace Livraria.API.Controllers.Base
         {
             get
             {
+                /// <summary>
+                /// O "Environment" É UMA CLASSE DO .NET QUE FORNECE INFORMAÇÕES SOBRE O AMBIENTE ONDE A APLICAÇÃO ESTÁ RODANDO
+                /// </summary>
+                
+                //return Environment.UserName;
+
                 return User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new Exception("ID NÃO INFORMADO");
             }
         }
