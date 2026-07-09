@@ -13,8 +13,6 @@ namespace Livraria.Infrastructure.Repositories.AutorRepository
 
         public async Task<bool> VerificarIdDoAutor(int numeroAutor)
         {
-            using var connection = CreateConnection();
-
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("SELECT");
             sb.AppendLine("       CASE");
@@ -24,31 +22,30 @@ namespace Livraria.Infrastructure.Repositories.AutorRepository
             sb.AppendLine("FROM [dbo].[Autor]");
             sb.AppendLine("WHERE [Id] = @IdAutor;");
 
+            using var connection = CreateConnection();
             return await connection.QuerySingleAsync<int>(sb.ToString(), new { IdAutor = numeroAutor }) > 0;
         }
 
         public async Task<IEnumerable<AutorOutputDto>> GetAll()
         {
-            using var connection = CreateConnection();
-
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("SELECT [id],");
             sb.AppendLine("            [nome]");
             sb.AppendLine("FROM [dbo].[Autor];");
 
+            using var connection = CreateConnection();
             return await connection.QueryAsync<AutorOutputDto>(sb.ToString());
         }
 
         public async Task<AutorOutputDto?> GetById(int id)
         {
-            using var connection = CreateConnection();
-
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("SELECT [id],");
             sb.AppendLine("            [nome]");
             sb.AppendLine("FROM [dbo].[Autor]");
             sb.AppendLine("WHERE [id] = @Id;");
 
+            using var connection = CreateConnection();
             return await connection.QueryFirstOrDefaultAsync<AutorOutputDto>(sb.ToString(), new { Id = id });
         }
     }

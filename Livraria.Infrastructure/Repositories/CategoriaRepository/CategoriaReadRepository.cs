@@ -13,8 +13,6 @@ namespace Livraria.Infrastructure.Repositories.CategoriaRepository
 
         public async Task<bool> VerificarIdDaCategoria(int numeroCategoria)
         {
-            using var connection = CreateConnection();
-
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("SELECT");
             sb.AppendLine("       CASE");
@@ -24,31 +22,30 @@ namespace Livraria.Infrastructure.Repositories.CategoriaRepository
             sb.AppendLine("FROM [dbo].[Categoria]");
             sb.AppendLine("WHERE [Categoria].[id] = @Id;");
 
+            using var connection = CreateConnection();
             return await connection.QuerySingleAsync<int>(sb.ToString(), new { Id = numeroCategoria }) > 0;
         }
 
         public async Task<IEnumerable<CategoriaLivroOutputDto>> GetAll()
         {
-            using var connection = CreateConnection();
-
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("SELECT [id],");
             sb.AppendLine("            [nome]");
             sb.AppendLine("FROM [dbo].[Categoria];");
 
+            using var connection = CreateConnection();
             return await connection.QueryAsync<CategoriaLivroOutputDto>(sb.ToString());
         }
 
         public async Task<CategoriaLivroOutputDto?> GetById(int id)
         {
-            using var connection = CreateConnection();
-
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("SELECT [id],");
             sb.AppendLine("            [nome]");
             sb.AppendLine("FROM [dbo].[Categoria]");
             sb.AppendLine("WHERE [id] = @Id;");
 
+            using var connection = CreateConnection();
             return await connection.QueryFirstOrDefaultAsync<CategoriaLivroOutputDto>(sb.ToString(), new { Id = id });
         }
     }

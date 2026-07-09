@@ -112,8 +112,6 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
 
         public override async Task<bool> Update(LivroEntity livro)
         {
-            using var connection = CreateConnection();
-
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("UPDATE [dbo].[Livros]");
             sb.AppendLine("SET [titulo] = @Titulo,");
@@ -137,18 +135,19 @@ namespace Livraria.Infrastructure.Repositories.LivroRepository
                 livro.Fk_Autor
             };
 
+            using var connection = CreateConnection();
             return await connection.ExecuteAsync(sb.ToString(), param) > 0;
         }
 
         public async Task<bool> RemoverCategorias(int idLivro, int categoria)
         {
-            using var connection = CreateConnection();
-
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("DELETE FROM [dbo].[Categoria_Livro]");
             sb.AppendLine("WHERE [fk_livro] = @Fk_Livro");
             sb.AppendLine("AND [fk_categoria] = @Categoria");
 
+
+            using var connection = CreateConnection();
             return await connection.ExecuteAsync(sb.ToString(), new { Fk_Livro = idLivro, Categoria = categoria }) > 0;
         }
     }

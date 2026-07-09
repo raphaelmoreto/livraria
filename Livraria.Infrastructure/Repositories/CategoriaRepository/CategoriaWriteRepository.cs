@@ -13,8 +13,6 @@ namespace Livraria.Infrastructure.Repositories.CategoriaRepository
 
         public override async Task<bool> Insert(CategoriaLivroEntity categoria)
         {
-            using var connection = CreateConnection();
-
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("INSERT INTO [dbo].[Categoria] ([nome])");
             sb.AppendLine("SELECT @Nome");
@@ -24,13 +22,12 @@ namespace Livraria.Infrastructure.Repositories.CategoriaRepository
             sb.AppendLine("         WHERE categoria.nome = @Nome");
             sb.AppendLine(")");
 
+            using var connection = CreateConnection();
             return await connection.ExecuteAsync(sb.ToString(), new { categoria.Nome }) > 0;
         }
 
         public override async Task<bool> Update(CategoriaLivroEntity categoria)
         {
-            using var connection = CreateConnection();
-
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("UPDATE [dbo].[Categoria]");
             sb.AppendLine("SET [nome] = @Nome");
@@ -41,6 +38,7 @@ namespace Livraria.Infrastructure.Repositories.CategoriaRepository
             sb.AppendLine("         WHERE categoria.nome = @Nome");
             sb.AppendLine(")");
 
+            using var connection = CreateConnection();
             return await connection.ExecuteAsync(sb.ToString(), new { categoria.Id, categoria.Nome }) > 0;
         }
     }
