@@ -11,16 +11,6 @@ namespace Livraria.Infrastructure.Repositories.AutorRepository
     {
         public AutorWriteRepository(IDatabaseConnection dbConnection) : base(dbConnection) { }
 
-        //public async Task<bool> BuscarAutorPorNome(string nomeAutor)
-        //{
-        //    StringBuilder sb = new StringBuilder();
-        //    sb.AppendLine("SELECT COUNT([nome])");
-        //    sb.AppendLine("FROM [dbo].[Autor]");
-        //    sb.AppendLine("WHERE [nome] = @Nome");
-
-        //    return await Connection.QuerySingleAsync<int>(sb.ToString(), new { Nome = nomeAutor }) > 0;
-        //}
-
         public override async Task<bool> Insert(AutorEntity autor)
         {
             using var connection = CreateConnection();

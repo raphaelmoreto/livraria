@@ -5,6 +5,8 @@ namespace Livraria.Domain.Interfaces.Repositories.CategoriaLivro
 {
     public interface ICategoriaReadRepository : IGetAll<CategoriaLivroOutputDto>, IGetById<CategoriaLivroOutputDto>
     {
+        Task<int> BuscarIdCategoriaPorNome(string nomeCategoria);
+
         Task<bool> VerificarIdDaCategoria(int numeroCategoria);
     }
 }

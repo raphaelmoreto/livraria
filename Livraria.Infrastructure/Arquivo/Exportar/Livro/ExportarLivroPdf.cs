@@ -7,7 +7,7 @@ using System.Globalization;
 
 namespace Livraria.Infrastructure.Arquivo.Exportar.Livro
 {
-    public class LivroPdf : IExportarLivro
+    public class ExportarLivroPdf : IExportarLivros
     {
         public bool SuportaExtensao(string extensao) => extensao.Equals(".pdf", StringComparison.OrdinalIgnoreCase);
 

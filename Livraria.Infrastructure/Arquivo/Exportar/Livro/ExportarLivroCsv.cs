@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Livraria.Infrastructure.Arquivo.Exportar.Livro
 {
-    public class LivroCsv : IExportarLivro
+    public class ExportarLivroCsv : IExportarLivros
     {
         public bool SuportaExtensao(string extensao) => extensao.Equals(".csv", StringComparison.OrdinalIgnoreCase);
 

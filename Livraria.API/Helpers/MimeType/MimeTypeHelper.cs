@@ -17,5 +17,7 @@
 
             return "application/octet-stream";
         }
+
+        public static bool ValidarMimeType(string extensao) => MimeType.ContainsKey(extensao.ToLower());
     }
 }

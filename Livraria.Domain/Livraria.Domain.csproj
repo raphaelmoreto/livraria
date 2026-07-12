@@ -11,8 +11,4 @@
     <PackageReference Include="Flunt" Version="2.0.5" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Interfaces\Repositories\Arquivo\Livro\Importar\" />
-  </ItemGroup>
-
 </Project>

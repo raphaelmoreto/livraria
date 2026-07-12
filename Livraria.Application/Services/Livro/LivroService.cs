@@ -3,9 +3,11 @@ using Livraria.Application.Interfaces.Services.Livro;
 using Livraria.Application.Interfaces.Services.Response;
 using Livraria.Application.Services.Base;
 using Livraria.Application.Response;
+using Livraria.Domain.Dtos.Arquivo;
 using Livraria.Domain.Dtos.Livro;
 using Livraria.Domain.Entities.Livro;
 using Livraria.Domain.Interfaces.Repositories.Arquivo.Livro.Exportar;
+using Livraria.Domain.Interfaces.Repositories.Arquivo.Livro.Importar;
 using Livraria.Domain.Interfaces.Repositories.Autor;
 using Livraria.Domain.Interfaces.Repositories.CategoriaLivro;
 using Livraria.Domain.Interfaces.Repositories.Livro;
@@ -18,26 +20,30 @@ namespace Livraria.Application.Services.Livro
 
         private readonly ICategoriaReadRepository categoriaReadRepository;
 
-        private readonly IEnumerable<IExportarLivro> exportador;
+        private readonly IEnumerable<IExportarLivros> exportador;
+
+        private readonly IEnumerable<IImportarLivros> importador;
 
         private readonly ILivroReadRepository livroReadRepository;
 
-        private readonly ILivroWriteRepository repositoryLivro;
+        private readonly ILivroWriteRepository livroWriteRepository;
 
         public LivroService
         (
             IAutorReadRepository autorReadRepository,
             ICategoriaReadRepository categoriaReadRepository,
-            IEnumerable<IExportarLivro> exportador,
+            IEnumerable<IExportarLivros> exportador,
+            IEnumerable<IImportarLivros> importador,
             ILivroReadRepository livroReadRepository,
-            ILivroWriteRepository repositoryLivro
+            ILivroWriteRepository livroWriteRepository
         )
         {
             this.autorReadRepository = autorReadRepository;
             this.categoriaReadRepository = categoriaReadRepository;
             this.exportador = exportador;
+            this.importador = importador;
             this.livroReadRepository = livroReadRepository;
-            this.repositoryLivro = repositoryLivro;
+            this.livroWriteRepository = livroWriteRepository;
         }
 
         public async Task<byte[]> DownloadLivros(string extensao)
@@ -86,7 +92,7 @@ namespace Livraria.Application.Services.Livro
             if (!livro.Validar())
                 return ServiceResponse.Error(TipoRetorno.Validation, "ERRO DE VALIDAÇÃO", livro.Notifications.Select(x => x.Message));
 
-            var insert = await repositoryLivro.Insert(livro, usuarioLogado);
+            var insert = await livroWriteRepository.Insert(livro, usuarioLogado);
             if (!insert)
                 return ServiceResponse.Error(TipoRetorno.Conflict, $"ERRO! LIVRO NÃO PODE SER CADASTRADO");
 
@@ -110,7 +116,7 @@ namespace Livraria.Application.Services.Livro
 
             foreach (var categoria in categorias)
             {
-                bool exclusaoCategoria = await repositoryLivro.RemoverCategorias(idLivro, categoria);
+                bool exclusaoCategoria = await livroWriteRepository.RemoverCategorias(idLivro, categoria);
                 if (!exclusaoCategoria)
                     return ServiceResponse.Error(TipoRetorno.Conflict, $"ERRO AO EXCLUIR CATEGORIA Nº{categoria}");
             }
@@ -141,7 +147,7 @@ namespace Livraria.Application.Services.Livro
                     idAutor = dto.Autor.Value;
             }
 
-            var livro = await repositoryLivro.GetById(id);
+            var livro = await livroWriteRepository.GetById(id);
             if (livro == null)
                 return ServiceResponse.Error(TipoRetorno.NotFound, "LIVRO NÃO ENCONTRADO NO BANCO!");
 
@@ -155,11 +161,40 @@ namespace Livraria.Application.Services.Livro
             if (!livro.Validar())
                 return ServiceResponse.Error(TipoRetorno.Validation, "ERRO DE VALIDAÇÃO", livro.Notifications.Select(x => x.Message));
 
-            var update = await repositoryLivro.Update(livro); //ToDo: FAZER UPDATE PARA O LIVRO
+            var update = await livroWriteRepository.Update(livro); //ToDo: FAZER UPDATE PARA O LIVRO
             if (!update)
                 return ServiceResponse.Error(TipoRetorno.Conflict, $"ERRO! LIVRO NÃO PODE SER ATUALIZADO");
 
             return ServiceResponse.Ok("LIVRO ATUALIZADO COM SUCESSO");
+        }
+
+        public async Task<IServiceResponse> UploadLivros(ArquivoDto dto, string usuarioLogado)
+        {
+            if (dto.Stream is null || dto.Stream.Length == 0)
+                return ServiceResponse.Error(TipoRetorno.BadRequest, $"ARQUIVO NÃO INFORMADO!");
+
+            var importar = importador.FirstOrDefault(i => i.SuportaExtensao(dto.Extensao));
+            if (importar is null)
+                return ServiceResponse.Error(TipoRetorno.BadRequest, "FORMATO DE ARQUIVO NÃO SUPORTADO!");
+
+            var lstLivros = await importar.LerArquivo(dto);
+            if (lstLivros is null)
+                return ServiceResponse.Error(TipoRetorno.BadRequest, "ARQUIVO VÁZIO!");
+
+            int livrosInseridos = 0;
+            foreach (var livro in lstLivros)
+            {
+                if (livro.Validar())
+                {
+                    var insert = await livroWriteRepository.Insert(livro, usuarioLogado);
+                    if (insert)
+                        livrosInseridos++;
+                }
+
+                continue;
+            }
+
+            return ServiceResponse.Ok($"{livrosInseridos}/{lstLivros.Count()} LIVROS IMPORTADOS COM SUCESSO");
         }
     }
 }

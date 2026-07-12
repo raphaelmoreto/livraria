@@ -15,11 +15,11 @@ namespace Livraria.Application.Response
 
         private ServiceResponse() { }
 
-        public static ServiceResponse Error(TipoRetorno TipoRetorno, string mensagem, IEnumerable<string>? notificacoes = null)
+        public static ServiceResponse Error(TipoRetorno tipoRetorno, string mensagem, IEnumerable<string>? notificacoes = null)
         {
             return new ServiceResponse
             {
-                TipoRetorno = TipoRetorno,
+                TipoRetorno = tipoRetorno,
                 Success = false,
                 Mensagem = mensagem,
                 Notificacoes = notificacoes?.ToList() ?? []

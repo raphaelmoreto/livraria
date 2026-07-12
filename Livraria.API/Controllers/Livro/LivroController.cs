@@ -2,6 +2,7 @@
 using Livraria.API.Helpers.MimeType;
 using Livraria.Application.Enum.Response;
 using Livraria.Application.Interfaces.Services.Livro;
+using Livraria.Domain.Dtos.Arquivo;
 using Livraria.Domain.Dtos.Livro;
 using Livraria.Domain.Interfaces.Repositories.Livro;
 using Microsoft.AspNetCore.Authorization;
@@ -86,6 +87,30 @@ namespace Livraria.API.Controllers.Livro
         public async Task<IActionResult> GetPorPaginacao(int page = 1, int pageSize = 20)
         {
             var result = await livroRead.BuscaPorPaginacao(page, pageSize);
+            return Ok(result);
+        }
+
+        [HttpPost("upload/livros")]
+        public async Task<IActionResult> ImportarLivros(IFormFile file)
+        {
+            string extensao = Path.GetExtension(file.FileName);
+
+            if (!MimeTypeHelper.ValidarMimeType(extensao))
+                return BadRequest("FORMATO DE ARQUIVO NÃO SUPORTADO!");
+
+            /// <summary>
+            /// "Stream" É UMA SEQUÊNCIA DE DADOS QUE PODE SER LIDA OU ESCRITA CONTINUAMENTE AO LONGO DO TEMPO.
+            /// • UM ARQUIVO É COMO UM LIVRO INTEIRO, VOCÊ TEM TODO O CONTEÚDO DISPONÍVEL.
+            /// • UMA "Stream" É COMO UMA MANGUEIRA COM ÁGUA. A ÁGUA VAI CHEGANDO E VOCÊ PODE USÁ-LA COFNFORME ELA SAI
+            /// </summary>
+            await using var stream = file.OpenReadStream();
+
+            var result = await livroService.UploadLivros(new ArquivoDto(stream, file.FileName, extensao, file.ContentType), UsuarioLogado);
+            if (!result.Success)
+            {
+                //ToDo: CONTINUAR O PROCESSO DEPOIS
+            }
+
             return Ok(result);
         }
 

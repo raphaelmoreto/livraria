@@ -2,7 +2,7 @@
 
 namespace Livraria.Domain.Interfaces.Repositories.Arquivo.Livro.Exportar
 {
-    public interface IExportarLivro
+    public interface IExportarLivros
     {
         bool SuportaExtensao(string extensao);
 

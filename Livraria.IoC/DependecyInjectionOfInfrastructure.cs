@@ -1,10 +1,12 @@
 ﻿using Livraria.Domain.Interfaces.Repositories.Arquivo.Livro.Exportar;
+using Livraria.Domain.Interfaces.Repositories.Arquivo.Livro.Importar;
 using Livraria.Domain.Interfaces.Repositories.Autor;
 using Livraria.Domain.Interfaces.Repositories.CategoriaLivro;
 using Livraria.Domain.Interfaces.Repositories.Livro;
 using Livraria.Domain.Interfaces.Repositories.Login;
 using Livraria.Domain.Interfaces.Repositories.Usuario;
 using Livraria.Infrastructure.Arquivo.Exportar.Livro;
+using Livraria.Infrastructure.Arquivo.Importar.Livro;
 using Livraria.Infrastructure.Connection;
 using Livraria.Infrastructure.Interfaces;
 using Livraria.Infrastructure.Repositories.AutorRepository;
@@ -26,9 +28,12 @@ namespace Livraria.IoC
             QuestPDF.Settings.License = LicenseType.Community;
 
             //ARQUIVO
-            services.AddScoped<IExportarLivro, LivroCsv>();
-            services.AddScoped<IExportarLivro, LivroPdf>();
-            services.AddScoped<IExportarLivro, LivroXlsx>();
+            services.AddScoped<IExportarLivros, ExportarLivroCsv>();
+            services.AddScoped<IExportarLivros, ExportarLivroPdf>();
+            services.AddScoped<IExportarLivros, ExportarLivroXlsx>();
+            services.AddScoped<IImportarLivros, ImportarLivroCsv>();
+            services.AddScoped<IImportarLivros, ImportarLivroPdf>();
+            services.AddScoped<IImportarLivros, ImportarLivroXlsx>();
 
             //CONNECTION
             services.AddScoped<IDatabaseConnection, DatabaseConnection>();
