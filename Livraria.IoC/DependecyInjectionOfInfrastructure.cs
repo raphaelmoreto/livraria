@@ -30,6 +30,7 @@ namespace Livraria.IoC
             //ARQUIVO
             services.AddScoped<IExportarLivros, ExportarLivroCsv>();
             services.AddScoped<IExportarLivros, ExportarLivroPdf>();
+            services.AddScoped<IExportarLivros, ExportarLivroTxt>();
             services.AddScoped<IExportarLivros, ExportarLivroXlsx>();
             services.AddScoped<IImportarLivros, ImportarLivroCsv>();
             services.AddScoped<IImportarLivros, ImportarLivroPdf>();

@@ -178,20 +178,16 @@ namespace Livraria.Application.Services.Livro
                 return ServiceResponse.Error(TipoRetorno.BadRequest, "FORMATO DE ARQUIVO NÃO SUPORTADO!");
 
             var lstLivros = await importar.LerArquivo(dto);
-            if (lstLivros is null)
-                return ServiceResponse.Error(TipoRetorno.BadRequest, "ARQUIVO VÁZIO!");
 
             int livrosInseridos = 0;
             foreach (var livro in lstLivros)
             {
-                if (livro.Validar())
-                {
-                    var insert = await livroWriteRepository.Insert(livro, usuarioLogado);
-                    if (insert)
-                        livrosInseridos++;
-                }
+                if (!livro.Validar())
+                    continue;
 
-                continue;
+                var insert = await livroWriteRepository.Insert(livro, usuarioLogado);
+                if (insert)
+                    livrosInseridos++;
             }
 
             return ServiceResponse.Ok($"{livrosInseridos}/{lstLivros.Count()} LIVROS IMPORTADOS COM SUCESSO");

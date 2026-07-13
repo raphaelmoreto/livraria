@@ -108,7 +108,8 @@ namespace Livraria.API.Controllers.Livro
             var result = await livroService.UploadLivros(new ArquivoDto(stream, file.FileName, extensao, file.ContentType), UsuarioLogado);
             if (!result.Success)
             {
-                //ToDo: CONTINUAR O PROCESSO DEPOIS
+                if (result.TipoRetorno == TipoRetorno.BadRequest)
+                    return BadRequest(result.Mensagem);
             }
 
             return Ok(result);
