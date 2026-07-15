@@ -33,12 +33,15 @@ Livraria
 
 * **.NET 8**
 * **ASP.NET Core Web API**
+* **Serilog.AspNetCore** (faz com que o próprio ILogger<T> da aplicação utilize o Serilog como provedor de logs)
+* **Serilog.Sinks.File** (gravador de logs em arquivos .txt ou .log)
 * **Dapper** (ORM leve)
 * **SQL Server**
 * **JWT Authentication**
 * **Swagger** (documentação da API)
 * **EPPlus** (manipulação de arquivos Excel)
-* **QuestPDF** (manipulação de arquivos PDF)
+* **QuestPDF** (Geração de arquivos PDF)
+* **iText7** (assinaturas, edição e leitura de arquivos .PDF)
 * **Flunt** (validações e notificações em domínios)
 
 ---
@@ -49,17 +52,19 @@ Livraria
 
 * JWT Authentication
 * Swagger (Swashbuckle)
+* Serilog.AspNetCore
+* Serilog.Sinks.File
 * Referência para Domain e IoC
 
 ### 🔹 Livraria.Application
 
 * Manipulação de Tokens JWT
-* Regras de negócio
 * Referência para Domain e Infrastructure
 
 ### 🔹 Livraria.Domain
 
 * Entidades
+* Regras de negócio
 * Interfaces
 * Dapper.Contrib
 * Flunt
@@ -69,7 +74,8 @@ Livraria
 * Dapper
 * SQL Server (Microsoft.Data.SqlClient)
 * EPPlus (Excel)
-* QuestPDF (PDF)
+* QuestPDF
+* iText7
 * Configurações
 
 ### 🔹 Livraria.IoC

@@ -1,6 +1,7 @@
 using Livraria.API.Configurations;
 using Livraria.API.Middlewares;
 using Livraria.IoC;
+using Serilog;
 using System.Text.Json.Serialization;
 
 namespace Livraria.API
@@ -9,7 +10,20 @@ namespace Livraria.API
     {
         public static void Main(string[] args)
         {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information() //DEFINE O MÍNIMO DE LOG QUE SERÁ GRAVADO (COMO DEFINIU "Information" SERÃO GRAVADOS: Information, Warning, Error, Fatal)
+                .WriteTo.File //INDICA QUE O DESTINO ("Sink") DOS LOGS SERÁ UM ARQUIVO (Console, Arquivo, SQL Server, etc...)
+                (
+                    @"C:\TEMP\LIVRARIA\LOGS\livraria-logs.txt",
+                    rollingInterval: RollingInterval.Infinite, //DEFINE QUANDO UM ARQUIVO NOVO SERÁ CRIADO. MAS ASSIM UTILIZARÁ SEMPRE O MESMO ARQUIVO
+                    shared: true //PERMITE QUE O ARQUIVO SEJA COMPARTILHADO
+                )
+                .CreateLogger();
+
             var builder = WebApplication.CreateBuilder(args);
+
+            //EM VEZ DE UTILIZAR O SISTEMA PADRÃO DE LOGS (Microsoft.Extensions.Logging) UTILIZARÁ O SERILOG
+            builder.Host.UseSerilog();
 
             // Add services to the container.
 

@@ -25,9 +25,12 @@
         //"RequestDelegate" É UM TIPO DE DELEGATE DO ASP.NET Core
         private readonly RequestDelegate _next;
 
-        public ExceptionMiddleware(RequestDelegate next) 
+        private readonly ILogger<ExceptionMiddleware> _logger;
+
+        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger) 
         {
             _next = next;
+            _logger = logger;
         }
 
         //O MÉTODO "InvokeAsync" É CHAMADO EM TODA REQUISIÇÃO HTTP QUE PASSA PELA PIPELINE DO ASP.NET Core, DESDE QUE O MIDDLEWARE TENHA SIDO REGISTRADO NO Program.cs
@@ -40,12 +43,30 @@
             }
             catch (Exception ex)
             {
+                ///<summary>
+                /// O "ILogger POSSUI VÁRIOS MÉTODOS"
+                /// LogTrace()
+                /// • LogDebug()
+                /// • LogInformation()
+                /// • LogWarning()
+                /// • LogError()
+                /// • LogCritical()
+                /// COMO "Exception" É UMA EXCEÇÃO, "LogError()" É O NÍVEL APROPRIADO
+                /// </summary>
+
+                _logger.LogError(
+                    ex,
+                    "ERRO AO PROCESSAR A REQUISIÇÃO {Metodo} {Rota}",
+                    context.Request.Method, //DELETE, GET, PATCH, POST OU PUT
+                    context.Request.Path //ROTA EXEMPLO: /api/usuarios/login
+                );
+
                 context.Response.StatusCode = 500;
 
                 //DEFINE O TIPO DE RESPOSTA DA API. ELA IRÁ RETORNAR SEMPRE UM JSON
                 context.Response.ContentType = "application/json";
 
-                await context.Response.WriteAsJsonAsync(new { success = false, erro = ex.Message });
+                await context.Response.WriteAsJsonAsync(new { success = false, erro = "OCORREU UM ERRO INTERNO" });
             }
         }
     }

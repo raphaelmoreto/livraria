@@ -1,4 +1,6 @@
-﻿using Livraria.Domain.Dtos.Arquivo;
+﻿using iText.Kernel.Pdf;
+using iText.Kernel.Pdf.Canvas.Parser;
+using Livraria.Domain.Dtos.Arquivo;
 using Livraria.Domain.Entities.Livro;
 using Livraria.Domain.Interfaces.Repositories.Arquivo.Livro.Importar;
 using Livraria.Domain.Interfaces.Repositories.Autor;
@@ -20,8 +22,18 @@ namespace Livraria.Infrastructure.Arquivo.Importar.Livro
 
         public bool SuportaExtensao(string extensao) => extensao.Equals(".pdf", StringComparison.OrdinalIgnoreCase);
 
-        Task<IEnumerable<LivroEntity>> IImportarLivros.LerArquivo(ArquivoDto dto)
+        public Task<IEnumerable<LivroEntity>> LerArquivo(ArquivoDto dto)
         {
+            using var pdf = new PdfDocument(new PdfReader(dto.Stream));
+
+            //ToDo:INCOMPLETO
+            for (int i = 1; i <= pdf.GetNumberOfPages(); i++)
+            {
+                var pagina = pdf.GetPage(i);
+                string textos = PdfTextExtractor.GetTextFromPage(pagina);
+                string[] vextorTextos = textos.Split('\n');
+            }
+
             throw new NotImplementedException();
         }
     }
