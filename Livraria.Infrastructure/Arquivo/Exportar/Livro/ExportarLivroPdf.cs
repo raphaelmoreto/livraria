@@ -1,9 +1,10 @@
-﻿using Livraria.Domain.Interfaces.Repositories.Arquivo.Livro.Exportar;
-using Livraria.Domain.Dtos.Livro;
+﻿using Livraria.Domain.Dtos.Livro;
+using Livraria.Domain.Interfaces.Repositories.Arquivo.Livro.Exportar;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using System.Globalization;
+using System.Reflection.PortableExecutable;
 
 namespace Livraria.Infrastructure.Arquivo.Exportar.Livro
 {
@@ -33,6 +34,7 @@ namespace Livraria.Infrastructure.Arquivo.Exportar.Livro
                         .PaddingBottom(15)
                         .Column(column => {
                             column.Item()
+                                .ShowOnce() //MOSTRA UMA ÚNICA VEZ
                                 .AlignCenter()
                                 .Padding(15)
                                 .Text("RELATÓRIO DE LIVROS")
@@ -41,6 +43,7 @@ namespace Livraria.Infrastructure.Arquivo.Exportar.Livro
                                 .FontSize(22);
 
                             column.Item()
+                                .ShowOnce()
                                 .AlignRight()
                                 .PaddingTop(5)
                                 .Text($"Gerado em: {DateTime.Now:dd/MM/yyyy HH:mm}")
@@ -51,56 +54,128 @@ namespace Livraria.Infrastructure.Arquivo.Exportar.Livro
                     page.Content()
                         .Container()
                         .PaddingVertical(10)
-                        .Table(table => {
-
+                        .Column(column => //FORMATAÇÃO NOVA DO LAYOUT
+                        {
                             //DEFINIÇÃO DAS COLUNAS
-                            table.ColumnsDefinition(columns => {
-                                columns.RelativeColumn(18);    // ISBN
-                                columns.RelativeColumn(30); //TÍTULO
-                                columns.RelativeColumn(28); //SUBTITULO
-                                columns.RelativeColumn(25);    // CATEGORIAS
-                                columns.RelativeColumn(25);    // AUTOR
-                                columns.RelativeColumn(14); //DT_PUBLICACAO                                
-                                columns.RelativeColumn(10);   // PREÇO
-                                columns.RelativeColumn(8);   // QUANTIDADE
-                            });
+                            column.Item()
+                                .ShowOnce()
+                                .Table(table =>
+                                {
+                                    table.ColumnsDefinition(columns =>
+                                    {
+                                        columns.RelativeColumn(18);    // ISBN
+                                        columns.RelativeColumn(30); //TÍTULO
+                                        columns.RelativeColumn(28); //SUBTITULO
+                                        columns.RelativeColumn(25);    // CATEGORIAS
+                                        columns.RelativeColumn(25);    // AUTOR
+                                        columns.RelativeColumn(14); //DT_PUBLICACAO                                
+                                        columns.RelativeColumn(10);   // PREÇO
+                                        columns.RelativeColumn(8);   // QUANTIDADE
+                                    });
 
-                            table.Header(header => {
-                                CelulaCabecalho(header.Cell(), "ISBN");
-                                CelulaCabecalho(header.Cell(), "TÍTULO");
-                                CelulaCabecalho(header.Cell(), "SUBTITULO");
-                                CelulaCabecalho(header.Cell(), "CATEGORIAS");
-                                CelulaCabecalho(header.Cell(), "AUTOR");
-                                CelulaCabecalho(header.Cell(), "PUBLICAÇÃO");
-                                CelulaCabecalho(header.Cell(), "PREÇO");
-                                CelulaCabecalho(header.Cell(), "QTD");
+                                    CelulaCabecalho(table.Cell(), "ISBN");
+                                    CelulaCabecalho(table.Cell(), "TÍTULO");
+                                    CelulaCabecalho(table.Cell(), "SUBTITULO");
+                                    CelulaCabecalho(table.Cell(), "CATEGORIAS");
+                                    CelulaCabecalho(table.Cell(), "AUTOR");
+                                    CelulaCabecalho(table.Cell(), "PUBLICAÇÃO");
+                                    CelulaCabecalho(table.Cell(), "PREÇO");
+                                    CelulaCabecalho(table.Cell(), "QTD");
 
-                                header
-                                    .Cell()
-                                    .ColumnSpan(8)
-                                    .BorderBottom(3)
-                                    .BorderColor(Preto)
-                                    .PaddingBottom(4);
-                            });
+                                    table
+                                        .Cell()
+                                        .ColumnSpan(8)
+                                        .BorderBottom(3)
+                                        .BorderColor(Preto)
+                                        .PaddingBottom(4);
+                                });
 
                             //DADOS
-                            for (int i = 0; i < dados.Count; i++)
-                            {
-                                var livro = dados[i];
+                            column.Item()
+                                .Table(table =>
+                                {
+                                    table.ColumnsDefinition(columns =>
+                                    {
+                                        columns.RelativeColumn(18);    // ISBN
+                                        columns.RelativeColumn(30); //TÍTULO
+                                        columns.RelativeColumn(28); //SUBTITULO
+                                        columns.RelativeColumn(25);    // CATEGORIAS
+                                        columns.RelativeColumn(25);    // AUTOR
+                                        columns.RelativeColumn(14); //DT_PUBLICACAO                                
+                                        columns.RelativeColumn(10);   // PREÇO
+                                        columns.RelativeColumn(8);   // QUANTIDADE
+                                    });
 
-                                string background = i % 2 == 0 ? Colors.White : RoxoClaro;
-                                string fontColor = i % 2 == 0 ? Preto : Colors.White;
+                                    for (int i = 0; i < dados.Count; i++)
+                                    {
+                                        var livro = dados[i];
 
-                                CelulaCorpo(table, livro.Isbn, background, fontColor);
-                                CelulaCorpo(table, livro.Titulo, background, fontColor);
-                                CelulaCorpo(table, livro.Subtitulo ?? "-", background, fontColor);
-                                CelulaCorpo(table, livro.Categorias, background, fontColor);
-                                CelulaCorpo(table, livro.Autor ?? "-", background, fontColor);
-                                CelulaCorpo(table, livro.Dt_Publicacao.ToString("dd/MM/yyyy"), background, fontColor);
-                                CelulaCorpo(table, livro.Preco.ToString("F2", CultureInfo.InvariantCulture), background, fontColor);
-                                CelulaCorpo(table, livro.Quantidade.ToString(), background, fontColor);
-                            }
+                                        string background = i % 2 == 0 ? Colors.White : RoxoClaro;
+                                        string fontColor = i % 2 == 0 ? Preto : Colors.White;
+
+                                        CelulaCorpo(table, livro.Isbn, background, fontColor);
+                                        CelulaCorpo(table, livro.Titulo, background, fontColor);
+                                        CelulaCorpo(table, livro.Subtitulo ?? "-", background, fontColor);
+                                        CelulaCorpo(table, livro.Categorias, background, fontColor);
+                                        CelulaCorpo(table, livro.Autor ?? "-", background, fontColor);
+                                        CelulaCorpo(table, livro.Dt_Publicacao.ToString("dd/MM/yyyy"), background, fontColor);
+                                        CelulaCorpo(table, livro.Preco.ToString("F2", CultureInfo.InvariantCulture), background, fontColor);
+                                        CelulaCorpo(table, livro.Quantidade.ToString(), background, fontColor);
+                                    }
+                                });
                         });
+
+                        //FORMATAÇÃO ANTIGA DO LAYOUT
+                        //.Table(table => {
+
+                        //    //DEFINIÇÃO DAS COLUNAS
+                        //    table.ColumnsDefinition(columns => {
+                        //        columns.RelativeColumn(18);    // ISBN
+                        //        columns.RelativeColumn(30); //TÍTULO
+                        //        columns.RelativeColumn(28); //SUBTITULO
+                        //        columns.RelativeColumn(25);    // CATEGORIAS
+                        //        columns.RelativeColumn(25);    // AUTOR
+                        //        columns.RelativeColumn(14); //DT_PUBLICACAO                                
+                        //        columns.RelativeColumn(10);   // PREÇO
+                        //        columns.RelativeColumn(8);   // QUANTIDADE
+                        //    });
+
+                        //    table.Header(header => {
+                        //        CelulaCabecalho(header.Cell(), "ISBN");
+                        //        CelulaCabecalho(header.Cell(), "TÍTULO");
+                        //        CelulaCabecalho(header.Cell(), "SUBTITULO");
+                        //        CelulaCabecalho(header.Cell(), "CATEGORIAS");
+                        //        CelulaCabecalho(header.Cell(), "AUTOR");
+                        //        CelulaCabecalho(header.Cell(), "PUBLICAÇÃO");
+                        //        CelulaCabecalho(header.Cell(), "PREÇO");
+                        //        CelulaCabecalho(header.Cell(), "QTD");
+
+                        //        header
+                        //            .Cell()
+                        //            .ColumnSpan(8)
+                        //            .BorderBottom(3)
+                        //            .BorderColor(Preto)
+                        //            .PaddingBottom(4);
+                        //    });
+
+                        //    //DADOS
+                        //    for (int i = 0; i < dados.Count; i++)
+                        //    {
+                        //        var livro = dados[i];
+
+                        //        string background = i % 2 == 0 ? Colors.White : RoxoClaro;
+                        //        string fontColor = i % 2 == 0 ? Preto : Colors.White;
+
+                        //        CelulaCorpo(table, livro.Isbn, background, fontColor);
+                        //        CelulaCorpo(table, livro.Titulo, background, fontColor);
+                        //        CelulaCorpo(table, livro.Subtitulo ?? "-", background, fontColor);
+                        //        CelulaCorpo(table, livro.Categorias, background, fontColor);
+                        //        CelulaCorpo(table, livro.Autor ?? "-", background, fontColor);
+                        //        CelulaCorpo(table, livro.Dt_Publicacao.ToString("dd/MM/yyyy"), background, fontColor);
+                        //        CelulaCorpo(table, livro.Preco.ToString("F2", CultureInfo.InvariantCulture), background, fontColor);
+                        //        CelulaCorpo(table, livro.Quantidade.ToString(), background, fontColor);
+                        //    }
+                        //});
 
                     page.Footer()
                         .AlignCenter()
@@ -133,6 +208,7 @@ namespace Livraria.Infrastructure.Arquivo.Exportar.Livro
             table.Cell()
                 .Background(background)
                 .Padding(6)
+                .AlignCenter()
                 .Text(texto)
                 .FontColor(fontColor)
                 .FontSize(8);

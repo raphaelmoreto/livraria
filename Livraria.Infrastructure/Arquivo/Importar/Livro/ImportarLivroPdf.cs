@@ -31,7 +31,7 @@ namespace Livraria.Infrastructure.Arquivo.Importar.Livro
             {
                 var pagina = pdf.GetPage(i);
                 string textos = PdfTextExtractor.GetTextFromPage(pagina);
-                string[] vextorTextos = textos.Split('\n');
+                string[] vextorTextos = textos.Split(' ');
             }
 
             throw new NotImplementedException();
