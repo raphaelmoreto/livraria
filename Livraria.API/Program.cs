@@ -15,7 +15,7 @@ namespace Livraria.API
                 .WriteTo.File //INDICA QUE O DESTINO ("Sink") DOS LOGS SERÁ UM ARQUIVO (Console, Arquivo, SQL Server, etc...)
                 (
                     @"C:\TEMP\LIVRARIA\LOGS\livraria-logs.txt",
-                    rollingInterval: RollingInterval.Infinite, //DEFINE QUANDO UM ARQUIVO NOVO SERÁ CRIADO. MAS ASSIM UTILIZARÁ SEMPRE O MESMO ARQUIVO
+                    rollingInterval: RollingInterval.Day, //DEFINE QUANDO UM ARQUIVO NOVO SERÁ CRIADO. ASSIM CRIARA UM ARQUIVO POR DIA
                     shared: true //PERMITE QUE O ARQUIVO SEJA COMPARTILHADO
                 )
                 .CreateLogger();

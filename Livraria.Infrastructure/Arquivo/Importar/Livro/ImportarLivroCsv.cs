@@ -20,7 +20,7 @@ namespace Livraria.Infrastructure.Arquivo.Importar.Livro
 
         public bool SuportaExtensao(string extensao) => extensao.Equals(".csv", StringComparison.OrdinalIgnoreCase);
 
-        public Task<IEnumerable<LivroEntity>> LerArquivo(ArquivoDto dto)
+        public async Task<IEnumerable<LivroEntity>> LerArquivo(ArquivoDto dto)
         {
             throw new NotImplementedException();
         }
