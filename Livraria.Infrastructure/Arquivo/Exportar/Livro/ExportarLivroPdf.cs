@@ -1,11 +1,9 @@
-﻿using iText.StyledXmlParser.Jsoup.Safety;
-using Livraria.Domain.Dtos.Livro;
+﻿using Livraria.Domain.Dtos.Livro;
 using Livraria.Domain.Interfaces.Repositories.Arquivo.Livro.Exportar;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using System.Globalization;
-using System.Reflection.PortableExecutable;
 using System.Text;
 
 namespace Livraria.Infrastructure.Arquivo.Exportar.Livro

@@ -6,11 +6,6 @@ using Livraria.Domain.Entities.Livro;
 using Livraria.Domain.Interfaces.Repositories.Arquivo.Livro.Importar;
 using Livraria.Domain.Interfaces.Repositories.Autor;
 using Livraria.Domain.Interfaces.Repositories.CategoriaLivro;
-using System;
-using System.ComponentModel;
-using System.Globalization;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Livraria.Infrastructure.Arquivo.Importar.Livro
 {
