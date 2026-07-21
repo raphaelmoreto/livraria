@@ -171,9 +171,9 @@ namespace Livraria.Infrastructure.Arquivo.Exportar.Livro
 
                                  CelulaCorpo(table, $"|{livro.Isbn}|", background, fontColor);
                                  CelulaCorpo(table, $"|{livro.Titulo}|", background, fontColor);
-                                 CelulaCorpo(table, $"|{livro.Subtitulo}|" ?? "-", background, fontColor);
+                                 CelulaCorpo(table, $"|{(string.IsNullOrWhiteSpace(livro.Subtitulo) ? "-" : livro.Subtitulo)}|", background, fontColor);
                                  CelulaCorpo(table, $"|{livro.Categorias}|", background, fontColor);
-                                 CelulaCorpo(table, $"|{livro.Autor}|" ?? "-", background, fontColor);
+                                 CelulaCorpo(table, $"|{(string.IsNullOrWhiteSpace(livro.Autor) ? "-" : livro.Autor)}|", background, fontColor);
                                  CelulaCorpo(table, $"|{livro.Dt_Publicacao.ToString("dd/MM/yyyy")}|", background, fontColor);
                                  CelulaCorpo(table, $"|{livro.Preco.ToString("F2", CultureInfo.InvariantCulture)}|", background, fontColor);
                                  CelulaCorpo(table, $"|{livro.Quantidade.ToString()}|", background, fontColor);

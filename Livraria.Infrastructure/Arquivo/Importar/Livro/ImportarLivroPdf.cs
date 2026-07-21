@@ -6,6 +6,7 @@ using Livraria.Domain.Entities.Livro;
 using Livraria.Domain.Interfaces.Repositories.Arquivo.Livro.Importar;
 using Livraria.Domain.Interfaces.Repositories.Autor;
 using Livraria.Domain.Interfaces.Repositories.CategoriaLivro;
+using System.Globalization;
 
 namespace Livraria.Infrastructure.Arquivo.Importar.Livro
 {
@@ -33,38 +34,65 @@ namespace Livraria.Infrastructure.Arquivo.Importar.Livro
             ///</summary>
             using var pdf = new PdfDocument(new PdfReader(dto.Stream));
             var livros = new List<LivroEntity>();
+            List<string> lstLinhas = new List<string>();
 
-            //ToDo: INCOMPLETO
             for (int i = 1; i <= pdf.GetNumberOfPages(); i++)
             {
                 string textos = PdfTextExtractor.GetTextFromPage(pdf.GetPage(i), new SimpleTextExtractionStrategy());
                 string[] vectorTextos = textos.Split('|');
                 
                 bool lerTabela = false;
-                List<string> lstLinhas = new List<string>();
 
                 foreach (var texto in vectorTextos)
                 {
                     if (!lerTabela)
                     {
-                        if (texto.StartsWith("QTD"))
+                        if (
+                                texto.ToUpper().StartsWith("RELATÓRIO DE LIVROS") ||
+                                texto.ToUpper().StartsWith("ISBN TÍTULO SUBTITULO CATEGORIAS AUTOR PUBLICAÇÃO PREÇO QTD")
+                           )
                             lerTabela = true;
 
                         continue;
                     }
 
                     //VERIFICA SE A TABELA CHEGOU AO FINAL
-                    if (texto.StartsWith("Página"))
+                    if (texto.ToLower().StartsWith("\nPágina".ToLower()))
                     {
                         lerTabela = false;
                         break;
                     }
 
-                    lstLinhas.Add(texto);
-
-                    //if (!string.IsNullOrWhiteSpace(texto))
-                    //    lstLinhas.Add(texto);
+                    if (!string.IsNullOrWhiteSpace(texto))
+                        lstLinhas.Add(texto);
                 }
+            }
+
+            for (int j = 0; j < lstLinhas.Count; j += 8)
+            {
+                string isbn = lstLinhas[j];
+                string titulo = lstLinhas[j + 1].Replace("\n", " ").Trim();
+                string? subtitulo = lstLinhas[j + 2] == "-" ? null : lstLinhas[j + 2].Replace("\n", " ").Trim();
+                string autor = lstLinhas[j + 4].Replace("\n", " ").Trim();
+                DateTime dt_publicacao = DateTime.ParseExact(lstLinhas[j + 5], "dd/MM/yyyy", CultureInfo.GetCultureInfo("pt-BR"));
+                decimal preco = decimal.Parse(lstLinhas[j + 6], CultureInfo.InvariantCulture);
+                int quantidade = int.Parse(lstLinhas[j + 7]);
+
+                int idAutor = await autorReadRepository.BuscarIdAutorPorNome(autor);
+
+                List<int> fk_Categorias = [];
+                foreach (var categoria in lstLinhas[j + 3].Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    var nome = categoria.Replace("\n", " ").Trim();
+                    int id = await categoriaReadRepository.BuscarIdCategoriaPorNome(nome);
+                    if (id != 0)
+                        fk_Categorias.Add(id);
+                }
+
+                livros.Add
+                (
+                    new LivroEntity(titulo, isbn, dt_publicacao, preco, quantidade, fk_Categorias, subtitulo, idAutor)
+                );
             }
 
             return livros;

@@ -28,7 +28,7 @@ namespace Livraria.Infrastructure.Arquivo.Importar.Livro
             var planilha = package.Workbook.Worksheets[0];
 
             List<LivroEntity> livros = [];
-            List<int> fk_categoria = [];
+            List<int> fk_categorias = [];
 
             var totalLinhas = planilha.Dimension.Rows;
             for (int linha = 2; linha <= totalLinhas; linha++)
@@ -53,12 +53,12 @@ namespace Livraria.Infrastructure.Arquivo.Importar.Livro
                     if (idCategoria == 0)
                         continue;
 
-                    fk_categoria.Add(idCategoria);
+                    fk_categorias.Add(idCategoria);
                 }
 
                 livros.Add
                 (
-                    new LivroEntity(titulo, isbn, dt_publicacao, preco, qt_estoque, fk_categoria, subtitulo, idAutor)
+                    new LivroEntity(titulo, isbn, dt_publicacao, preco, qt_estoque, fk_categorias, subtitulo, idAutor)
                 );
             }
 
